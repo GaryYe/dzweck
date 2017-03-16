@@ -35,33 +35,4 @@ public class JDBCBoxDaoTest extends AbstractBoxDaoTest {
     public void tearDown() throws SQLException {
         dataSource.getConnection().rollback();
     }
-
-    @Test
-    public void findAllShouldReturnEmptyWhenNoElementsInside() throws Exception {
-        assertTrue(boxDao.findAll().isEmpty());
-    }
-
-    @Test
-    public void testCreateBoxWithAllAttributesSet() {
-        Box box = new Box.BoxBuilder(42L)
-                .area(37.8)
-                .dailyRate(-22.2)
-                .windows(false)
-                .indoor(true)
-                .name("Box 42")
-                // .image(new BufferedImage(1, 1, 3)) TODO
-                .create();
-        boxDao.update(box);
-        List<Box> storedBoxes = new ArrayList<>(boxDao.findAll());
-        assertEquals(1, storedBoxes.size());
-
-        Box storedBox = storedBoxes.get(0);
-        assertEquals(box, storedBox);
-        assertTrue(box.equals(storedBox));
-    }
-
-    @Test
-    public void delete() throws Exception {
-
-    }
 }
