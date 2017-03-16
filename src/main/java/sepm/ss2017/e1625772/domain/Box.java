@@ -114,6 +114,19 @@ public class Box {
     }
 
     @Override
+    public String toString() {
+        return "Box{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", area=" + area +
+                ", dailyRate=" + dailyRate +
+                ", hasWindows=" + hasWindows +
+                ", isIndoor=" + isIndoor +
+                ", image=" + image +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
