@@ -106,3 +106,7 @@ Session.vim
 tags
 
 # End of https://www.gitignore.io/api/linux,intellij,java,vim
+.idea/inspectionProfiles/
+.idea/sonarlint/
+.idea/sqldialects.xml
+lib/
