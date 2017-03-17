@@ -22,6 +22,7 @@ public class Main {
         } else {
             BoxService boxService = context.getBean(BoxService.class);
             try {
+                boxService.deleteBox(new Box.BoxBuilder(30L).create());
                 boxService.createBox(new Box.BoxBuilder(30L).create());
             } catch (BusinessLogicException ignored) {
             }
