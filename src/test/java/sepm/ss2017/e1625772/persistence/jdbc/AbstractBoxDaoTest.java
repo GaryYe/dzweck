@@ -2,7 +2,7 @@ package sepm.ss2017.e1625772.persistence.jdbc;
 
 import org.junit.Test;
 import sepm.ss2017.e1625772.domain.Box;
-import sepm.ss2017.e1625772.persistence.BoxDao;
+import sepm.ss2017.e1625772.persistence.BoxDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ import static junit.framework.TestCase.*;
 /**
  * Tests the BoxDAO implementation.
  * <p>
- * The implementation that should be tested must be set with the {@link AbstractBoxDaoTest#setBoxDao(BoxDao)} method.
+ * The implementation that should be tested must be set with the {@link AbstractBoxDaoTest#setBoxDAO(BoxDAO)} method.
  */
 public abstract class AbstractBoxDaoTest {
-    protected BoxDao boxDao;
+    protected BoxDAO boxDAO;
 
-    protected void setBoxDao(BoxDao boxDao) {
-        this.boxDao = boxDao;
+    protected void setBoxDAO(BoxDAO boxDAO) {
+        this.boxDAO = boxDAO;
     }
 
     @Test
@@ -31,32 +31,32 @@ public abstract class AbstractBoxDaoTest {
                 .name("Box 42")
                 // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
-        boxDao.create(box);
-        List<Box> storedBoxes = new ArrayList<>(boxDao.findAll());
+        boxDAO.create(box);
+        List<Box> storedBoxes = new ArrayList<>(boxDAO.findAll());
         assertEquals(1, storedBoxes.size());
         assertEquals(box, storedBoxes.get(0));
     }
 
     @Test
     public void testFindAllShouldReturnEmptyWhenNoElementsInside() {
-        assertTrue(boxDao.findAll().isEmpty());
+        assertTrue(boxDAO.findAll().isEmpty());
     }
 
     @Test
     public void testDeleteExistingElement() {
         Box box = new Box.BoxBuilder(23L).create();
-        boxDao.create(box);
-        assertFalse(boxDao.findAll().isEmpty());
-        boxDao.delete(new Box.BoxBuilder(23L).create());
-        assertTrue(boxDao.findAll().isEmpty());
+        boxDAO.create(box);
+        assertFalse(boxDAO.findAll().isEmpty());
+        boxDAO.delete(new Box.BoxBuilder(23L).create());
+        assertTrue(boxDAO.findAll().isEmpty());
     }
 
     @Test
     public void testDeleteNonExistingElement() {
         Box box = new Box.BoxBuilder(23L).create();
-        boxDao.create(box);
-        boxDao.delete(new Box.BoxBuilder(42L).create());
-        assertFalse(boxDao.findAll().isEmpty());
+        boxDAO.create(box);
+        boxDAO.delete(new Box.BoxBuilder(42L).create());
+        assertFalse(boxDAO.findAll().isEmpty());
     }
 
     @Test
@@ -69,16 +69,16 @@ public abstract class AbstractBoxDaoTest {
                 .name("Box 42")
                 // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
-        boxDao.create(box);
-        assertFalse(boxDao.findAll().isEmpty());
-        boxDao.delete(new Box.BoxBuilder(42L)
+        boxDAO.create(box);
+        assertFalse(boxDAO.findAll().isEmpty());
+        boxDAO.delete(new Box.BoxBuilder(42L)
                 .area(12.8)
                 .dailyRate(293.0)
                 .windows(false)
                 .indoor(true)
                 .name("Box")
                 .create());
-        assertTrue(boxDao.findAll().isEmpty());
+        assertTrue(boxDAO.findAll().isEmpty());
     }
 
     @Test
@@ -91,7 +91,7 @@ public abstract class AbstractBoxDaoTest {
                 .name("Box 42")
                 // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
-        boxDao.create(before);
+        boxDAO.create(before);
         Box after = new Box.BoxBuilder(42L)
                 .area(3939.9)
                 .dailyRate(+25.2)
@@ -101,20 +101,20 @@ public abstract class AbstractBoxDaoTest {
                 // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
 
-        boxDao.update(after);
-        List<Box> list = new ArrayList<>(boxDao.findAll());
+        boxDAO.update(after);
+        List<Box> list = new ArrayList<>(boxDAO.findAll());
         assertEquals(after, list.get(0));
     }
 
     @Test
     public void testFindOneNonExistingShouldReturnNull() {
-        assertNull(boxDao.findOne(1L));
+        assertNull(boxDAO.findOne(1L));
     }
 
     @Test
     public void testFindOneExistingShouldReturnMatching() {
         Box box = new Box.BoxBuilder(23L).create();
-        boxDao.create(box);
-        assertEquals(box, boxDao.findOne(23L));
+        boxDAO.create(box);
+        assertEquals(box, boxDAO.findOne(23L));
     }
 }

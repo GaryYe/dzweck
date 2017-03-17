@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
- * Created by gary on 05.03.17.
+ * @author Gary Ye
+ * @version %I% %G%
  */
-public interface ReservationDao {
+public interface ReservationDAO {
     Collection<Reservation> findAll();
     Collection<Reservation> findAllBetween(LocalDateTime begin, LocalDateTime end);
     Reservation create(Reservation reservation);

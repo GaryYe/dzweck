@@ -1,24 +1,24 @@
 package sepm.ss2017.e1625772.persistence.jdbc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sepm.ss2017.e1625772.domain.Box;
-import sepm.ss2017.e1625772.persistence.BoxDao;
+import sepm.ss2017.e1625772.persistence.BoxDAO;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Formatter;
 
 /**
  * @author Gary Ye
  * @version %I% %G%
  */
-public class JDBCBoxDao implements BoxDao {
-    private static final Logger LOG = Logger.getLogger(JDBCBoxDao.class);
+public class JDBCBoxDAO implements BoxDAO {
+    private static final Logger LOG = LoggerFactory.getLogger(JDBCBoxDAO.class);
     private final Connection connection;
 
-    public JDBCBoxDao(Connection connection) {
+    public JDBCBoxDAO(Connection connection) {
         this.connection = connection;
     }
 
