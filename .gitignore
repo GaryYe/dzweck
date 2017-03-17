@@ -48,10 +48,10 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
+*.iml
 # modules.xml
-# .idea/misc.xml
-# *.ipr
+.idea/misc.xml
+*.ipr
 
 ### Java ###
 # Compiled class file
@@ -104,8 +104,27 @@ Session.vim
 .netrwhist
 # auto-generated tag files
 tags
-
 # End of https://www.gitignore.io/api/linux,intellij,java,vim
+
+# Created by https://www.gitignore.io/api/maven
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Exclude maven wrapper
+!/.mvn/wrapper/maven-wrapper.jar
+
+# End of https://www.gitignore.io/api/maven
+
+
 .idea/inspectionProfiles/
 .idea/sonarlint/
 .idea/sqldialects.xml
