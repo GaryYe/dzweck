@@ -17,7 +17,7 @@ public class JDBCBoxDAOTest extends AbstractBoxDaoTest {
 
     @Before
     public void setUp() throws SQLException {
-        final String url = "jdbc:h2:mem:test;INIT=runscript from './scripts/database.sql'\\;";
+        final String url = "jdbc:h2:mem:test;INIT=runscript from 'scripts/database.sql'\\;";
         dataSource = new JdbcDataSource();
         dataSource.setURL(url);
         dataSource.setUser("sa");
