@@ -2,6 +2,7 @@ package sepm.ss2017.e1625772.persistence.jdbc;
 
 import org.junit.Test;
 import sepm.ss2017.e1625772.domain.Box;
+import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public abstract class AbstractBoxDaoTest {
     }
 
     @Test
-    public void testCreateBoxWithAllAttributesSet() {
+    public void testCreateBoxWithAllAttributesSet() throws DataAccessException {
         Box box = new Box.BoxBuilder(42L)
                 .area(37.8)
                 .dailyRate(-22.2)
@@ -38,12 +39,17 @@ public abstract class AbstractBoxDaoTest {
     }
 
     @Test
-    public void testFindAllShouldReturnEmptyWhenNoElementsInside() {
+    public void testFindAllShouldReturnEmptyWhenNoElementsInside() throws DataAccessException {
         assertTrue(boxDAO.findAll().isEmpty());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeleteNullShouldThrowException() throws DataAccessException {
+        boxDAO.delete(null);
+    }
+
     @Test
-    public void testDeleteExistingElement() {
+    public void testDeleteExistingElement() throws DataAccessException {
         Box box = new Box.BoxBuilder(23L).create();
         boxDAO.create(box);
         assertFalse(boxDAO.findAll().isEmpty());
@@ -52,7 +58,7 @@ public abstract class AbstractBoxDaoTest {
     }
 
     @Test
-    public void testDeleteNonExistingElement() {
+    public void testDeleteNonExistingElement() throws DataAccessException {
         Box box = new Box.BoxBuilder(23L).create();
         boxDAO.create(box);
         boxDAO.delete(new Box.BoxBuilder(42L).create());
@@ -60,7 +66,7 @@ public abstract class AbstractBoxDaoTest {
     }
 
     @Test
-    public void testDeleteAttributesShouldNotMatter() {
+    public void testDeleteAttributesShouldNotMatter() throws DataAccessException {
         Box box = new Box.BoxBuilder(42L)
                 .area(37.8)
                 .dailyRate(-22.2)
@@ -82,7 +88,7 @@ public abstract class AbstractBoxDaoTest {
     }
 
     @Test
-    public void testUpdateExisting() {
+    public void testUpdateExisting() throws DataAccessException {
         Box before = new Box.BoxBuilder(42L)
                 .area(37.8)
                 .dailyRate(-22.2)
@@ -107,12 +113,12 @@ public abstract class AbstractBoxDaoTest {
     }
 
     @Test
-    public void testFindOneNonExistingShouldReturnNull() {
+    public void testFindOneNonExistingShouldReturnNull() throws DataAccessException {
         assertNull(boxDAO.findOne(1L));
     }
 
     @Test
-    public void testFindOneExistingShouldReturnMatching() {
+    public void testFindOneExistingShouldReturnMatching() throws DataAccessException {
         Box box = new Box.BoxBuilder(23L).create();
         boxDAO.create(box);
         assertEquals(box, boxDAO.findOne(23L));

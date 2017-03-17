@@ -1,6 +1,6 @@
 package sepm.ss2017.e1625772.persistence;
 
-import sepm.ss2017.e1625772.domain.Reservation;
+import sepm.ss2017.e1625772.domain.Booking;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.Collection;
  * @version %I% %G%
  */
 public interface ReservationDAO {
-    Collection<Reservation> findAll();
-    Collection<Reservation> findAllBetween(LocalDateTime begin, LocalDateTime end);
-    Reservation create(Reservation reservation);
+    Collection<Booking> findAll();
+    Collection<Booking> findAllBetween(LocalDateTime begin, LocalDateTime end);
+    Booking create(Booking booking);
 }

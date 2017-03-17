@@ -2,9 +2,9 @@ package sepm.ss2017.e1625772.domain;
 
 /**
  */
-public class BoxReservation {
+public class BoxBooking {
     private Box box;
-    private Reservation reservation;
+    private Booking booking;
     private String horseName;
 
     public Box getBox() {
@@ -15,12 +15,12 @@ public class BoxReservation {
         this.box = box;
     }
 
-    public Reservation getReservation() {
-        return reservation;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     public String getHorseName() {
