@@ -3,6 +3,8 @@ package sepm.ss2017.e1625772.service;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 
+import java.util.List;
+
 /**
  * @author Gary Ye
  * @version %I% %G%
@@ -22,6 +24,14 @@ public interface BoxService {
      * @return either null, if the box was not found, or else the box with the matching id
      */
     Box findBox(Long id) throws BusinessLogicException;
+
+    /**
+     * Finds all boxes that match the given one
+     * @param box the box to match with
+     * @return the boxes
+     * @throws BusinessLogicException
+     */
+    List<Box> findBoxes(Box box) throws BusinessLogicException;
 
     /**
      * Updates the given box with the new attributes. A registered box must exist, otherwise an exception will be

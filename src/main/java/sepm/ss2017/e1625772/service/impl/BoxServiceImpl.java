@@ -10,6 +10,9 @@ import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
 import sepm.ss2017.e1625772.service.BoxService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Gary Ye
  * @version %I% %G%
@@ -37,6 +40,15 @@ public class BoxServiceImpl implements BoxService {
     public Box findBox(Long id) throws BusinessLogicException {
         try {
             return boxDAO.findOne(id);
+        } catch (DataAccessException e) {
+            throw new BusinessLogicException(e);
+        }
+    }
+
+    @Override
+    public List<Box> findBoxes(Box box) throws BusinessLogicException {
+        try {
+            return new ArrayList<>(boxDAO.findAll()); // TODO
         } catch (DataAccessException e) {
             throw new BusinessLogicException(e);
         }
