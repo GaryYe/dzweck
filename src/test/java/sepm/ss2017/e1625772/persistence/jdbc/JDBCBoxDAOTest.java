@@ -1,8 +1,10 @@
 package sepm.ss2017.e1625772.persistence.jdbc;
 
-import org.h2.jdbcx.JdbcDataSource;
 import org.junit.After;
 import org.junit.Before;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import java.sql.SQLException;
 
@@ -13,21 +15,19 @@ import static org.junit.Assert.assertTrue;
  * Testing with the test_db
  */
 public class JDBCBoxDAOTest extends AbstractBoxDaoTest {
-    private JdbcDataSource dataSource;
+    private EmbeddedDatabase db;
 
     @Before
     public void setUp() throws SQLException {
-        final String url = "jdbc:h2:mem:test;INIT=runscript from 'scripts/database.sql'\\;";
-        dataSource = new JdbcDataSource();
-        dataSource.setURL(url);
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
-        setBoxDAO(new JDBCBoxDAO(dataSource.getConnection()));
-        dataSource.getConnection().setAutoCommit(false);
+        db = new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2) //.H2 or .DERBY
+                .addScript("db/create-db.sql")
+                .build();
+        setBoxDAO(new JDBCBoxDAO(db));
     }
 
     @After
     public void tearDown() throws SQLException {
-        dataSource.getConnection().rollback();
+        db.shutdown();
     }
 }

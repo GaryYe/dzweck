@@ -1,22 +1,30 @@
 package sepm.ss2017.e1625772;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import sepm.ss2017.e1625772.domain.Box;
+import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
+import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.persistence.BoxDAO;
+import sepm.ss2017.e1625772.persistence.jdbc.JDBCBoxDAO;
+import sepm.ss2017.e1625772.service.BoxService;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
+@Configuration
+@ComponentScan(basePackages = "sepm.ss2017.e1625772")
 public class Main {
-
-    public static void main(String[] args) {
-        // final Logger logger = LoggerFactory.getLogger(Main.class);
-        // logger.info("This is my {}", "test!");
-        System.out.println("YEA");
-        try {
-            Class.forName("org.h2.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/boxes", "sa", "");
-        } catch (Exception e) {
-            return;
+    public static void main(String[] args) throws DataAccessException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+        if (false) {
+            BoxDAO boxDAO = context.getBean(JDBCBoxDAO.class);
+            boxDAO.create(new Box.BoxBuilder(30L).create());
+        } else {
+            BoxService boxService = context.getBean(BoxService.class);
+            try {
+                boxService.createBox(new Box.BoxBuilder(30L).create());
+            } catch (BusinessLogicException ignored) {
+            }
         }
     }
 }

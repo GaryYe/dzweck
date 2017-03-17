@@ -8,6 +8,7 @@ import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,16 +21,17 @@ import java.util.Collection;
 @Component
 public class JDBCBoxDAO implements BoxDAO {
     private static final Logger LOG = LoggerFactory.getLogger(JDBCBoxDAO.class);
-    private final Connection connection;
+    private final DataSource dataSource;
 
     @Autowired
-    public JDBCBoxDAO(Connection connection) {
-        this.connection = connection;
+    public JDBCBoxDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     public Box findOne(Long id) throws DataAccessException {
-        try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM BOXES WHERE ID = ?")) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM BOXES WHERE ID = ?")) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -54,7 +56,8 @@ public class JDBCBoxDAO implements BoxDAO {
     @Override
     public Collection<Box> findAll() throws DataAccessException {
         Collection<Box> result = new ArrayList<>();
-        try (Statement stmt = connection.createStatement();
+        try (Connection connection = dataSource.getConnection();
+             Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM BOXES")) {
             while (rs.next()) {
                 Box box = new Box();
@@ -85,7 +88,8 @@ public class JDBCBoxDAO implements BoxDAO {
             throw new IllegalArgumentException();
 
         String insertSql = "INSERT INTO BOXES (ID, INDOOR, WINDOWS, DAILY_RATE, AREA, NAME) VALUES (?,?,?,?,?,?) ";
-        try (PreparedStatement stmt = connection.prepareStatement(insertSql)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(insertSql)) {
             stmt.setLong(1, box.getId());
             stmt.setBoolean(2, box.isIndoor());
             stmt.setBoolean(3, box.hasWindows());
@@ -105,7 +109,8 @@ public class JDBCBoxDAO implements BoxDAO {
         if (box == null)
             throw new IllegalArgumentException();
         String deleteSql = "DELETE FROM BOXES WHERE ID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(deleteSql)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(deleteSql)) {
             stmt.setLong(1, box.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -118,7 +123,8 @@ public class JDBCBoxDAO implements BoxDAO {
     @Override
     public void update(Box box) throws DataAccessException {
         String updateSql = "UPDATE BOXES SET INDOOR=?, WINDOWS=?, DAILY_RATE=?, AREA=?, NAME=? WHERE BOXES.ID=?";
-        try (PreparedStatement stmt = connection.prepareStatement(updateSql)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateSql)) {
             stmt.setBoolean(1, box.isIndoor());
             stmt.setBoolean(2, box.hasWindows());
             stmt.setBigDecimal(3, BigDecimal.valueOf(box.getDailyRate()));
