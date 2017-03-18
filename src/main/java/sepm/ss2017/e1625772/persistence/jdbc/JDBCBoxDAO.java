@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
@@ -18,7 +19,7 @@ import java.util.Collection;
  * @author Gary Ye
  * @version %I% %G%
  */
-@Component
+@Repository
 public class JDBCBoxDAO implements BoxDAO {
     private static final Logger LOG = LoggerFactory.getLogger(JDBCBoxDAO.class);
     private final DataSource dataSource;

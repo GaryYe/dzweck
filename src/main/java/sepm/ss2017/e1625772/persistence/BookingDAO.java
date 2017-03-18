@@ -9,7 +9,7 @@ import java.util.Collection;
  * @author Gary Ye
  * @version %I% %G%
  */
-public interface ReservationDAO {
+public interface BookingDAO {
     Collection<Booking> findAll();
     Collection<Booking> findAllBetween(LocalDateTime begin, LocalDateTime end);
     Booking create(Booking booking);

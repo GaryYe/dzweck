@@ -41,4 +41,37 @@ public class Booking {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Booking booking = (Booking) o;
+
+        if (id != null ? !id.equals(booking.id) : booking.id != null) return false;
+        if (customerName != null ? !customerName.equals(booking.customerName) : booking.customerName != null)
+            return false;
+        if (beginTime != null ? !beginTime.equals(booking.beginTime) : booking.beginTime != null) return false;
+        return endTime != null ? endTime.equals(booking.endTime) : booking.endTime == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (customerName != null ? customerName.hashCode() : 0);
+        result = 31 * result + (beginTime != null ? beginTime.hashCode() : 0);
+        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", customerName='" + customerName + '\'' +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                '}';
+    }
 }

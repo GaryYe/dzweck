@@ -32,7 +32,7 @@ public class JavaFXTest extends Application {
         BoxSearchingController demoController = appContext.getBean(BoxSearchingController.class);
 
         stage.setScene(new Scene((Parent) demoController.getView()));
-        stage.setTitle("Wendy's horse mansion");
+        stage.setTitle("Wendy's horse pension");
         stage.show();
 
         LOG.info("The UI has started");
