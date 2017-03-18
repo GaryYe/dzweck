@@ -92,9 +92,24 @@ public class BoxSearchingController extends FXMLController {
     @FXML
     private Label currentStateLabel;
 
+    private final String EDITING_STATE = "Viewing";
+    private final String CREATING_STATE = "Creating";
+
     // DETAIL VIEW END
 
     // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
+
+    private void setCreateNewState() {
+        boxIdTextBox.setText("");
+        boxIdTextBox.setEditable(true);
+
+        boxNameTextBox.setText("");
+        areaTextBox.setText("");
+        dailyRateTextBox.setText("");
+        hasWindowsCheckbox.setSelected(false);
+        indoorCheckbox.setSelected(false);
+        currentStateLabel.setText(CREATING_STATE);
+    }
 
     @FXML
     public void search(ActionEvent actionEvent) {
@@ -114,22 +129,12 @@ public class BoxSearchingController extends FXMLController {
     @FXML
     public void createNew(ActionEvent actionEvent) {
         LOG.error("User has requested creating a new Box");
-        boxIdTextBox.setText("");
-        boxIdTextBox.setEditable(true);
-
-        boxNameTextBox.setText("");
-        areaTextBox.setText("");
-        dailyRateTextBox.setText("");
-        hasWindowsCheckbox.setSelected(false);
-        indoorCheckbox.setSelected(false);
-        currentStateLabel.setText("Creating new box");
+        setCreateNewState();
     }
 
     @FXML
     public void save(ActionEvent actionEvent) {
         LOG.error("User clicked the save button");
-
-        // Was I creating or updating?
 
         Box box = new Box();
         try {
@@ -145,10 +150,20 @@ public class BoxSearchingController extends FXMLController {
             return;
         }
 
-        try {
-            boxService.createBox(box);
-        } catch (BusinessLogicException e) {
-            LOG.error("Something went wrong when creating the box ", e);
+        if (currentStateLabel.getText().equals(CREATING_STATE)) {
+            try {
+                boxService.createBox(box);
+                LOG.info("Box {} successfully created", box);
+            } catch (BusinessLogicException e) {
+                LOG.error("Something went wrong when creating the box ", e);
+            }
+        } else {
+            try {
+                boxService.updateBox(box);
+                LOG.info("Box {} successfully updated", box);
+            } catch (BusinessLogicException e) {
+                LOG.error("Something went wrong when updating the box ", e);
+            }
         }
 
         setStateViewingBox(box.getId());
@@ -173,7 +188,7 @@ public class BoxSearchingController extends FXMLController {
             dailyRateTextBox.setText(String.format("%.2f", box.getDailyRate()));
             hasWindowsCheckbox.setSelected(box.hasWindows());
             indoorCheckbox.setSelected(box.isIndoor());
-            currentStateLabel.setText("Editing/Viewing");
+            currentStateLabel.setText(EDITING_STATE);
         } catch (BusinessLogicException e) {
             LOG.error("Something went wrong with retrieving the box id={}", id, e);
         }
@@ -193,7 +208,6 @@ public class BoxSearchingController extends FXMLController {
         this.boxSearchTable.setItems(boxObservableList);
         idColumn.setCellValueFactory(new PropertyValueFactory<PropertyBox, Long>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<PropertyBox, String>("name"));
-
         boxSearchTable.getSelectionModel()
                 .selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -201,7 +215,7 @@ public class BoxSearchingController extends FXMLController {
                 setStateViewingBox(newSelection.getId());
             }
         });
-
+        setCreateNewState();
     }
 
     public static class PropertyBox {
