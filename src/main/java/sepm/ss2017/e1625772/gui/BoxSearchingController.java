@@ -1,17 +1,14 @@
 package sepm.ss2017.e1625772.gui;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,9 @@ public class BoxSearchingController extends FXMLController {
 
 
     @FXML
+    private Label nameLabel;
+
+    @FXML
     private Button searchButton;
 
     @FXML
@@ -59,13 +59,48 @@ public class BoxSearchingController extends FXMLController {
     private Button resetButton;
 
     @FXML
+    private Button saveButton;
+    @FXML
+    private Button createNewButton;
+
+    @FXML
     private TableColumn<PropertyBox, Long> idColumn;
 
+    // DETAIL VIEW BEGIN
+    @FXML
+    private TextField boxNameTextBox;
+    @FXML
+    private TextField boxIdTextBox;
+    @FXML
+    private Button selectImageButton;
+
+    @FXML
+    private ImageView imageView;
+
+    @FXML
+    private CheckBox hasWindowsCheckbox;
+
+    @FXML
+    private CheckBox indoorCheckbox;
+
+    @FXML
+    private TextField areaTextBox;
+
+    @FXML
+    private TextField dailyRateTextBox;
+
+    @FXML
+    private Label currentStateLabel;
+
+    // DETAIL VIEW END
+
+    // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
 
     @FXML
     public void search(ActionEvent actionEvent) {
         LOG.error("User has requested a search via the search button");
         try {
+            // Maybe in method
             List<Box> boxes = boxService.findBoxes(null);
             boxObservableList.clear();
             for (Box box : boxes)
@@ -74,6 +109,75 @@ public class BoxSearchingController extends FXMLController {
         } catch (BusinessLogicException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void createNew(ActionEvent actionEvent) {
+        LOG.error("User has requested creating a new Box");
+        boxIdTextBox.setText("");
+        boxIdTextBox.setEditable(true);
+
+        boxNameTextBox.setText("");
+        areaTextBox.setText("");
+        dailyRateTextBox.setText("");
+        hasWindowsCheckbox.setSelected(false);
+        indoorCheckbox.setSelected(false);
+        currentStateLabel.setText("Creating new box");
+    }
+
+    @FXML
+    public void save(ActionEvent actionEvent) {
+        LOG.error("User clicked the save button");
+
+        // Was I creating or updating?
+
+        Box box = new Box();
+        try {
+            box.setId(Long.valueOf(boxIdTextBox.getText()));
+            box.setName(boxNameTextBox.getText());
+            box.setArea(Double.valueOf(areaTextBox.getText()));
+            box.setDailyRate(Double.valueOf(dailyRateTextBox.getText()));
+            box.setHasWindows(hasWindowsCheckbox.isSelected());
+            box.setIndoor(indoorCheckbox.isSelected());
+        } catch (Exception e) {
+            // Something something
+            LOG.error("Something went wrong parsing the box", e);
+            return;
+        }
+
+        try {
+            boxService.createBox(box);
+        } catch (BusinessLogicException e) {
+            LOG.error("Something went wrong when creating the box ", e);
+        }
+
+        setStateViewingBox(box.getId());
+    }
+
+    /**
+     * Sets the form state to a viewing state of the given box.
+     *
+     * @param id the id of the box (maybe take Box instead?)
+     */
+    private void setStateViewingBox(Long id) {
+        if (id == null)
+            throw new IllegalArgumentException();
+        LOG.info("Loading view of box = {}", id);
+        try {
+            Box box = boxService.findBox(id);
+            boxIdTextBox.setText(String.valueOf(id));
+            boxIdTextBox.setEditable(false);
+
+            boxNameTextBox.setText(box.getName());
+            areaTextBox.setText(String.format("%.2f", box.getArea()));
+            dailyRateTextBox.setText(String.format("%.2f", box.getDailyRate()));
+            hasWindowsCheckbox.setSelected(box.hasWindows());
+            indoorCheckbox.setSelected(box.isIndoor());
+            currentStateLabel.setText("Editing/Viewing");
+        } catch (BusinessLogicException e) {
+            LOG.error("Something went wrong with retrieving the box id={}", id, e);
+        }
+
     }
 
     @Value("ui/sample.fxml")
@@ -85,10 +189,18 @@ public class BoxSearchingController extends FXMLController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.boxObservableList = FXCollections.observableList(Collections.emptyList());
-        this.boxObservableList = FXCollections.observableArrayList(new PropertyBox(3L, "5"));
+        this.boxObservableList = FXCollections.observableArrayList();
         this.boxSearchTable.setItems(boxObservableList);
-        idColumn.setCellValueFactory( new PropertyValueFactory<PropertyBox, Long>("id"));
-        nameColumn.setCellValueFactory( new PropertyValueFactory<PropertyBox, String>("name"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<PropertyBox, Long>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<PropertyBox, String>("name"));
+
+        boxSearchTable.getSelectionModel()
+                .selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                LOG.info("Selected id = {}", newSelection.getId());
+                setStateViewingBox(newSelection.getId());
+            }
+        });
 
     }
 
