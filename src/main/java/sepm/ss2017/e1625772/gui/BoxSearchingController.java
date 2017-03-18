@@ -21,6 +21,7 @@ import sepm.ss2017.e1625772.service.BoxService;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -133,9 +134,34 @@ public class BoxSearchingController extends FXMLController {
     }
 
     @FXML
-    public void save(ActionEvent actionEvent) {
-        LOG.error("User clicked the save button");
+    public void delete(ActionEvent actionEvent) {
+        LOG.error("User has requested deleting the current box");
 
+        if (currentStateLabel.getText().equals(CREATING_STATE)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("You can not delete the box you are currently creating");
+            alert.showAndWait();
+        } else {
+            Box box = new Box.BoxBuilder(Long.valueOf(boxIdTextBox.getText())).create();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("The current box you selected has the id = " + box.getId());
+            alert.setContentText("Are you ok with this?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                try {
+                    boxService.deleteBox(box);
+                    search(actionEvent);
+                    setCreateNewState();
+                } catch (BusinessLogicException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private Box parseCurrentBox() throws Exception {
         Box box = new Box();
         try {
             box.setId(Long.valueOf(boxIdTextBox.getText()));
@@ -147,6 +173,19 @@ public class BoxSearchingController extends FXMLController {
         } catch (Exception e) {
             // Something something
             LOG.error("Something went wrong parsing the box", e);
+        }
+        return box;
+    }
+
+    @FXML
+    public void save(ActionEvent actionEvent) {
+        LOG.error("User clicked the save button");
+
+        Box box = null;
+        try {
+            box = parseCurrentBox();
+        } catch (Exception e) {
+            e.printStackTrace();
             return;
         }
 

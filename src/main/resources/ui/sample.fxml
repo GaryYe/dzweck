@@ -74,16 +74,15 @@
                      <children>
                         <HBox prefHeight="0.0" prefWidth="440.0" GridPane.rowIndex="1">
                            <children>
-                              <TilePane prefHeight="30.0" prefWidth="289.0">
+                              <TilePane prefHeight="30.0" prefWidth="246.0">
                                  <children>
-                                    <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save" />
                                     <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#createNew" text="Create new" />
                                  </children>
                               </TilePane>
-                              <TilePane prefHeight="30.0" prefWidth="134.0">
+                              <TilePane prefHeight="30.0" prefWidth="289.0">
                                  <children>
-                                    <Button fx:id="editButton" mnemonicParsing="false" text="Edit" />
-                                    <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
+                                    <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save" />
+                                    <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete" />
                                  </children>
                               </TilePane>
                            </children>
