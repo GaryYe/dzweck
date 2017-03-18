@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="469.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sepm.ss2017.e1625772.gui.BoxSearchingController">
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="469.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.4497695852534562" layoutX="100.0" layoutY="91.0" prefHeight="469.0" prefWidth="592.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -15,8 +18,8 @@
                            <children>
                               <TableView fx:id="boxSearchTable" layoutX="30.0" layoutY="35.0" prefHeight="428.0" prefWidth="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="ID" />
-                                    <TableColumn prefWidth="75.0" text="NAME" />
+                                    <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="nameColumn" prefWidth="75.0" text="NAME" />
                                  </columns>
                               </TableView>
                            </children>
@@ -25,7 +28,7 @@
                            <children>
                               <GridPane layoutX="41.0" layoutY="39.0" prefHeight="257.0" prefWidth="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TextField prefHeight="26.0" prefWidth="264.0" GridPane.columnIndex="1">
+                                    <TextField fx:id="searchName" prefHeight="26.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -57,7 +60,7 @@
                   </SplitPane>
                </children>
             </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="695.0" prefWidth="658.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="467.0" prefWidth="334.0" />
          </items>
       </SplitPane>
    </children>

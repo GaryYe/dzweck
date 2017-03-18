@@ -1,21 +1,26 @@
 package sepm.ss2017.e1625772.gui;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * @author Gary Ye
  * @version %I% %G%
  */
-@Component
+@Configuration
+@ComponentScan(basePackages = "sepm.ss2017.e1625772")
 public class JavaFXTest extends Application {
+    private static final Logger LOG = LoggerFactory.getLogger(JavaFXTest.class);
 
     public static void main(String[] args) {
         launch(args);
@@ -23,16 +28,13 @@ public class JavaFXTest extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Sample.fxml"));
+        ApplicationContext appContext = new AnnotationConfigApplicationContext(JavaFXTest.class);
+        BoxSearchingController demoController = appContext.getBean(BoxSearchingController.class);
 
-        URL url = getClass().getClassLoader().getResource("ui/sample.fxml");
-        if (url == null)
-            return;
-        Parent root = FXMLLoader.load(url);
-        Scene scene = new Scene(root, 300, 275);
-
-        stage.setTitle("FXML Welcome");
-        stage.setScene(scene);
+        stage.setScene(new Scene((Parent) demoController.getView()));
+        stage.setTitle("NAME");
         stage.show();
+
+        LOG.info("The UI has started");
     }
 }

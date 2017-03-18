@@ -7,6 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * https://codelife.de/2015/02/27/javafx-8-with-spring-integration/
@@ -29,11 +30,10 @@ public abstract class FXMLController implements InitializingBean, Initializable 
     }
 
     protected final void loadFXML() throws IOException {
-        try (InputStream fxmlStream = getClass().getResourceAsStream(fxmlFilePath)) {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setController(this);
-            this.view = (loader.load(fxmlStream));
-        }
+        URL url = getClass().getClassLoader().getResource(fxmlFilePath);
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.setController(this);
+        this.view = loader.load();
     }
 
     public Node getView() {
