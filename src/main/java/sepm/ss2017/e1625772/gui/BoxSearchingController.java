@@ -123,7 +123,7 @@ public class BoxSearchingController extends FXMLController {
     public void search(ActionEvent actionEvent) {
         LOG.error("User has requested a search via the search button");
         try {
-            // Maybe in method
+            // TODO: Replace null LUL
             List<Box> boxes = boxService.findBoxes(null);
             boxObservableList.clear();
             for (Box box : boxes)
@@ -173,7 +173,6 @@ public class BoxSearchingController extends FXMLController {
     private Box parseCurrentBox() throws Exception {
         Box box = new Box();
         try {
-            // exception?????????????? // validators?
             box.setId(Long.valueOf(boxIdTextBox.getText()));
             box.setName(boxNameTextBox.getText());
             box.setArea(Double.valueOf(areaTextBox.getText()));
@@ -181,7 +180,7 @@ public class BoxSearchingController extends FXMLController {
             box.setHasWindows(hasWindowsCheckbox.isSelected());
             box.setIndoor(indoorCheckbox.isSelected());
         } catch (Exception e) {
-            // Something something
+            // TODO: Something something / Better usability
             LOG.error("Something went wrong parsing the box", e);
             throw new Exception(e);
         }
@@ -206,8 +205,10 @@ public class BoxSearchingController extends FXMLController {
                 boxService.createBox(box);
                 LOG.info("Box {} successfully created", box);
             } catch (BusinessLogicException e) {
+                // TODO: Better usability (ID already existing)
                 LOG.error("Something went wrong when creating the box ", e);
                 alertErrorMessage("Service error while creating the box");
+                return;
             }
         } else {
             try {
@@ -216,6 +217,7 @@ public class BoxSearchingController extends FXMLController {
             } catch (BusinessLogicException e) {
                 LOG.error("Something went wrong when updating the box ", e);
                 alertErrorMessage("Service error while updating the box");
+                return;
             }
         }
 
@@ -235,7 +237,7 @@ public class BoxSearchingController extends FXMLController {
         Box box = null;
         try {
             box = boxService.findBox(id);
-            if(box == null)
+            if (box == null)
                 throw new BusinessLogicException("Box not found");
         } catch (BusinessLogicException e) {
             LOG.error("Something went wrong with retrieving the box id={}", id, e);
@@ -247,8 +249,9 @@ public class BoxSearchingController extends FXMLController {
         boxIdTextBox.setEditable(false);
 
         boxNameTextBox.setText(box.getName());
-        areaTextBox.setText(String.format("%.2f", box.getArea()));
-        dailyRateTextBox.setText(String.format("%.2f", box.getDailyRate()));
+        // Do
+        areaTextBox.setText(String.valueOf(box.getArea()));
+        dailyRateTextBox.setText(String.valueOf(box.getDailyRate()));
         hasWindowsCheckbox.setSelected(box.hasWindows());
         indoorCheckbox.setSelected(box.isIndoor());
         currentStateLabel.setText(EDITING_STATE);
