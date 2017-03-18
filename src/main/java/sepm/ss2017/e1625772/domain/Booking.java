@@ -1,14 +1,14 @@
 package sepm.ss2017.e1625772.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  */
 public class Booking {
     private Long id;
     private String customerName;
-    private LocalDateTime beginTime;
-    private LocalDateTime endTime;
+    private LocalDate beginTime;
+    private LocalDate endTime;
 
     public Long getId() {
         return id;
@@ -26,21 +26,22 @@ public class Booking {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getBeginTime() {
+    public LocalDate getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(LocalDateTime beginTime) {
+    public void setBeginTime(LocalDate beginTime) {
         this.beginTime = beginTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -73,5 +74,38 @@ public class Booking {
                 ", beginTime=" + beginTime +
                 ", endTime=" + endTime +
                 '}';
+    }
+
+    public static class BookingBuilder {
+        private Booking built;
+
+        public BookingBuilder(Long id) {
+            this.built = new Booking();
+            built.setId(id);
+        }
+
+        public BookingBuilder id(Long id) {
+            this.built.setId(id);
+            return this;
+        }
+
+        public BookingBuilder beginTime(LocalDate begin) {
+            this.built.setBeginTime(begin);
+            return this;
+        }
+
+        public BookingBuilder endTime(LocalDate end) {
+            this.built.setEndTime(end);
+            return this;
+        }
+
+        public BookingBuilder customer(String name) {
+            this.built.setCustomerName(name);
+            return this;
+        }
+
+        public Booking create() {
+            return this.built;
+        }
     }
 }
