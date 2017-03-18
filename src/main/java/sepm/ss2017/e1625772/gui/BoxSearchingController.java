@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class BoxSearchingController extends FXMLController {
     private Button searchButton;
 
     @FXML
-    private TableColumn<?, ?> nameColumn;
+    private TableColumn<PropertyBox, String> nameColumn;
 
     @FXML
     private TableView<PropertyBox> boxSearchTable;
@@ -58,7 +59,7 @@ public class BoxSearchingController extends FXMLController {
     private Button resetButton;
 
     @FXML
-    private TableColumn<?, ?> idColumn;
+    private TableColumn<PropertyBox, Long> idColumn;
 
 
     @FXML
@@ -69,6 +70,7 @@ public class BoxSearchingController extends FXMLController {
             boxObservableList.clear();
             for (Box box : boxes)
                 boxObservableList.addAll(new PropertyBox(box));
+            boxSearchTable.refresh();
         } catch (BusinessLogicException e) {
             e.printStackTrace();
         }
@@ -85,6 +87,9 @@ public class BoxSearchingController extends FXMLController {
         this.boxObservableList = FXCollections.observableList(Collections.emptyList());
         this.boxObservableList = FXCollections.observableArrayList(new PropertyBox(3L, "5"));
         this.boxSearchTable.setItems(boxObservableList);
+        idColumn.setCellValueFactory( new PropertyValueFactory<PropertyBox, Long>("id"));
+        nameColumn.setCellValueFactory( new PropertyValueFactory<PropertyBox, String>("name"));
+
     }
 
     public static class PropertyBox {
