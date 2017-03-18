@@ -100,6 +100,13 @@ public class BoxSearchingController extends FXMLController {
 
     // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
 
+    private void alertErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(message);
+        alert.showAndWait();
+    }
+
     private void setCreateNewState() {
         boxIdTextBox.setText("");
         boxIdTextBox.setEditable(true);
@@ -123,7 +130,8 @@ public class BoxSearchingController extends FXMLController {
                 boxObservableList.addAll(new PropertyBox(box));
             boxSearchTable.refresh();
         } catch (BusinessLogicException e) {
-            e.printStackTrace();
+            LOG.error("Error happened while searching for the boxes");
+            alertErrorMessage("Error while calling the service for searching the boxes");
         }
     }
 
@@ -152,11 +160,12 @@ public class BoxSearchingController extends FXMLController {
             if (result.get() == ButtonType.OK) {
                 try {
                     boxService.deleteBox(box);
-                    search(actionEvent);
-                    setCreateNewState();
                 } catch (BusinessLogicException e) {
-                    e.printStackTrace();
+                    LOG.error("Error while deleting the box");
+                    alertErrorMessage("Error happened while telling the service to delete the box");
                 }
+                search(actionEvent);
+                setCreateNewState();
             }
         }
     }
@@ -164,6 +173,7 @@ public class BoxSearchingController extends FXMLController {
     private Box parseCurrentBox() throws Exception {
         Box box = new Box();
         try {
+            // exception?????????????? // validators?
             box.setId(Long.valueOf(boxIdTextBox.getText()));
             box.setName(boxNameTextBox.getText());
             box.setArea(Double.valueOf(areaTextBox.getText()));
@@ -173,6 +183,7 @@ public class BoxSearchingController extends FXMLController {
         } catch (Exception e) {
             // Something something
             LOG.error("Something went wrong parsing the box", e);
+            throw new Exception(e);
         }
         return box;
     }
@@ -185,7 +196,8 @@ public class BoxSearchingController extends FXMLController {
         try {
             box = parseCurrentBox();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("The given box is invalid", e);
+            alertErrorMessage("Sorry, but we could not parse the given box.");
             return;
         }
 
@@ -195,6 +207,7 @@ public class BoxSearchingController extends FXMLController {
                 LOG.info("Box {} successfully created", box);
             } catch (BusinessLogicException e) {
                 LOG.error("Something went wrong when creating the box ", e);
+                alertErrorMessage("Service error while creating the box");
             }
         } else {
             try {
@@ -202,6 +215,7 @@ public class BoxSearchingController extends FXMLController {
                 LOG.info("Box {} successfully updated", box);
             } catch (BusinessLogicException e) {
                 LOG.error("Something went wrong when updating the box ", e);
+                alertErrorMessage("Service error while updating the box");
             }
         }
 
@@ -217,21 +231,27 @@ public class BoxSearchingController extends FXMLController {
         if (id == null)
             throw new IllegalArgumentException();
         LOG.info("Loading view of box = {}", id);
-        try {
-            Box box = boxService.findBox(id);
-            boxIdTextBox.setText(String.valueOf(id));
-            boxIdTextBox.setEditable(false);
 
-            boxNameTextBox.setText(box.getName());
-            areaTextBox.setText(String.format("%.2f", box.getArea()));
-            dailyRateTextBox.setText(String.format("%.2f", box.getDailyRate()));
-            hasWindowsCheckbox.setSelected(box.hasWindows());
-            indoorCheckbox.setSelected(box.isIndoor());
-            currentStateLabel.setText(EDITING_STATE);
+        Box box = null;
+        try {
+            box = boxService.findBox(id);
+            if(box == null)
+                throw new BusinessLogicException("Box not found");
         } catch (BusinessLogicException e) {
             LOG.error("Something went wrong with retrieving the box id={}", id, e);
+            alertErrorMessage(String.format("Error while retrieving box details of id=%d from service", id));
+            return;
         }
 
+        boxIdTextBox.setText(String.valueOf(id));
+        boxIdTextBox.setEditable(false);
+
+        boxNameTextBox.setText(box.getName());
+        areaTextBox.setText(String.format("%.2f", box.getArea()));
+        dailyRateTextBox.setText(String.format("%.2f", box.getDailyRate()));
+        hasWindowsCheckbox.setSelected(box.hasWindows());
+        indoorCheckbox.setSelected(box.isIndoor());
+        currentStateLabel.setText(EDITING_STATE);
     }
 
     @Value("ui/sample.fxml")
