@@ -193,7 +193,6 @@ public class BookingController extends FXMLController {
                     bookingService.delete(booking);
                     bookingService.create(booking); // TODO: can be improved
                     search(event);
-                    setStateCreateNew();
                 } catch (BusinessLogicException e) {
                     alertErrorMessage("Something went wrong when the serviced updating the box " + e.getMessage());
                 }
