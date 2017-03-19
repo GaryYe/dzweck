@@ -19,4 +19,6 @@ public interface BookingDAO {
     void create(Booking booking) throws DataAccessException;
 
     void delete(Booking booking) throws DataAccessException;
+
+    Booking findOne(Long id) throws DataAccessException;
 }

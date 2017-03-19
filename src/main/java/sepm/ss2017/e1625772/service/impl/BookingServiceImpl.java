@@ -66,4 +66,13 @@ public class BookingServiceImpl implements BookingService {
             throw new BusinessLogicException(e);
         }
     }
+
+    @Override
+    public Booking findOne(Long id) throws BusinessLogicException {
+        try {
+            return bookingDAO.findOne(id);
+        } catch (DataAccessException e) {
+            throw new BusinessLogicException(e);
+        }
+    }
 }

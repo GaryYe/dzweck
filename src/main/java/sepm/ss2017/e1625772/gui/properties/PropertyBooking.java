@@ -23,11 +23,15 @@ public class PropertyBooking {
         this(booking.getId(), booking.getCustomerName(), booking.getBeginTime(), booking.getEndTime());
     }
 
+    private static String dateToString(LocalDate date) {
+        return date == null ? "Unknown" : date.toString();
+    }
+
     public PropertyBooking(Long id, String name, LocalDate beginTime, LocalDate endTime) {
         this.id = new SimpleLongProperty(id);
         this.name = new SimpleStringProperty(name);
-        this.beginTime = new SimpleStringProperty(beginTime.toString());
-        this.endTime = new SimpleStringProperty(endTime.toString());
+        this.beginTime = new SimpleStringProperty(dateToString(beginTime));
+        this.endTime = new SimpleStringProperty(dateToString(endTime));
     }
 
     public long getId() {

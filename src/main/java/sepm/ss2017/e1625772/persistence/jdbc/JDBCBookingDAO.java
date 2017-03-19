@@ -78,10 +78,24 @@ public class JDBCBookingDAO implements BookingDAO {
         }
     }
 
+    @Override
+    public Booking findOne(Long id) throws DataAccessException {
+        if (id == null)
+            throw new IllegalArgumentException("Id can not be null");
+
+        try {
+            return jdbcTemplate.queryForObject("SELECT ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME FROM BOOKINGS" +
+                    " WHERE ID = ?", new Object[]{id}, new BookingMapper());
+        } catch (org.springframework.dao.DataAccessException e) {
+            throw new DataAccessException(e);
+        }
+    }
+
     private static final class BookingMapper implements RowMapper<Booking> {
         private LocalDate toLocalDate(Date date) {
             return date == null ? null : date.toLocalDate();
         }
+
         @Override
         public Booking mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             Booking booking = new Booking();

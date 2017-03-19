@@ -47,7 +47,7 @@
                                     <DatePicker fx:id="searchBeginTimePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label contentDisplay="CENTER" text="Begin time" textAlignment="CENTER" GridPane.rowIndex="1" />
                                     <Label contentDisplay="CENTER" text="End time" textAlignment="CENTER" GridPane.rowIndex="2" />
-                                    <DatePicker fx:id="endBeginTimePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <DatePicker fx:id="searchEndTimePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="129.0" />

@@ -101,7 +101,6 @@ public class BoxSearchingController extends FXMLController {
     // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
 
 
-
     private void setCreateNewState() {
         boxIdTextBox.setText("");
         boxIdTextBox.setEditable(true);
@@ -147,12 +146,7 @@ public class BoxSearchingController extends FXMLController {
             alert.showAndWait();
         } else {
             Box box = new Box.BoxBuilder(Long.valueOf(boxIdTextBox.getText())).create();
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("The current box you selected has the id = " + box.getId());
-            alert.setContentText("Are you ok with this?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
+            if (confirmationDialog("The current box you selected has the id = " + box.getId())) {
                 try {
                     boxService.deleteBox(box);
                 } catch (BusinessLogicException e) {

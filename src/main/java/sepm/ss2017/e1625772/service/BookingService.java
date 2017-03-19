@@ -4,7 +4,6 @@ import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -19,4 +18,6 @@ public interface BookingService {
     void create(Booking booking) throws BusinessLogicException;
 
     void delete(Booking booking) throws BusinessLogicException;
+
+    Booking findOne(Long id) throws BusinessLogicException;
 }
