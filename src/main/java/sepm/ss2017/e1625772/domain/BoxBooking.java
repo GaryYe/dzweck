@@ -1,10 +1,21 @@
 package sepm.ss2017.e1625772.domain;
 
 /**
+ * An aggregate root for the relationship between boxes and bookings.
  */
 public class BoxBooking {
-    private Box box;
-    private Booking booking;
+    /**
+     * The id of the box
+     */
+    private Long boxId;
+    /**
+     * The id of the booking
+     */
+    private Long bookingId;
+
+    /**
+     * The name of the horse
+     */
     private String horseName;
     /**
      * The daily rate of the box that was agreed on, which is usually the daily rate of the box at the time of
@@ -12,20 +23,11 @@ public class BoxBooking {
      */
     private Double agreedDailyRate;
 
-    public Box getBox() {
-        return box;
-    }
-
-    public void setBox(Box box) {
-        this.box = box;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
+    public BoxBooking(Long boxId, Long bookingId, String horseName, Double agreedDailyRate) {
+        this.boxId = boxId;
+        this.bookingId = bookingId;
+        this.horseName = horseName;
+        this.agreedDailyRate = agreedDailyRate;
     }
 
     public String getHorseName() {
@@ -44,14 +46,20 @@ public class BoxBooking {
         this.agreedDailyRate = agreedDailyRate;
     }
 
-    @Override
-    public String toString() {
-        return "BoxBooking{" +
-                "box=" + box +
-                ", booking=" + booking +
-                ", horseName='" + horseName + '\'' +
-                ", agreedDailyRate=" + agreedDailyRate +
-                '}';
+    public Long getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(Long boxId) {
+        this.boxId = boxId;
+    }
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
     @Override
@@ -61,18 +69,28 @@ public class BoxBooking {
 
         BoxBooking that = (BoxBooking) o;
 
-        if (box != null ? !box.equals(that.box) : that.box != null) return false;
-        if (booking != null ? !booking.equals(that.booking) : that.booking != null) return false;
+        if (boxId != null ? !boxId.equals(that.boxId) : that.boxId != null) return false;
+        if (bookingId != null ? !bookingId.equals(that.bookingId) : that.bookingId != null) return false;
         if (horseName != null ? !horseName.equals(that.horseName) : that.horseName != null) return false;
         return agreedDailyRate != null ? agreedDailyRate.equals(that.agreedDailyRate) : that.agreedDailyRate == null;
     }
 
     @Override
     public int hashCode() {
-        int result = box != null ? box.hashCode() : 0;
-        result = 31 * result + (booking != null ? booking.hashCode() : 0);
+        int result = boxId != null ? boxId.hashCode() : 0;
+        result = 31 * result + (bookingId != null ? bookingId.hashCode() : 0);
         result = 31 * result + (horseName != null ? horseName.hashCode() : 0);
         result = 31 * result + (agreedDailyRate != null ? agreedDailyRate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BoxBooking{" +
+                "boxId=" + boxId +
+                ", bookingId=" + bookingId +
+                ", horseName='" + horseName + '\'' +
+                ", agreedDailyRate=" + agreedDailyRate +
+                '}';
     }
 }

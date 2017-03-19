@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 import sepm.ss2017.e1625772.gui.properties.PropertyBooking;
+import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
 import sepm.ss2017.e1625772.service.BookingService;
 
 import java.net.URL;
@@ -79,8 +80,44 @@ public class BookingController extends FXMLController {
     @FXML
     private Button resetButton;
 
+    @FXML
+    private Button addBoxButton;
+
+    private ObservableList<PropertyBoxBooking> boxBookings;
+
+    @FXML
+    private ListView<PropertyBoxBooking> boxListView;
+
+    @FXML
+    private TextField boxIDTextField;
+    @FXML
+    private TextField agreedDailyRateTextField;
+    @FXML
+    private TextField horseNameTextField;
+
     private final String EDITING_STATE = "Editing";
     private final String CREATING_STATE = "Creating";
+
+    private void clearAddBoxForm() {
+        horseNameTextField.setText("");
+        agreedDailyRateTextField.setText("");
+        boxIDTextField.setText("");
+    }
+
+    @FXML
+    public void addBox(ActionEvent actionEvent) {
+        LOG.info("User has pressed the add box button");
+        PropertyBoxBooking propertyBoxBooking = null;
+        try {
+            propertyBoxBooking = new PropertyBoxBooking(Long.valueOf(boxIDTextField.getText()),
+                    horseNameTextField.getText(),
+                    Double.valueOf(agreedDailyRateTextField.getText()));
+        } catch (Exception e) {
+            alertErrorMessage("Error while parsing your box " + e.getMessage());
+            return;
+        }
+        boxBookings.addAll(propertyBoxBooking);
+    }
 
     @FXML
     void search(ActionEvent event) {
@@ -224,6 +261,9 @@ public class BookingController extends FXMLController {
     public void initialize(URL location, ResourceBundle resources) {
         searchTableList = FXCollections.observableArrayList();
         searchTable.setItems(searchTableList);
+
+        boxBookings = FXCollections.observableArrayList();
+        boxListView.setItems(boxBookings);
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
