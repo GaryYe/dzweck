@@ -123,4 +123,10 @@ public class JDBCBookingDAOTest {
         testBookingRange(of(2017, 3, 11), of(2018, 3, 5), queryBegin, queryEnd, false);
     }
 
+    @Test
+    public void testFindAllBetweenWithIllegalQueries() throws Exception {
+        LocalDate queryBegin = of(2017, 3, 1);
+        LocalDate queryEnd = of(2017, 3, 10);
+        
+    }
 }
