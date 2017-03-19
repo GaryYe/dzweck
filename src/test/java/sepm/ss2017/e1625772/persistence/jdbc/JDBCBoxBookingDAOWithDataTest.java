@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
+import sepm.ss2017.e1625772.domain.builders.BookingBuilder;
 import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
 import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
@@ -48,10 +48,10 @@ public class JDBCBoxBookingDAOWithDataTest {
         boxDAO.create(new BoxBuilder(3L).create());
         boxDAO.create(new BoxBuilder(4L).create());
 
-        bookingDAO.create(new Booking.BookingBuilder(1L).create());
-        bookingDAO.create(new Booking.BookingBuilder(2L).create());
-        bookingDAO.create(new Booking.BookingBuilder(3L).create());
-        bookingDAO.create(new Booking.BookingBuilder(4L).create());
+        bookingDAO.create(new BookingBuilder(1L).create());
+        bookingDAO.create(new BookingBuilder(2L).create());
+        bookingDAO.create(new BookingBuilder(3L).create());
+        bookingDAO.create(new BookingBuilder(4L).create());
     }
 
     @After

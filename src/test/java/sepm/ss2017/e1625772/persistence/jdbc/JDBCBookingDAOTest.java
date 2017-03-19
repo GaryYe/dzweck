@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import sepm.ss2017.e1625772.domain.Booking;
+import sepm.ss2017.e1625772.domain.builders.BookingBuilder;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
 
@@ -48,7 +49,7 @@ public class JDBCBookingDAOTest {
 
     @Test
     public void testCreateNormalShouldWork() throws DataAccessException {
-        Booking booking = new Booking.BookingBuilder(404L)
+        Booking booking = new BookingBuilder(404L)
                 .beginTime(of(2017, 3, 12))
                 .endTime(of(2017, 3, 14))
                 .customer("Elon Musk")
@@ -61,7 +62,7 @@ public class JDBCBookingDAOTest {
 
     @Test
     public void testCreateWithNullAttributesShouldWork() throws DataAccessException {
-        Booking booking = new Booking.BookingBuilder(404L)
+        Booking booking = new BookingBuilder(404L)
                 .beginTime(null)
                 .endTime(of(2017, 3, 14))
                 .customer(null)
@@ -89,12 +90,12 @@ public class JDBCBookingDAOTest {
 
     @Test
     public void testDeleteNotExistingShouldJustDoNothing() throws DataAccessException {
-        dao.delete(new Booking.BookingBuilder(30L).create());
+        dao.delete(new BookingBuilder(30L).create());
     }
 
     @Test
     public void testDeleteOneShouldWork() throws DataAccessException {
-        Booking booking = new Booking.BookingBuilder(30L).create();
+        Booking booking = new BookingBuilder(30L).create();
         dao.create(booking);
         assertTrue(!dao.findAll().isEmpty());
         dao.delete(booking);
@@ -102,7 +103,7 @@ public class JDBCBookingDAOTest {
     }
 
     private void testBookingRange(LocalDate begin, LocalDate end, LocalDate queryBegin, LocalDate queryEnd, boolean isInside) throws DataAccessException {
-        Booking booking = new Booking.BookingBuilder(1L).beginTime(begin).endTime(end).create();
+        Booking booking = new BookingBuilder(1L).beginTime(begin).endTime(end).create();
         dao.create(booking);
         List<Booking> expected = new ArrayList<>();
         if (isInside)

@@ -87,19 +87,21 @@ public class JDBCBoxBookingDAO implements BoxBookingDAO {
             throw new DataAccessException(e);
         }
     }
-}
 
+    private class BoxBookingRowMapper implements RowMapper<BoxBooking> {
 
-class BoxBookingRowMapper implements RowMapper<BoxBooking> {
-
-    @Override
-    public BoxBooking mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        BoxBooking boxBooking = new BoxBooking();
-        boxBooking.setBookingId(resultSet.getLong("BOOKING_ID"));
-        boxBooking.setBoxId(resultSet.getLong("BOX_ID"));
-        // getDouble actually returns 0.0 if the object was null
-        boxBooking.setAgreedDailyRate(resultSet.getObject("DAILY_RATE", Double.class));
-        boxBooking.setHorseName(resultSet.getString("HORSE_NAME"));
-        return boxBooking;
+        @Override
+        public BoxBooking mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            BoxBooking boxBooking = new BoxBooking();
+            boxBooking.setBookingId(resultSet.getLong("BOOKING_ID"));
+            boxBooking.setBoxId(resultSet.getLong("BOX_ID"));
+            // getDouble actually returns 0.0 if the object was null
+            boxBooking.setAgreedDailyRate(resultSet.getObject("DAILY_RATE", Double.class));
+            boxBooking.setHorseName(resultSet.getString("HORSE_NAME"));
+            return boxBooking;
+        }
     }
 }
+
+
+
