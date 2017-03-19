@@ -139,14 +139,15 @@
                               <ListView fx:id="boxListView" prefHeight="273.0" prefWidth="263.0" />
                               <HBox prefHeight="72.0" prefWidth="440.0">
                                  <children>
-                                    <TextField fx:id="boxIDTextField" prefHeight="25.0" prefWidth="120.0" promptText="Enter Box ID">
+                                    <TextField fx:id="boxIDTextField" prefHeight="25.0" prefWidth="84.0" promptText="Box ID">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
                                     </TextField>
-                                    <TextField fx:id="agreedDailyRateTextField" prefHeight="25.0" prefWidth="83.0" promptText="Daily Rate" />
-                                    <TextField fx:id="horseNameTextField" prefHeight="25.0" prefWidth="147.0" promptText="Horse Name" />
+                                    <TextField fx:id="agreedDailyRateTextField" prefHeight="25.0" prefWidth="97.0" promptText="Daily Rate" />
+                                    <TextField fx:id="horseNameTextField" prefHeight="25.0" prefWidth="105.0" promptText="Horse Name" />
                                     <Button fx:id="addBoxButton" mnemonicParsing="false" onAction="#addBox" text="Add" />
+                                    <Button fx:id="deleteBoxButton" mnemonicParsing="false" onAction="#deleteBox" text="Delete" />
                                  </children>
                               </HBox>
                            </children>

@@ -18,6 +18,7 @@ import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
 import sepm.ss2017.e1625772.service.BookingService;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -82,6 +83,8 @@ public class BookingController extends FXMLController {
 
     @FXML
     private Button addBoxButton;
+    @FXML
+    private Button deleteBoxButton;
 
     private ObservableList<PropertyBoxBooking> boxBookings;
 
@@ -120,12 +123,31 @@ public class BookingController extends FXMLController {
     }
 
     @FXML
+    public void deleteBox(ActionEvent actionEvent) {
+        LOG.info("User has requested deleting a box");
+    }
+
+    @FXML
     void search(ActionEvent event) {
         LOG.info("User has requested search by clicking the search button");
 
-        // Search all or with ranges?
+        LocalDate beginTime = searchBeginTimePicker.getValue();
+        LocalDate endTime = searchEndTimePicker.getValue();
+
+        // TODO: can this be improved?
+        if (beginTime == null)
+            beginTime = BookingService.MIN;
+        if (endTime == null)
+            endTime = BookingService.MAX;
+
+        if (beginTime.isAfter(endTime)) {
+            alertErrorMessage("End time can not be after begin time");
+            return;
+        }
+
         try {
-            List<Booking> list = bookingService.findAll();
+            List<Booking> list = bookingService.findAllBetween(beginTime, endTime);
+            LOG.info("Service found {} bookings", list.size());
             searchTableList.clear();
             for (Booking booking : list) {
                 searchTableList.addAll(new PropertyBooking(booking));
@@ -184,7 +206,7 @@ public class BookingController extends FXMLController {
                     search(event);
                     setStateCreateNew();
                 } catch (BusinessLogicException e) {
-                    alertErrorMessage("Something went wrong when the serviced created the box " + e.getMessage());
+                    alertErrorMessage("Something went wrong when the service created the box " + e.getMessage());
                 }
             }
         } else {
@@ -194,7 +216,7 @@ public class BookingController extends FXMLController {
                     bookingService.create(booking); // TODO: can be improved
                     search(event);
                 } catch (BusinessLogicException e) {
-                    alertErrorMessage("Something went wrong when the serviced updating the box " + e.getMessage());
+                    alertErrorMessage("Something went wrong when the service updated the box " + e.getMessage());
                 }
             }
         }

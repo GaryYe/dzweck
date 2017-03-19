@@ -11,6 +11,9 @@ import java.util.List;
  * @version %I% %G%
  */
 public interface BookingService {
+    LocalDate MIN = LocalDate.of(1970, 1, 1);
+    LocalDate MAX = LocalDate.of(2038, 1, 1);
+
     List<Booking> findAll() throws BusinessLogicException;
 
     List<Booking> findAllBetween(LocalDate begin, LocalDate end) throws BusinessLogicException;
