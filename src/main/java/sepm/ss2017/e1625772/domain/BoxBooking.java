@@ -23,6 +23,10 @@ public class BoxBooking {
      */
     private Double agreedDailyRate;
 
+    public BoxBooking() {
+        this(null, null, null, null);
+    }
+
     public BoxBooking(Long boxId, Long bookingId, String horseName, Double agreedDailyRate) {
         this.boxId = boxId;
         this.bookingId = bookingId;
@@ -93,4 +97,5 @@ public class BoxBooking {
                 ", agreedDailyRate=" + agreedDailyRate +
                 '}';
     }
+
 }

@@ -70,49 +70,6 @@ public class Box {
         this.image = image;
     }
 
-    public static class BoxBuilder {
-        private Box built;
-
-        public BoxBuilder(Long id) {
-            this.built = new Box();
-            this.built.setId(id);
-        }
-
-        public BoxBuilder name(String name) {
-            this.built.name = name;
-            return this;
-        }
-
-        public BoxBuilder area(double area) {
-            this.built.area = area;
-            return this;
-        }
-
-        public BoxBuilder dailyRate(double dailyRate) {
-            this.built.area = dailyRate;
-            return this;
-        }
-
-        public BoxBuilder windows(boolean has) {
-            this.built.hasWindows = has;
-            return this;
-        }
-
-        public BoxBuilder indoor(boolean is) {
-            this.built.isIndoor = is;
-            return this;
-        }
-
-        public BoxBuilder image(Image image) {
-            this.built.image = image;
-            return this;
-        }
-
-        public Box create() {
-            return built;
-        }
-    }
-
     @Override
     public String toString() {
         return "Box{" +

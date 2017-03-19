@@ -2,6 +2,7 @@ package sepm.ss2017.e1625772.persistence.jdbc;
 
 import org.junit.Test;
 import sepm.ss2017.e1625772.domain.Box;
+import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
 
@@ -24,7 +25,7 @@ public abstract class AbstractBoxDaoTest {
 
     @Test
     public void testCreateBoxWithAllAttributesSet() throws DataAccessException {
-        Box box = new Box.BoxBuilder(42L)
+        Box box = new BoxBuilder(42L)
                 .area(37.8)
                 .dailyRate(-22.2)
                 .windows(false)
@@ -50,24 +51,24 @@ public abstract class AbstractBoxDaoTest {
 
     @Test
     public void testDeleteExistingElement() throws DataAccessException {
-        Box box = new Box.BoxBuilder(23L).create();
+        Box box = new BoxBuilder(23L).create();
         boxDAO.create(box);
         assertFalse(boxDAO.findAll().isEmpty());
-        boxDAO.delete(new Box.BoxBuilder(23L).create());
+        boxDAO.delete(new BoxBuilder(23L).create());
         assertTrue(boxDAO.findAll().isEmpty());
     }
 
     @Test
     public void testDeleteNonExistingElement() throws DataAccessException {
-        Box box = new Box.BoxBuilder(23L).create();
+        Box box = new BoxBuilder(23L).create();
         boxDAO.create(box);
-        boxDAO.delete(new Box.BoxBuilder(42L).create());
+        boxDAO.delete(new BoxBuilder(42L).create());
         assertFalse(boxDAO.findAll().isEmpty());
     }
 
     @Test
     public void testDeleteAttributesShouldNotMatter() throws DataAccessException {
-        Box box = new Box.BoxBuilder(42L)
+        Box box = new BoxBuilder(42L)
                 .area(37.8)
                 .dailyRate(-22.2)
                 .windows(false)
@@ -77,7 +78,7 @@ public abstract class AbstractBoxDaoTest {
                 .create();
         boxDAO.create(box);
         assertFalse(boxDAO.findAll().isEmpty());
-        boxDAO.delete(new Box.BoxBuilder(42L)
+        boxDAO.delete(new BoxBuilder(42L)
                 .area(12.8)
                 .dailyRate(293.0)
                 .windows(false)
@@ -89,7 +90,7 @@ public abstract class AbstractBoxDaoTest {
 
     @Test
     public void testUpdateExisting() throws DataAccessException {
-        Box before = new Box.BoxBuilder(42L)
+        Box before = new BoxBuilder(42L)
                 .area(37.8)
                 .dailyRate(-22.2)
                 .windows(false)
@@ -98,7 +99,7 @@ public abstract class AbstractBoxDaoTest {
                 // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
         boxDAO.create(before);
-        Box after = new Box.BoxBuilder(42L)
+        Box after = new BoxBuilder(42L)
                 .area(3939.9)
                 .dailyRate(+25.2)
                 .windows(true)
@@ -119,7 +120,7 @@ public abstract class AbstractBoxDaoTest {
 
     @Test
     public void testFindOneExistingShouldReturnMatching() throws DataAccessException {
-        Box box = new Box.BoxBuilder(23L).create();
+        Box box = new BoxBuilder(23L).create();
         boxDAO.create(box);
         assertEquals(box, boxDAO.findOne(23L));
     }

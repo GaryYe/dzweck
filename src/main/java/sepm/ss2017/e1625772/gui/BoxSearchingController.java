@@ -15,13 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import sepm.ss2017.e1625772.domain.Box;
+import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
 import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 import sepm.ss2017.e1625772.service.BoxService;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -145,7 +144,7 @@ public class BoxSearchingController extends FXMLController {
             alert.setHeaderText("You can not delete the box you are currently creating");
             alert.showAndWait();
         } else {
-            Box box = new Box.BoxBuilder(Long.valueOf(boxIdTextBox.getText())).create();
+            Box box = new BoxBuilder(Long.valueOf(boxIdTextBox.getText())).create();
             if (confirmationDialog("The current box you selected has the id = " + box.getId())) {
                 try {
                     boxService.deleteBox(box);
