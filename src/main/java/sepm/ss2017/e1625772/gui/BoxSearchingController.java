@@ -100,12 +100,7 @@ public class BoxSearchingController extends FXMLController {
 
     // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
 
-    private void alertErrorMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(message);
-        alert.showAndWait();
-    }
+
 
     private void setCreateNewState() {
         boxIdTextBox.setText("");
@@ -265,7 +260,6 @@ public class BoxSearchingController extends FXMLController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.boxObservableList = FXCollections.observableList(Collections.emptyList());
         this.boxObservableList = FXCollections.observableArrayList();
         this.boxSearchTable.setItems(boxObservableList);
         idColumn.setCellValueFactory(new PropertyValueFactory<PropertyBox, Long>("id"));

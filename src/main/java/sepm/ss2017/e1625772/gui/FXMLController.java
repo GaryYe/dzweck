@@ -3,6 +3,7 @@ package sepm.ss2017.e1625772.gui;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
@@ -38,5 +39,13 @@ public abstract class FXMLController implements InitializingBean, Initializable 
 
     public Node getView() {
         return view;
+    }
+
+
+    protected void alertErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(message);
+        alert.showAndWait();
     }
 }

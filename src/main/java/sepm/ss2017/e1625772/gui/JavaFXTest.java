@@ -29,7 +29,7 @@ public class JavaFXTest extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ApplicationContext appContext = new AnnotationConfigApplicationContext(JavaFXTest.class);
-        BoxSearchingController demoController = appContext.getBean(BoxSearchingController.class);
+        FXMLController demoController = appContext.getBean(BookingController.class);
 
         stage.setScene(new Scene((Parent) demoController.getView()));
         stage.setTitle("Wendy's horse pension");

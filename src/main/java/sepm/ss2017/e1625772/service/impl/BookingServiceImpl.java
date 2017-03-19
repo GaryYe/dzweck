@@ -9,7 +9,10 @@ import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.service.BookingService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Gary Ye
@@ -25,18 +28,22 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<Booking> findAll() throws BusinessLogicException {
+    public List<Booking> findAll() throws BusinessLogicException {
         try {
-            return bookingDAO.findAll();
+            return new ArrayList<>(bookingDAO.findAll());
         } catch (DataAccessException e) {
             throw new BusinessLogicException(e);
         }
     }
 
     @Override
-    public Collection<Booking> findAllBetween(LocalDate begin, LocalDate end) throws BusinessLogicException {
+    public List<Booking> findAllBetween(LocalDate begin, LocalDate end) throws BusinessLogicException {
+        if (begin == null || end == null)
+            throw new IllegalArgumentException("Begin and end can not be null");
+        if (begin.isAfter(end))
+            throw new IllegalArgumentException("Begin can not be after end");
         try {
-            return bookingDAO.findAllBetween(begin, end);
+            return new ArrayList<>(bookingDAO.findAllBetween(begin, end));
         } catch (DataAccessException e) {
             throw new BusinessLogicException(e);
         }
