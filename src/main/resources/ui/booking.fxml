@@ -38,7 +38,7 @@
                                        <children>
                                           <TilePane prefHeight="200.0" prefWidth="200.0">
                                              <children>
-                                                <Button fx:id="resetButton" mnemonicParsing="false" text="Reset" />
+                                                <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetSearch" text="Reset" />
                                                 <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" text="Search" />
                                              </children>
                                           </TilePane>
@@ -99,6 +99,7 @@
                                  <children>
                                     <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save" />
                                     <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete" />
+                                    <Button fx:id="receiptButton" mnemonicParsing="false" onAction="#openReceipt" text="Receipt" />
                                  </children>
                               </TilePane>
                            </children>

@@ -50,6 +50,9 @@ public class BookingController extends FXMLController {
     private Button searchButton;
 
     @FXML
+    private Button receiptButton;
+
+    @FXML
     private DatePicker searchEndTimePicker;
 
     @FXML
@@ -102,6 +105,8 @@ public class BookingController extends FXMLController {
         this.formBeginTimePicker.setValue(null);
         this.formEndTimePicker.setValue(null);
         this.customerTextField.setText("");
+        this.deleteButton.setDisable(true);
+        this.receiptButton.setDisable(true);
     }
 
     private void setStateEditing(Booking booking) {
@@ -114,6 +119,8 @@ public class BookingController extends FXMLController {
             this.formBeginTimePicker.setValue(booking.getBeginTime());
             this.formEndTimePicker.setValue(booking.getEndTime());
             this.customerTextField.setText(booking.getCustomerName());
+            this.deleteButton.setDisable(false);
+            this.receiptButton.setDisable(false);
         }
     }
 
@@ -134,16 +141,40 @@ public class BookingController extends FXMLController {
         }
 
         if (currentStateLabel.getText().equals(CREATING_STATE)) {
-            if (confirmationDialog("Do you really want to create the box")) {
+            if (confirmationDialog("Do you really want to create the box?")) {
                 try {
                     bookingService.create(booking);
+                    search(event);
+                    setStateCreateNew();
                 } catch (BusinessLogicException e) {
                     alertErrorMessage("Something went wrong when the serviced created the box " + e.getMessage());
                 }
             }
         } else {
-
+            if (confirmationDialog("Do you really want to update the box?")) {
+                try {
+                    bookingService.delete(booking);
+                    bookingService.create(booking); // TODO: can be improved
+                    search(event);
+                    setStateCreateNew();
+                } catch (BusinessLogicException e) {
+                    alertErrorMessage("Something went wrong when the serviced updating the box " + e.getMessage());
+                }
+            }
         }
+    }
+
+    @FXML
+    void openReceipt(ActionEvent event) {
+        LOG.info("User has pressed the receipt button");
+        Booking booking = null;
+        try {
+            booking = parseBooking();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        alertErrorMessage("This is the receipt of booking: " + booking);
     }
 
     private Booking parseBooking() throws Exception {
@@ -152,7 +183,7 @@ public class BookingController extends FXMLController {
             booking.setId(Long.valueOf(idTextField.getText()));
             booking.setBeginTime(formBeginTimePicker.getValue());
             booking.setEndTime(formEndTimePicker.getValue());
-            booking.setCustomerName(booking.getCustomerName());
+            booking.setCustomerName(customerTextField.getText());
         } catch (NumberFormatException e) {
             throw new Exception(e);
         }
@@ -160,12 +191,14 @@ public class BookingController extends FXMLController {
     }
 
     @FXML
-    void delete(ActionEvent event) {
-        if (currentStateLabel.getText().equals(CREATING_STATE)) {
-            alertErrorMessage("You can not delete a box you are creating");
-            return;
-        }
+    void resetSearch(ActionEvent event) {
+        LOG.info("User has clicked the reset button");
+        searchBeginTimePicker.setValue(null);
+        searchEndTimePicker.setValue(null);
+    }
 
+    @FXML
+    void delete(ActionEvent event) {
         Booking booking = null;
         try {
             booking = parseBooking();
@@ -177,6 +210,7 @@ public class BookingController extends FXMLController {
         if (confirmationDialog("Do you really want to delete?")) {
             try {
                 bookingService.delete(booking);
+                search(event);
                 setStateCreateNew();
             } catch (BusinessLogicException e) {
                 alertErrorMessage("Something went wrong when calling the service to delete the given box" + e.getMessage());
