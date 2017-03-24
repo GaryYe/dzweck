@@ -103,7 +103,8 @@ public class JDBCBookingDAOTest {
         assertTrue(dao.findAll().isEmpty());
     }
 
-    private void testBookingRange(LocalDate begin, LocalDate end, LocalDate queryBegin, LocalDate queryEnd, boolean isInside) throws DataAccessException {
+    private void testBookingRange(LocalDate begin, LocalDate end, LocalDate queryBegin, LocalDate queryEnd, boolean
+            isInside) throws DataAccessException {
         Booking booking = new BookingBuilder(1L).beginTime(begin).endTime(end).create();
         dao.create(booking);
         List<Booking> expected = new ArrayList<>();
@@ -112,6 +113,7 @@ public class JDBCBookingDAOTest {
         assertEquals(expected, dao.findAllBetween(queryBegin, queryEnd));
         dao.delete(booking);
     }
+
     @Test
     public void testFindAllBetweenWithNormalQueryRanges() throws Exception {
         LocalDate queryBegin = of(2017, 3, 1);
@@ -129,6 +131,24 @@ public class JDBCBookingDAOTest {
     public void testFindAllBetweenWithIllegalQueries() throws Exception {
         LocalDate queryBegin = of(2017, 3, 1);
         LocalDate queryEnd = of(2017, 3, 10);
-        
+
+    }
+
+    @Test
+    public void testUpdateAllAttributesShouldWork() {
+        Booking oldBooking = new BookingBuilder(28L)
+                .beginTime(of(2017, 3, 24))
+                .endTime(of(2017, 3, 28))
+                .customer("Harald")
+                .create();
+        dao.create(oldBooking);
+        assertEquals(oldBooking, dao.findOne(28L));
+        Booking newBooking = new BookingBuilder(28L)
+                .beginTime(of(2017, 3, 25))
+                .endTime(of(2017, 3, 29))
+                .customer("Geoerg")
+                .create();
+        dao.update(newBooking);
+        assertEquals(newBooking, dao.findOne(28L));
     }
 }

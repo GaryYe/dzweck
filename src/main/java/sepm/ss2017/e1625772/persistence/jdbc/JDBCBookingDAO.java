@@ -83,7 +83,14 @@ public class JDBCBookingDAO implements BookingDAO {
 
     @Override
     public void update(Booking booking) {
-
+        if (booking == null)
+            throw new IllegalArgumentException("Booking can not be null");
+        try {
+            jdbcTemplate.update("UPDATE BOOKINGS SET BEGIN_TIME=?, END_TIME=?, CUSTOMER_NAME=? WHERE ID = ?",
+                    booking.getBeginTime(), booking.getEndTime(), booking.getCustomerName(), booking.getId());
+        } catch (org.springframework.dao.DataAccessException e) {
+            throw new DataAccessException(e);
+        }
     }
 
     @Override
