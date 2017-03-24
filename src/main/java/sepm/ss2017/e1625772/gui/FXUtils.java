@@ -6,13 +6,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
 
 /**
- * Code adapted from:
+ * Most of the code adapted from:
  * http://code.makery.ch/blog/javafx-dialogs-official/
  *
  * @author Gary Ye
@@ -24,6 +25,11 @@ public class FXUtils {
         alert.setTitle("Error");
         alert.setHeaderText("An error occurred");
         alert.setContentText(message);
+
+        // http://stackoverflow.com/a/33905734
+        alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)
+                node).setMinHeight(Region.USE_PREF_SIZE));
+
         alert.showAndWait();
     }
 
