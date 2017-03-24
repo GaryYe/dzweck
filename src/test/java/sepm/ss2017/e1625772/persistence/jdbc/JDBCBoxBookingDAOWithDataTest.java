@@ -11,6 +11,8 @@ import sepm.ss2017.e1625772.domain.builders.BookingBuilder;
 import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
 import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
+import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Integration tests with some boxes and bookings already in DB.
@@ -60,7 +63,7 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test
-    public void testCreateShouldWork() throws DataAccessException {
+    public void testCreateShouldWork() throws DataAccessException, DuplicatedObjectException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         BoxBooking boxBooking2 = new BoxBookingBuilder(1L, 2L).create();
         List<BoxBooking> expected = Arrays.asList(boxBooking1, boxBooking2);
@@ -70,7 +73,7 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test
-    public void testFindAllByBooking() throws DataAccessException {
+    public void testFindAllByBooking() throws DataAccessException, DuplicatedObjectException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         BoxBooking boxBooking2 = new BoxBookingBuilder(1L, 2L).create();
         BoxBooking boxBooking3 = new BoxBookingBuilder(2L, 2L).create();
@@ -82,7 +85,7 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test
-    public void testFindAllByBox() throws DataAccessException {
+    public void testFindAllByBox() throws DataAccessException, DuplicatedObjectException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         BoxBooking boxBooking2 = new BoxBookingBuilder(1L, 2L).create();
         BoxBooking boxBooking3 = new BoxBookingBuilder(2L, 2L).create();
@@ -93,6 +96,14 @@ public class JDBCBoxBookingDAOWithDataTest {
         assertEquals(Arrays.asList(boxBooking2, boxBooking3), boxBookingDAO.findAllByBox(2L));
     }
 
+    @Test(expected = DuplicatedObjectException.class)
+    public void testCreateTwiceShouldThrowDuplicatedObjectException() throws DuplicatedObjectException {
+        BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
+        boxBookingDAO.create(boxBooking1);
+        boxBookingDAO.create(boxBooking1);
+    }
+
+
     @Test(expected = IllegalArgumentException.class)
     public void testFindAllByBookingNullShouldThrow() throws DataAccessException {
         boxBookingDAO.findAllByBooking(null);
@@ -101,5 +112,14 @@ public class JDBCBoxBookingDAOWithDataTest {
     @Test(expected = IllegalArgumentException.class)
     public void testFindAllByBoxNullShouldThrow() throws DataAccessException {
         boxBookingDAO.findAllByBox(null);
+    }
+
+    @Test
+    public void testDeleteShouldHappen() throws ObjectNotFoundException, DuplicatedObjectException {
+        BoxBooking boxBooking = new BoxBookingBuilder(3L, 4L).create();
+        boxBookingDAO.create(boxBooking);
+        assertTrue(!boxBookingDAO.findAll().isEmpty());
+        boxBookingDAO.delete(boxBooking);
+        assertTrue(boxBookingDAO.findAll().isEmpty());
     }
 }

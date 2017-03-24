@@ -138,10 +138,17 @@ public class BookingController extends FXMLController {
             horseNameTextField.clear();
             boxIDTextField.clear();
             agreedDailyRateTextField.clear();
-
-            loadBoxBookingProperties(currentBooking);
         } catch (FormParsingException e) {
             alertErrorMessage("Error while parsing the given box: " + e.getMessage());
+        } catch (BoxBookingCollisionException e) {
+            alertErrorMessage(e.getMessage());
+        } catch (ObjectNotFoundException e) {
+            // TODO: Would be clean to check whether it is the box that is missing
+            alertErrorMessage("The requested box does not exist");
+        } catch (DuplicatedObjectException e) {
+            alertErrorMessage("The given box already exists!");
+        } finally {
+            loadBoxBookingProperties(currentBooking);
         }
     }
 
@@ -165,6 +172,7 @@ public class BookingController extends FXMLController {
             boxBookingService.delete(boxBooking);
             loadBoxBookingProperties(currentBooking);
         } catch (ObjectNotFoundException e) {
+            // Usually happens when some other service already deleted this object
             alertErrorMessage("The box booking relationship doesn't exist anymore");
         }
     }

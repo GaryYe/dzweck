@@ -2,6 +2,7 @@ package sepm.ss2017.e1625772.persistence;
 
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
 import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public interface BoxBookingDAO {
      * @param boxBooking the box booking to create
      * @throws DataAccessException if an error occurred while accessing the data
      */
-    void create(BoxBooking boxBooking);
+    void create(BoxBooking boxBooking) throws DuplicatedObjectException;
 
     /**
      * @param boxBooking the box booking to delete

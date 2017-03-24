@@ -1,15 +1,16 @@
 package sepm.ss2017.e1625772.persistence.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -62,15 +63,19 @@ public class JDBCBoxBookingDAO implements BoxBookingDAO {
     }
 
     @Override
-    public void create(BoxBooking boxBooking) throws DataAccessException {
+    public void create(BoxBooking boxBooking) throws DuplicatedObjectException {
         if (boxBooking == null)
             throw new IllegalArgumentException("BoxBooking can not be null");
         try {
             jdbcTemplate.update("INSERT INTO BOXBOOKINGS (BOOKING_ID, BOX_ID, HORSE_NAME, DAILY_RATE) VALUES (?,?,?,?)",
-                    boxBooking.getBookingId(), boxBooking.getBoxId(), boxBooking.getHorseName(), boxBooking.getAgreedDailyRate());
+                    boxBooking.getBookingId(), boxBooking.getBoxId(), boxBooking.getHorseName(), boxBooking
+                            .getAgreedDailyRate());
+        } catch (DuplicateKeyException e) {
+            throw new DuplicatedObjectException(e);
         } catch (org.springframework.dao.DataAccessException e) {
             throw new DataAccessException(e);
         }
+
     }
 
     @Override

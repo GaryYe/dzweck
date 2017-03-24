@@ -2,6 +2,8 @@ package sepm.ss2017.e1625772.service;
 
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
+import sepm.ss2017.e1625772.exceptions.BoxBookingCollisionException;
+import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
 import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 
@@ -19,12 +21,18 @@ public interface BoxBookingService {
     List<BoxBooking> findAllByBox(Long boxId);
 
     /**
+     * Creates the given box booking, but also performs a check whether there are any conflicts between the given one
+     * and the already existing ones.
+     *
      * @param boxBooking the box booking relationship to create
-     *                   TODO: throws Box does not exist?
-     *                   TODO: booking does not exist?
-     *                   TODO:
+     * @throws IllegalArgumentException     if the given box booking is null
+     * @throws ObjectNotFoundException      if the booking or the box do not exist
+     * @throws BoxBookingCollisionException if by creating the box booking there will be a conflict with other box
+     *                                      bookings
+     * @throws DuplicatedObjectException    if the given box booking already exists
      */
-    void create(BoxBooking boxBooking);
+    void create(BoxBooking boxBooking) throws BoxBookingCollisionException, ObjectNotFoundException,
+            DuplicatedObjectException;
 
     /**
      * Deletes the given box booking.

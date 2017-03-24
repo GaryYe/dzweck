@@ -9,13 +9,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
+import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Gary Ye
@@ -55,18 +53,12 @@ public class JDBCBoxBookingDAOWithEmptyDBTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDeleteNullBookingIdShouldThrow() throws Exception {
+    public void testDeleteNullBookingIdShouldThrow() throws ObjectNotFoundException {
         dao.delete(new BoxBookingBuilder(null, 3L).create());
     }
 
-    @Test
-    public void testDeleteShouldHappen() throws Exception {
-        BoxBooking boxBooking = new BoxBookingBuilder(3L, 4L).create();
-        // dao.create(boxBooking);
-    }
-
     @Test(expected = DataAccessException.class)
-    public void testCreateWithoutExistingBoxesShouldThrow() throws DataAccessException {
+    public void testCreateWithoutExistingBoxesShouldThrow() throws DuplicatedObjectException {
         BoxBooking boxBooking = new BoxBookingBuilder(3L, 5L).create();
         dao.create(boxBooking);
     }

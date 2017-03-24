@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
 import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
@@ -62,7 +63,7 @@ public class BoxBookingServiceImpl implements BoxBookingService {
     }
 
     @Override
-    public void create(BoxBooking boxBooking) {
+    public void create(BoxBooking boxBooking) throws DuplicatedObjectException {
         try {
             boxBookingDAO.create(boxBooking);
             LOG.info("BoxBooking between boxId={} and bookingId={} was created", boxBooking.getBoxId(), boxBooking
