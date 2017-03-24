@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
+import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
 import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
+import sepm.ss2017.e1625772.exceptions.FormParsingException;
 import sepm.ss2017.e1625772.gui.properties.PropertyBooking;
 import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
 import sepm.ss2017.e1625772.service.BookingService;
@@ -171,6 +173,15 @@ public class BookingController extends FXMLController {
         this.customerTextField.setText("");
         this.deleteButton.setDisable(true);
         this.receiptButton.setDisable(true);
+        this.addBoxButton.setDisable(true);
+        this.deleteBoxButton.setDisable(true);
+
+        this.boxIDTextField.setText("");
+        this.boxIDTextField.setEditable(false);
+        this.agreedDailyRateTextField.setText("");
+        this.agreedDailyRateTextField.setEditable(false);
+        this.horseNameTextField.setText("");
+        this.horseNameTextField.setEditable(false);
         this.boxBookings.clear();
     }
 
@@ -186,6 +197,11 @@ public class BookingController extends FXMLController {
             this.customerTextField.setText(booking.getCustomerName());
             this.deleteButton.setDisable(false);
             this.receiptButton.setDisable(false);
+            this.addBoxButton.setDisable(false);
+            this.deleteBoxButton.setDisable(false);
+            this.boxIDTextField.setEditable(true);
+            this.agreedDailyRateTextField.setEditable(true);
+            this.horseNameTextField.setEditable(true);
 
             this.boxBookings.clear();
             for (BoxBooking boxBooking : boxBookings) {
@@ -214,6 +230,18 @@ public class BookingController extends FXMLController {
             if (confirmationDialog("Do you really want to create the box?")) {
                 try {
                     bookingService.create(booking);
+
+                    for (PropertyBoxBooking pbb : boxBookings) {
+                        BoxBooking boxBooking = new BoxBookingBuilder(booking.getId(), pbb.getBoxId())
+                                .agreedDailyRate(pbb.getAgreedDailyRate())
+                                .horseName(pbb.getHorseName())
+                                .create();
+                        boxBookingService.create(boxBooking); // TODO: create or update ?
+                        // Somehow determine which one were deleted
+                        // Or add to add
+                    }
+
+                    // TODO: save relationship from
                     search(event);
                     setStateCreateNew();
                 } catch (BusinessLogicException e) {
@@ -246,16 +274,23 @@ public class BookingController extends FXMLController {
         alertErrorMessage("This is the receipt of booking: " + booking);
     }
 
-    private Booking parseBooking() throws Exception {
+    private Booking parseBooking() throws FormParsingException {
         Booking booking = new Booking();
+
         try {
             booking.setId(Long.valueOf(idTextField.getText()));
+            if (formBeginTimePicker.getValue() == null)
+                throw new FormParsingException("Begin time has to be present");
             booking.setBeginTime(formBeginTimePicker.getValue());
+            if (formEndTimePicker.getValue() == null)
+                throw new FormParsingException("End time has to be present");
             booking.setEndTime(formEndTimePicker.getValue());
+
             booking.setCustomerName(customerTextField.getText());
         } catch (NumberFormatException e) {
-            throw new Exception(e);
+            throw new FormParsingException("Id could not be parsed (it must be a positive number)");
         }
+
         return booking;
     }
 
@@ -282,7 +317,8 @@ public class BookingController extends FXMLController {
                 search(event);
                 setStateCreateNew();
             } catch (BusinessLogicException e) {
-                alertErrorMessage("Something went wrong when calling the service to delete the given box" + e.getMessage());
+                LOG.error("Could not delete the booking", e);
+                alertErrorMessage("Something went wrong when calling the service to delete the given box");
             }
         }
     }
