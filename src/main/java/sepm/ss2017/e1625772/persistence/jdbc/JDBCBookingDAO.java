@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 /**
+ * A booking data access object implementation with JDBC retrieval methods.
+ *
  * @author Gary Ye
  * @version %I% %G%
  */
@@ -32,9 +34,10 @@ public class JDBCBookingDAO implements BookingDAO {
     }
 
     @Override
-    public Collection<Booking> findAll() throws DataAccessException {
+    public Collection<Booking> findAll() {
         try {
-            return jdbcTemplate.query("SELECT ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME FROM BOOKINGS", new BookingMapper());
+            return jdbcTemplate.query("SELECT ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME FROM BOOKINGS", new
+                    BookingMapper());
         } catch (org.springframework.dao.DataAccessException e) {
             LOG.error("Data access exception while query findingAll", e);
             throw new DataAccessException(e);
@@ -42,7 +45,7 @@ public class JDBCBookingDAO implements BookingDAO {
     }
 
     @Override
-    public Collection<Booking> findAllBetween(LocalDate begin, LocalDate end) throws DataAccessException {
+    public Collection<Booking> findAllBetween(LocalDate begin, LocalDate end) {
         try {
             return jdbcTemplate.query("SELECT ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME FROM BOOKINGS " +
                             "WHERE ? <= END_TIME AND BEGIN_TIME <= ?",
@@ -53,7 +56,7 @@ public class JDBCBookingDAO implements BookingDAO {
     }
 
     @Override
-    public void create(Booking booking) throws DataAccessException {
+    public void create(Booking booking) {
         if (booking == null)
             throw new IllegalArgumentException("Booking can not be null");
         try {
@@ -68,7 +71,7 @@ public class JDBCBookingDAO implements BookingDAO {
     }
 
     @Override
-    public void delete(Booking booking) throws DataAccessException {
+    public void delete(Booking booking) {
         if (booking == null)
             throw new IllegalArgumentException("Booking can not be null");
         try {
@@ -76,6 +79,11 @@ public class JDBCBookingDAO implements BookingDAO {
         } catch (org.springframework.dao.DataAccessException e) {
             throw new DataAccessException(e);
         }
+    }
+
+    @Override
+    public void update(Booking booking) {
+
     }
 
     @Override

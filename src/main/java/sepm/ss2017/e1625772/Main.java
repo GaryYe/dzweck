@@ -5,8 +5,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
-import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
 import sepm.ss2017.e1625772.persistence.jdbc.JDBCBoxDAO;
 import sepm.ss2017.e1625772.service.BoxService;
@@ -24,7 +24,7 @@ public class Main {
             try {
                 boxService.deleteBox(new BoxBuilder(30L).create());
                 boxService.createBox(new BoxBuilder(30L).create());
-            } catch (BusinessLogicException ignored) {
+            } catch (ServiceException ignored) {
             }
         }
     }

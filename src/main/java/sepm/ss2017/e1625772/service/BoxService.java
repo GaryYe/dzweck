@@ -1,7 +1,7 @@
 package sepm.ss2017.e1625772.service;
 
 import sepm.ss2017.e1625772.domain.Box;
-import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
+import sepm.ss2017.e1625772.exceptions.ServiceException;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface BoxService {
      *
      * @param box the box to register
      */
-    void createBox(Box box) throws BusinessLogicException;
+    void createBox(Box box) throws ServiceException;
 
     /**
      * Retrieves the box with the given id.
@@ -23,15 +23,16 @@ public interface BoxService {
      * @param id the id of the box to return
      * @return either null, if the box was not found, or else the box with the matching id
      */
-    Box findBox(Long id) throws BusinessLogicException;
+    Box findBox(Long id) throws ServiceException;
 
     /**
      * Finds all boxes that match the given one
+     *
      * @param box the box to match with
      * @return the boxes
-     * @throws BusinessLogicException
+     * @throws ServiceException if an error occurred at the service
      */
-    List<Box> findBoxes(Box box) throws BusinessLogicException;
+    List<Box> findBoxes(Box box);
 
     /**
      * Updates the given box with the new attributes. A registered box must exist, otherwise an exception will be
@@ -39,11 +40,12 @@ public interface BoxService {
      *
      * @param box the box with the new attributes.
      */
-    void updateBox(Box box) throws BusinessLogicException;
+    void updateBox(Box box) throws ServiceException;
 
     /**
      * Deletes the given box.
+     *
      * @param box the box to delete
      */
-    void deleteBox(Box box) throws BusinessLogicException;
+    void deleteBox(Box box) throws ServiceException;
 }

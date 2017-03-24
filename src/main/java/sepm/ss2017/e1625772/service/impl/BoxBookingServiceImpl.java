@@ -2,13 +2,18 @@ package sepm.ss2017.e1625772.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
-import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.ServiceException;
+import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 import sepm.ss2017.e1625772.service.BoxBookingService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Gary Ye
@@ -17,54 +22,84 @@ import java.util.List;
 @Service
 public class BoxBookingServiceImpl implements BoxBookingService {
     private final BoxBookingDAO boxBookingDAO;
+    private final BookingDAO bookingDAO;
 
     @Autowired
-    public BoxBookingServiceImpl(BoxBookingDAO boxBookingDAO) {
+    public BoxBookingServiceImpl(BoxBookingDAO boxBookingDAO, BookingDAO bookingDAO) {
         this.boxBookingDAO = boxBookingDAO;
+        this.bookingDAO = bookingDAO;
     }
 
     @Override
-    public List<BoxBooking> findAll() throws BusinessLogicException {
+    public List<BoxBooking> findAll() {
         try {
             return boxBookingDAO.findAll();
         } catch (DataAccessException e) {
-            throw new BusinessLogicException(e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
-    public List<BoxBooking> findAllByBooking(Long bookingId) throws BusinessLogicException {
+    public List<BoxBooking> findAllByBooking(Long bookingId) {
         try {
             return boxBookingDAO.findAllByBooking(bookingId);
         } catch (DataAccessException e) {
-            throw new BusinessLogicException(e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
-    public List<BoxBooking> findAllByBox(Long boxId) throws BusinessLogicException {
+    public List<BoxBooking> findAllByBox(Long boxId) {
         try {
             return boxBookingDAO.findAllByBox(boxId);
         } catch (DataAccessException e) {
-            throw new BusinessLogicException(e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
-    public void create(BoxBooking boxBooking) throws BusinessLogicException {
+    public void create(BoxBooking boxBooking) {
         try {
             boxBookingDAO.create(boxBooking);
         } catch (DataAccessException e) {
-            throw new BusinessLogicException(e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
-    public void delete(BoxBooking boxBooking) throws BusinessLogicException {
+    public void delete(BoxBooking boxBooking) {
         try {
             boxBookingDAO.delete(boxBooking);
         } catch (DataAccessException e) {
-            throw new BusinessLogicException(e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation has an asymptotically O(n) run time, where n is the number of boxes.
+     */
+    @Override
+    public List<BoxBooking> conflictingBoxBookings(Booking booking) {
+        try {
+            Set<Long> boxIdOurs = new TreeSet<>();
+            for (BoxBooking boxBooking : boxBookingDAO.findAllByBox(booking.getId()))
+                boxIdOurs.add(boxBooking.getBoxId());
+            List<Booking> intersectingBookings = new ArrayList<>(bookingDAO.findAllBetween(booking.getBeginTime(),
+                    booking.getEndTime()));
+            List<BoxBooking> conflicting = new ArrayList<>();
+            for (Booking potentialConflictingBooking : intersectingBookings) {
+                List<BoxBooking> boxBookingsOther = boxBookingDAO.findAllByBooking(potentialConflictingBooking.getId());
+                for (BoxBooking boxBookingOther : boxBookingsOther) {
+                    if (boxIdOurs.contains(boxBookingOther.getBoxId())) {
+                        conflicting.add(boxBookingOther);
+                    }
+                }
+            }
+            return conflicting;
+        } catch (DataAccessException e) {
+            throw new ServiceException(e);
         }
     }
 }

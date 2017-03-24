@@ -14,8 +14,8 @@ import org.springframework.stereotype.Controller;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
-import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
 import sepm.ss2017.e1625772.exceptions.FormParsingException;
+import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.gui.properties.PropertyBooking;
 import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
 import sepm.ss2017.e1625772.service.BookingService;
@@ -34,13 +34,14 @@ import java.util.ResourceBundle;
 @Controller
 public class BookingController extends FXMLController {
     private static final Logger LOG = LoggerFactory.getLogger(BookingController.class);
-
+    private final String EDITING_STATE = "Editing";
+    private final String CREATING_STATE = "Creating";
+    private final BookingService bookingService;
+    private final BoxBookingService boxBookingService;
     @FXML
     private Button createNewButton;
-
     @FXML
     private TextField idTextField;
-
     @FXML
     private TableView<PropertyBooking> searchTable;
     @FXML
@@ -51,59 +52,48 @@ public class BookingController extends FXMLController {
     private TableColumn<PropertyBooking, String> beginColumn;
     @FXML
     private TableColumn<PropertyBooking, String> endColumn;
-
     @FXML
     private Button searchButton;
-
     @FXML
     private Button receiptButton;
-
     @FXML
     private DatePicker searchEndTimePicker;
-
     @FXML
     private Button deleteButton;
-
     @FXML
     private DatePicker formBeginTimePicker;
-
     @FXML
     private TextField customerTextField;
-
     @FXML
     private DatePicker searchBeginTimePicker;
-
     @FXML
     private Label currentStateLabel;
-
     @FXML
     private DatePicker formEndTimePicker;
-
     @FXML
     private Button saveButton;
-
     @FXML
     private Button resetButton;
-
     @FXML
     private Button addBoxButton;
     @FXML
     private Button deleteBoxButton;
-
     private ObservableList<PropertyBoxBooking> boxBookings;
-
     @FXML
     private ListView<PropertyBoxBooking> boxListView;
-
     @FXML
     private TextField boxIDTextField;
     @FXML
     private TextField agreedDailyRateTextField;
     @FXML
     private TextField horseNameTextField;
+    private ObservableList<PropertyBooking> searchTableList;
 
-    private final String EDITING_STATE = "Editing";
-    private final String CREATING_STATE = "Creating";
+    @Autowired
+    public BookingController(BookingService bookingService, BoxBookingService boxBookingService) {
+        this.bookingService = bookingService;
+        this.boxBookingService = boxBookingService;
+    }
 
     private void clearAddBoxForm() {
         horseNameTextField.clear();
@@ -111,22 +101,62 @@ public class BookingController extends FXMLController {
         boxIDTextField.clear();
     }
 
+    private PropertyBoxBooking parsePropertyBoxBooking() throws FormParsingException {
+        try {
+            PropertyBoxBooking box = new PropertyBoxBooking(Long.valueOf(boxIDTextField.getText()),
+                    horseNameTextField.getText(), Double.valueOf(agreedDailyRateTextField.getText()));
+            return box;
+        } catch (NumberFormatException e) {
+            throw new FormParsingException(e);
+        }
+    }
+
+    public void reloadBoxes() {
+
+    }
+
     @FXML
     public void addBox(ActionEvent actionEvent) {
         LOG.info("User has pressed the add box button");
-        PropertyBoxBooking propertyBoxBooking = null;
+
+        PropertyBoxBooking boxBookingProperty = null;
+        Booking booking = null;
         try {
-            propertyBoxBooking = new PropertyBoxBooking(Long.valueOf(boxIDTextField.getText()),
-                    horseNameTextField.getText(),
-                    Double.valueOf(agreedDailyRateTextField.getText()));
-            horseNameTextField.clear();
-            boxIDTextField.clear();
-            agreedDailyRateTextField.clear();
-        } catch (Exception e) {
-            alertErrorMessage("Error while parsing your box " + e.getMessage());
+            boxBookingProperty = parsePropertyBoxBooking();
+        } catch (FormParsingException e) {
+            alertErrorMessage("Error while parsing the given box: " + e.getMessage());
             return;
         }
-        boxBookings.addAll(propertyBoxBooking);
+
+        try {
+            booking = parseBooking();
+        } catch (FormParsingException e) {
+            alertErrorMessage("Error while parsing the given booking: " + e.getMessage());
+            return;
+        }
+
+        BoxBooking boxBooking = new BoxBookingBuilder(booking.getId(), boxBookingProperty.getBoxId())
+                .agreedDailyRate(boxBookingProperty.getAgreedDailyRate())
+                .horseName(boxBookingProperty.getHorseName())
+                .create();
+
+        try {
+            boxBookingService.create(boxBooking);
+            LOG.info("BoxBooking between boxId={} and bookingId={} was created", boxBooking.getBoxId(), boxBooking
+                    .getBookingId());
+        } catch (ServiceException e) {
+            // TODO: Relationship alraedy exists exception ? So user can know :D
+            // TODO: And maybe check if already reserved
+            LOG.error("Service could not add the box booking relationship", e);
+            alertErrorMessage("Service error: Something went wrong when adding the box to the booking.");
+            return;
+        }
+
+        horseNameTextField.clear();
+        boxIDTextField.clear();
+        agreedDailyRateTextField.clear();
+        // TODO: Maybe reload box, easier
+        boxBookings.addAll(boxBookingProperty);
     }
 
     @FXML
@@ -135,7 +165,7 @@ public class BookingController extends FXMLController {
     }
 
     @FXML
-    void search(ActionEvent event) {
+    private void search(ActionEvent event) {
         LOG.info("User has requested search by clicking the search button");
 
         LocalDate beginTime = searchBeginTimePicker.getValue();
@@ -159,7 +189,7 @@ public class BookingController extends FXMLController {
             for (Booking booking : list) {
                 searchTableList.addAll(new PropertyBooking(booking));
             }
-        } catch (BusinessLogicException e) {
+        } catch (ServiceException e) {
             alertErrorMessage(e.getMessage());
         }
     }
@@ -244,7 +274,7 @@ public class BookingController extends FXMLController {
                     // TODO: save relationship from
                     search(event);
                     setStateCreateNew();
-                } catch (BusinessLogicException e) {
+                } catch (ServiceException e) {
                     alertErrorMessage("Something went wrong when the service created the box " + e.getMessage());
                 }
             }
@@ -254,9 +284,10 @@ public class BookingController extends FXMLController {
                     bookingService.delete(booking);
                     bookingService.create(booking); // TODO: can be improved , and has to be, cause of data integrity
                     search(event);
-                } catch (BusinessLogicException e) {
+                } catch (ServiceException e) {
                     alertErrorMessage("Something went wrong when the service updated the box " + e.getMessage());
                 }
+                // Handle data inconsistency error
             }
         }
     }
@@ -316,14 +347,12 @@ public class BookingController extends FXMLController {
                 bookingService.delete(booking);
                 search(event);
                 setStateCreateNew();
-            } catch (BusinessLogicException e) {
+            } catch (ServiceException e) {
                 LOG.error("Could not delete the booking", e);
                 alertErrorMessage("Something went wrong when calling the service to delete the given box");
             }
         }
     }
-
-    private ObservableList<PropertyBooking> searchTableList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -344,7 +373,7 @@ public class BookingController extends FXMLController {
                     Booking booking = bookingService.findOne(newSelection.getId());
                     List<BoxBooking> boxBookings = boxBookingService.findAllByBox(booking.getId());
                     setStateEditing(booking, boxBookings);
-                } catch (BusinessLogicException e) {
+                } catch (ServiceException e) {
                     alertErrorMessage(String.format("The service could not find the box with id = %d", newSelection
                             .getId()));
                 }
@@ -352,15 +381,6 @@ public class BookingController extends FXMLController {
         });
 
         setStateCreateNew();
-    }
-
-    private final BookingService bookingService;
-    private final BoxBookingService boxBookingService;
-
-    @Autowired
-    public BookingController(BookingService bookingService, BoxBookingService boxBookingService) {
-        this.bookingService = bookingService;
-        this.boxBookingService = boxBookingService;
     }
 
     @Value("ui/booking.fxml")

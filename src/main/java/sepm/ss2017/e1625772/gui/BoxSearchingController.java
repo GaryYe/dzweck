@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
-import sepm.ss2017.e1625772.exceptions.BusinessLogicException;
+import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.service.BoxService;
 
 import java.net.URL;
@@ -122,7 +122,7 @@ public class BoxSearchingController extends FXMLController {
             for (Box box : boxes)
                 boxObservableList.addAll(new PropertyBox(box));
             boxSearchTable.refresh();
-        } catch (BusinessLogicException e) {
+        } catch (ServiceException e) {
             LOG.error("Error happened while searching for the boxes");
             alertErrorMessage("Error while calling the service for searching the boxes");
         }
@@ -148,7 +148,7 @@ public class BoxSearchingController extends FXMLController {
             if (confirmationDialog("The current box you selected has the id = " + box.getId())) {
                 try {
                     boxService.deleteBox(box);
-                } catch (BusinessLogicException e) {
+                } catch (ServiceException e) {
                     LOG.error("Error while deleting the box");
                     alertErrorMessage("Error happened while telling the service to delete the box");
                 }
@@ -192,7 +192,7 @@ public class BoxSearchingController extends FXMLController {
             try {
                 boxService.createBox(box);
                 LOG.info("Box {} successfully created", box);
-            } catch (BusinessLogicException e) {
+            } catch (ServiceException e) {
                 // TODO: Better usability (ID already existing)
                 LOG.error("Something went wrong when creating the box ", e);
                 alertErrorMessage("Service error while creating the box");
@@ -202,7 +202,7 @@ public class BoxSearchingController extends FXMLController {
             try {
                 boxService.updateBox(box);
                 LOG.info("Box {} successfully updated", box);
-            } catch (BusinessLogicException e) {
+            } catch (ServiceException e) {
                 LOG.error("Something went wrong when updating the box ", e);
                 alertErrorMessage("Service error while updating the box");
                 return;
@@ -226,8 +226,8 @@ public class BoxSearchingController extends FXMLController {
         try {
             box = boxService.findBox(id);
             if (box == null)
-                throw new BusinessLogicException("Box not found");
-        } catch (BusinessLogicException e) {
+                throw new ServiceException("Box not found");
+        } catch (ServiceException e) {
             LOG.error("Something went wrong with retrieving the box id={}", id, e);
             alertErrorMessage(String.format("Error while retrieving box details of id=%d from service", id));
             return;

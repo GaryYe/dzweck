@@ -4,7 +4,7 @@ package sepm.ss2017.e1625772.exceptions;
  * @author Gary Ye
  * @version %I% %G%
  */
-public class DataAccessException extends Exception {
+public class DataAccessException extends RuntimeException {
     public DataAccessException() {
     }
 

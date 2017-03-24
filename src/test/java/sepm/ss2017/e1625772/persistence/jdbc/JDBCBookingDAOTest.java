@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDate.of;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Gary Ye
@@ -31,7 +32,7 @@ public class JDBCBookingDAOTest {
     @Before
     public void setUp() throws SQLException {
         db = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2) //.H2 or .DERBY
+                .setType(EmbeddedDatabaseType.H2)
                 .addScript("db/create-db.sql")
                 .build();
         dao = new JDBCBookingDAO(db);

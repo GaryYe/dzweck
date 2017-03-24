@@ -10,13 +10,41 @@ import java.util.List;
  * @version %I% %G%
  */
 public interface BoxBookingDAO {
-    List<BoxBooking> findAll() throws DataAccessException;
+    /**
+     * @return all box bookings in the system.
+     * @throws DataAccessException if an error occurred while accessing the data
+     */
+    List<BoxBooking> findAll();
 
-    List<BoxBooking> findAllByBooking(Long bookingId) throws DataAccessException;
+    /**
+     * Finds all box bookings that have the given booking id.
+     *
+     * @param bookingId the id of the book
+     * @return all box bookings that are related to the given booking id
+     * @throws DataAccessException if an error occurred while accessing the data
+     */
+    List<BoxBooking> findAllByBooking(Long bookingId);
 
-    List<BoxBooking> findAllByBox(Long boxId) throws DataAccessException;
+    /**
+     * Finds all box bookings that have the given box id.
+     *
+     * @param boxId the id of the box
+     * @return all box bookings that are related to the given box id
+     * @throws DataAccessException if an error occurred while accessing the data
+     */
+    List<BoxBooking> findAllByBox(Long boxId);
 
-    void create(BoxBooking boxBooking) throws DataAccessException;
+    /**
+     * Creates the given box booking relationship.
+     *
+     * @param boxBooking the box booking to create
+     * @throws DataAccessException if an error occurred while accessing the data
+     */
+    void create(BoxBooking boxBooking);
 
-    void delete(BoxBooking boxBooking) throws DataAccessException;
+    /**
+     * @param boxBooking the box booking to delete
+     * @throws DataAccessException if an error occurred while accessing the data
+     */
+    void delete(BoxBooking boxBooking);
 }
