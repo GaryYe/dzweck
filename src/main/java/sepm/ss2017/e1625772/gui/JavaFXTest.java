@@ -2,10 +2,8 @@ package sepm.ss2017.e1625772.gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import sepm.ss2017.e1625772.exceptions.ServiceException;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
 
 /**
  * @author Gary Ye
@@ -33,7 +29,7 @@ public class JavaFXTest extends Application {
     }
 
     private static void showError(Thread t, Throwable e) {
-        System.err.println("***Default exception handler***");
+        LOG.error("Error occurred", e);
         if (Platform.isFxApplicationThread()) {
             showErrorDialog(e);
         } else {
@@ -42,19 +38,11 @@ public class JavaFXTest extends Application {
     }
 
     private static void showErrorDialog(Throwable e) {
-        StringWriter errorMsg = new StringWriter();
-        e.printStackTrace(new PrintWriter(errorMsg));
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        URL url = JavaFXTest.class.getClassLoader().getResource("ui/error.fxml");
-        FXMLLoader loader = new FXMLLoader(url);
-        try {
-            Parent root = loader.load();
-            ((ErrorController) loader.getController()).setErrorText(errorMsg.toString());
-            dialog.setScene(new Scene(root, 250, 400));
-            dialog.show();
-        } catch (IOException exc) {
-            exc.printStackTrace();
+        String errorMessage = "An unexpected occurred while processing your request";
+        if (e instanceof ServiceException) {
+            FXUtils.alertErrorMessage(errorMessage);
+        } else {
+            FXUtils.alertExceptionMessage(new Exception(e), errorMessage);
         }
     }
 

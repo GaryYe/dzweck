@@ -1,10 +1,13 @@
 package sepm.ss2017.e1625772.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
@@ -21,6 +24,7 @@ import java.util.TreeSet;
  */
 @Service
 public class BoxBookingServiceImpl implements BoxBookingService {
+    private static final Logger LOG = LoggerFactory.getLogger(BoxBookingServiceImpl.class);
     private final BoxBookingDAO boxBookingDAO;
     private final BookingDAO bookingDAO;
 
@@ -61,13 +65,15 @@ public class BoxBookingServiceImpl implements BoxBookingService {
     public void create(BoxBooking boxBooking) {
         try {
             boxBookingDAO.create(boxBooking);
+            LOG.info("BoxBooking between boxId={} and bookingId={} was created", boxBooking.getBoxId(), boxBooking
+                    .getBookingId());
         } catch (DataAccessException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void delete(BoxBooking boxBooking) {
+    public void delete(BoxBooking boxBooking) throws ObjectNotFoundException {
         try {
             boxBookingDAO.delete(boxBooking);
         } catch (DataAccessException e) {
@@ -82,6 +88,8 @@ public class BoxBookingServiceImpl implements BoxBookingService {
      */
     @Override
     public List<BoxBooking> conflictingBoxBookings(Booking booking) {
+        if (booking == null)
+            throw new IllegalArgumentException("Booking can not be null");
         try {
             Set<Long> boxIdOurs = new TreeSet<>();
             for (BoxBooking boxBooking : boxBookingDAO.findAllByBox(booking.getId()))

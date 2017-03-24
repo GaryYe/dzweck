@@ -8,7 +8,6 @@ import javafx.scene.control.ButtonType;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 
@@ -42,14 +41,6 @@ public abstract class FXMLController implements InitializingBean, Initializable 
 
     public Node getView() {
         return view;
-    }
-
-
-    protected void alertErrorMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(message);
-        alert.showAndWait();
     }
 
     /**

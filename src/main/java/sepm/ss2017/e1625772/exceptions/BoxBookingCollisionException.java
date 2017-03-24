@@ -20,4 +20,12 @@ public class BoxBookingCollisionException extends Exception {
     public List<BoxBooking> getConflicting() {
         return conflicting;
     }
+
+    @Override
+    public String getMessage() {
+        StringBuilder sb = new StringBuilder("Following box bookings are in conflict with the given one:");
+        for (BoxBooking boxBooking : conflicting)
+            sb.append(boxBooking);
+        return sb.toString();
+    }
 }

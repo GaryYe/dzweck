@@ -4,7 +4,7 @@ package sepm.ss2017.e1625772.exceptions;
  * @author Gary Ye
  * @version %I% %G%
  */
-public class PresentationException extends Exception {
+public class PresentationException extends RuntimeException {
     public PresentationException() {
     }
 

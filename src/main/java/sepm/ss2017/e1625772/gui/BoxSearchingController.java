@@ -23,6 +23,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
+
 /**
  * sepm.ss2017.e1625772.gui.BoxSearchingController
  */
@@ -31,41 +33,27 @@ public class BoxSearchingController extends FXMLController {
     private static final Logger LOG = LoggerFactory.getLogger(BoxSearchingController.class);
 
     private final BoxService boxService;
+    private final String EDITING_STATE = "Viewing";
+    private final String CREATING_STATE = "Creating";
     private ObservableList<PropertyBox> boxObservableList;
-
-    @Autowired
-    public BoxSearchingController(BoxService boxService) {
-        super();
-        this.boxService = boxService;
-    }
-
-
     @FXML
     private Label nameLabel;
-
     @FXML
     private Button searchButton;
-
     @FXML
     private TableColumn<PropertyBox, String> nameColumn;
-
     @FXML
     private TableView<PropertyBox> boxSearchTable;
-
     @FXML
     private TextField searchName;
-
     @FXML
     private Button resetButton;
-
     @FXML
     private Button saveButton;
     @FXML
     private Button createNewButton;
-
     @FXML
     private TableColumn<PropertyBox, Long> idColumn;
-
     // DETAIL VIEW BEGIN
     @FXML
     private TextField boxNameTextBox;
@@ -73,32 +61,28 @@ public class BoxSearchingController extends FXMLController {
     private TextField boxIdTextBox;
     @FXML
     private Button selectImageButton;
-
     @FXML
     private ImageView imageView;
-
     @FXML
     private CheckBox hasWindowsCheckbox;
-
     @FXML
     private CheckBox indoorCheckbox;
-
     @FXML
     private TextField areaTextBox;
-
     @FXML
     private TextField dailyRateTextBox;
-
     @FXML
     private Label currentStateLabel;
 
-    private final String EDITING_STATE = "Viewing";
-    private final String CREATING_STATE = "Creating";
+    @Autowired
+    public BoxSearchingController(BoxService boxService) {
+        super();
+        this.boxService = boxService;
+    }
 
     // DETAIL VIEW END
 
     // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
-
 
     private void setCreateNewState() {
         boxIdTextBox.setText("");
@@ -284,24 +268,24 @@ public class BoxSearchingController extends FXMLController {
             return id.get();
         }
 
-        public SimpleLongProperty idProperty() {
-            return id;
-        }
-
         public void setId(long id) {
             this.id.set(id);
+        }
+
+        public SimpleLongProperty idProperty() {
+            return id;
         }
 
         public String getName() {
             return name.get();
         }
 
-        public SimpleStringProperty nameProperty() {
-            return name;
-        }
-
         public void setName(String name) {
             this.name.set(name);
+        }
+
+        public SimpleStringProperty nameProperty() {
+            return name;
         }
     }
 }

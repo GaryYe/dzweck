@@ -2,6 +2,7 @@ package sepm.ss2017.e1625772.persistence;
 
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public interface BoxBookingDAO {
 
     /**
      * @param boxBooking the box booking to delete
-     * @throws DataAccessException if an error occurred while accessing the data
+     * @throws DataAccessException     if an error occurred while accessing the data
+     * @throws ObjectNotFoundException if the box booking does not exist
      */
-    void delete(BoxBooking boxBooking);
+    void delete(BoxBooking boxBooking) throws ObjectNotFoundException;
 }
