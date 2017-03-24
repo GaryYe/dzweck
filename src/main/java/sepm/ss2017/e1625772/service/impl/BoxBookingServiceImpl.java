@@ -92,12 +92,14 @@ public class BoxBookingServiceImpl implements BoxBookingService {
             throw new IllegalArgumentException("Booking can not be null");
         try {
             Set<Long> boxIdOurs = new TreeSet<>();
-            for (BoxBooking boxBooking : boxBookingDAO.findAllByBox(booking.getId()))
+            for (BoxBooking boxBooking : boxBookingDAO.findAllByBooking(booking.getId()))
                 boxIdOurs.add(boxBooking.getBoxId());
             List<Booking> intersectingBookings = new ArrayList<>(bookingDAO.findAllBetween(booking.getBeginTime(),
                     booking.getEndTime()));
             List<BoxBooking> conflicting = new ArrayList<>();
             for (Booking potentialConflictingBooking : intersectingBookings) {
+                if (potentialConflictingBooking.getId().equals(booking.getId()))
+                    continue;
                 List<BoxBooking> boxBookingsOther = boxBookingDAO.findAllByBooking(potentialConflictingBooking.getId());
                 for (BoxBooking boxBookingOther : boxBookingsOther) {
                     if (boxIdOurs.contains(boxBookingOther.getBoxId())) {
