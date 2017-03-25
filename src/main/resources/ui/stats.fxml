@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<GridPane prefHeight="566.0" prefWidth="855.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<GridPane prefHeight="566.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints/>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
@@ -118,7 +118,8 @@
                 </HBox>
                 <HBox prefHeight="298.0" prefWidth="259.0" spacing="10.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <Label lineSpacing="10.0" prefHeight="25.0" prefWidth="94.0" text="Not loaded"/>
+                        <Label fx:id="previewLabel" alignment="TOP_LEFT" lineSpacing="10.0" prefHeight="188.0"
+                               prefWidth="238.0" text="Not loaded" wrapText="true"/>
                     </children>
                     <opaqueInsets>
                         <Insets/>

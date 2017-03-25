@@ -48,4 +48,5 @@ public interface BoxService {
      * @param box the box to delete
      */
     void deleteBox(Box box) throws ServiceException;
+
 }

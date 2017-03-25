@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
+import static sepm.ss2017.e1625772.gui.FXUtils.confirmationDialog;
 
 
 /**

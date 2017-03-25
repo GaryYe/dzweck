@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.BoxStatistics;
+import sepm.ss2017.e1625772.exceptions.PresentationException;
 import sepm.ss2017.e1625772.gui.forms.AbstractForm;
 import sepm.ss2017.e1625772.service.BookingService;
+import sepm.ss2017.e1625772.service.BoxService;
 import sepm.ss2017.e1625772.service.BoxStatisticsService;
 
 import java.net.URL;
@@ -23,6 +26,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
+import static sepm.ss2017.e1625772.gui.FXUtils.confirmationDialog;
 
 /**
  * @author Gary Ye
@@ -31,6 +35,7 @@ import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
 @Controller
 public class StatisticsController extends FXMLController {
     private final BoxStatisticsService boxStatisticsService;
+    private final BoxService boxService;
 
     @FXML
     private StackedBarChart<String, Number> stackedBarChart;
@@ -48,21 +53,30 @@ public class StatisticsController extends FXMLController {
     private DatePicker beginTimePicker;
     @FXML
     private DatePicker endTimePicker;
+    @FXML
+    private Label previewLabel;
 
     private TimeRangeForm timeRangeForm;
     private UpdateForm updateForm;
 
     @Autowired
-    public StatisticsController(BoxStatisticsService boxStatisticsService) {
+    public StatisticsController(BoxStatisticsService boxStatisticsService, BoxService boxService) {
         this.boxStatisticsService = boxStatisticsService;
+        this.boxService = boxService;
+    }
+
+    private boolean checkForm(AbstractForm form) {
+        if (!form.parseAndValidate()) {
+            alertErrorMessage(form.errorMessages());
+            return false;
+        }
+        return true;
     }
 
     @FXML
     public void load() {
-        if (!timeRangeForm.parseAndValidate()) {
-            alertErrorMessage(timeRangeForm.errorMessages());
+        if (!checkForm(timeRangeForm))
             return;
-        }
 
         stackedBarChart.getData().clear();
         List<XYChart.Series<String, Number>> allSeries = new ArrayList<>();
@@ -81,13 +95,47 @@ public class StatisticsController extends FXMLController {
             stackedBarChart.getData().addAll(daySeries);
     }
 
+    Box getBoxFromForm(boolean update) {
+        if (!checkForm(timeRangeForm) || !checkForm(updateForm))
+            throw new PresentationException("Form hasn't been checked for some reason");
+        Box outlier = boxStatisticsService.findOutlierBox(timeRangeForm.beginDate, timeRangeForm.endDate, updateForm
+                .updateBest);
+        if (update)
+            outlier.setDailyRate(newPrice(outlier.getDailyRate(), updateForm.updateAbsolute, updateForm.number));
+        return outlier;
+    }
+
+    double newPrice(double currentPrice, boolean absolute, double amount) {
+        double delta = absolute ? amount : currentPrice * amount / 100.0;
+        return currentPrice + delta;
+    }
+
     @FXML
     public void preview() {
+        if (!checkForm(timeRangeForm) || !checkForm(updateForm))
+            return;
+        Box oldBox = getBoxFromForm(false);
+        Box newBox = getBoxFromForm(true);
+        if (oldBox == null) {
+            previewLabel.setText("No box available in this time range");
+        } else {
+            previewLabel.setText(String.format("Box %s (id=%d): %.2f$/d -> %.2f$/d", oldBox.getName(), oldBox.getId(),
+                    oldBox.getDailyRate(), newBox.getDailyRate()));
+        }
     }
 
     @FXML
     public void update() {
-
+        if (!checkForm(timeRangeForm) || !checkForm(updateForm))
+            return;
+        Box box = getBoxFromForm(true);
+        if (box == null) {
+            alertErrorMessage("No box available in this time range");
+            return;
+        }
+        if (confirmationDialog("Do you really want to update")) {
+            boxService.updateBox(box);
+        }
     }
 
     @Value("ui/stats.fxml")

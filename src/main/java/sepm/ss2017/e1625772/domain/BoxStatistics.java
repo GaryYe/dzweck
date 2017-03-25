@@ -24,7 +24,10 @@ public class BoxStatistics {
         return data.get(box)[dayOfWeek.getValue() - 1];
     }
 
-    public void setData(Map<Box, int[]> data) {
-        this.data = data;
+    public int numberOfReservations(Box box) {
+        int sum = 0;
+        for (int numberOfBookings : data.get(box))
+            sum += numberOfBookings;
+        return sum;
     }
 }

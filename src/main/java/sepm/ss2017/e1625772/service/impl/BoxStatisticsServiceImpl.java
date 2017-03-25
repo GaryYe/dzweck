@@ -11,9 +11,11 @@ import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
+import sepm.ss2017.e1625772.service.BookingService;
 import sepm.ss2017.e1625772.service.BoxStatisticsService;
 import sepm.ss2017.e1625772.utils.DateUtils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +44,11 @@ public class BoxStatisticsServiceImpl implements BoxStatisticsService {
 
     @Override
     public BoxStatistics getStatistics(LocalDate beginTime, LocalDate endTime) {
+        if (beginTime == null)
+            beginTime = BookingService.MIN;
+        if (endTime == null)
+            endTime = BookingService.MAX;
+
         try {
             List<Booking> intersecting = new ArrayList<>(bookingDAO.findAllIntersecting(beginTime, endTime));
             Map<Box, int[]> map = new HashMap<>();
@@ -60,5 +67,35 @@ public class BoxStatisticsServiceImpl implements BoxStatisticsService {
         } catch (DataAccessException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public Box findOutlierBox(LocalDate begin, LocalDate end, boolean best) {
+        BoxStatistics boxStatistics = getStatistics(begin, end);
+        Box bestBox = null;
+        for (Box box : boxStatistics.boxes()) {
+            if (bestBox == null ||
+                    (best && boxStatistics.numberOfReservations(box) > boxStatistics.numberOfReservations(bestBox)) ||
+                    (!best && boxStatistics.numberOfReservations(box) < boxStatistics.numberOfReservations(bestBox))) {
+                bestBox = box;
+            }
+        }
+        return bestBox;
+    }
+
+    @Override
+    public Box findOutlierBox(DayOfWeek dayOfWeek, boolean best) {
+        BoxStatistics boxStatistics = getStatistics(null, null);
+        Box bestBox = null;
+        for (Box box : boxStatistics.boxes()) {
+            if (bestBox == null ||
+                    (best && boxStatistics.numberOfReservations(box, dayOfWeek) > boxStatistics.numberOfReservations
+                            (bestBox, dayOfWeek)) ||
+                    (!best && boxStatistics.numberOfReservations(box, dayOfWeek) < boxStatistics.numberOfReservations
+                            (bestBox, dayOfWeek))) {
+                bestBox = box;
+            }
+        }
+        return bestBox;
     }
 }
