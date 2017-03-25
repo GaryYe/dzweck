@@ -196,7 +196,7 @@ public class BookingController extends FXMLController {
         }
 
         try {
-            List<Booking> list = bookingService.findAllBetween(beginTime, endTime);
+            List<Booking> list = bookingService.findAllIntersecting(beginTime, endTime);
             LOG.info("Service found {} bookings", list.size());
             searchTableList.clear();
             for (Booking booking : list) {

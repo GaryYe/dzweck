@@ -80,8 +80,8 @@ public class JDBCBookingDAOTest {
     }
 
     @Test
-    public void findAllBetweenEmpty() throws Exception {
-        assertTrue(dao.findAllBetween(of(2017, 3, 1), of(2017, 3, 5)).isEmpty());
+    public void findAllIntersectingEmpty() throws Exception {
+        assertTrue(dao.findAllIntersecting(of(2017, 3, 1), of(2017, 3, 5)).isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -110,12 +110,12 @@ public class JDBCBookingDAOTest {
         List<Booking> expected = new ArrayList<>();
         if (isInside)
             expected.add(booking);
-        assertEquals(expected, dao.findAllBetween(queryBegin, queryEnd));
+        assertEquals(expected, dao.findAllIntersecting(queryBegin, queryEnd));
         dao.delete(booking);
     }
 
     @Test
-    public void testFindAllBetweenWithNormalQueryRanges() throws Exception {
+    public void testFindAllIntersectingWithNormalQueryRanges() throws Exception {
         LocalDate queryBegin = of(2017, 3, 1);
         LocalDate queryEnd = of(2017, 3, 10);
 
@@ -128,7 +128,7 @@ public class JDBCBookingDAOTest {
     }
 
     @Test
-    public void testFindAllBetweenWithIllegalQueries() throws Exception {
+    public void testFindAllIntersectingWithIllegalQueries() throws Exception {
         LocalDate queryBegin = of(2017, 3, 1);
         LocalDate queryEnd = of(2017, 3, 10);
 

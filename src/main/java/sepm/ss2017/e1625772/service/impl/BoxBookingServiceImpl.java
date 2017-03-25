@@ -96,7 +96,7 @@ public class BoxBookingServiceImpl implements BoxBookingService {
             Set<Long> boxIdOurs = new TreeSet<>();
             for (BoxBooking boxBooking : bookingInQuestion)
                 boxIdOurs.add(boxBooking.getBoxId());
-            List<Booking> intersectingBookings = new ArrayList<>(bookingDAO.findAllBetween(booking.getBeginTime(),
+            List<Booking> intersectingBookings = new ArrayList<>(bookingDAO.findAllIntersecting(booking.getBeginTime(),
                     booking.getEndTime()));
             List<BoxBooking> conflicting = new ArrayList<>();
             for (Booking potentialConflictingBooking : intersectingBookings) {

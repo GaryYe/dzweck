@@ -18,7 +18,7 @@ public interface BookingService {
 
     List<Booking> findAll();
 
-    List<Booking> findAllBetween(LocalDate begin, LocalDate end);
+    List<Booking> findAllIntersecting(LocalDate begin, LocalDate end);
 
     void create(Booking booking);
 

@@ -40,13 +40,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> findAllBetween(LocalDate begin, LocalDate end) {
+    public List<Booking> findAllIntersecting(LocalDate begin, LocalDate end) {
         if (begin == null || end == null)
             throw new IllegalArgumentException("Begin and end can not be null");
         if (begin.isAfter(end))
             throw new IllegalArgumentException("Begin can not be after end");
         try {
-            return new ArrayList<>(bookingDAO.findAllBetween(begin, end));
+            return new ArrayList<>(bookingDAO.findAllIntersecting(begin, end));
         } catch (DataAccessException e) {
             throw new ServiceException(e);
         }

@@ -45,7 +45,7 @@ public class JDBCBookingDAO implements BookingDAO {
     }
 
     @Override
-    public Collection<Booking> findAllBetween(LocalDate begin, LocalDate end) {
+    public Collection<Booking> findAllIntersecting(LocalDate begin, LocalDate end) {
         try {
             return jdbcTemplate.query("SELECT ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME FROM BOOKINGS " +
                             "WHERE ? <= END_TIME AND BEGIN_TIME <= ?",

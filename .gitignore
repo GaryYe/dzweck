@@ -128,4 +128,6 @@ buildNumber.properties
 .idea/inspectionProfiles/
 .idea/sonarlint/
 .idea/sqldialects.xml
+.idea/kotlinc.xml
+.idea/codeStyleSettings.xml
 lib/

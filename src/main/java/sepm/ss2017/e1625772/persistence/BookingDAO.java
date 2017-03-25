@@ -39,7 +39,7 @@ public interface BookingDAO {
      * @param end   the end time
      * @throws DataAccessException if an exception occurred while accessing the data
      */
-    Collection<Booking> findAllBetween(LocalDate begin, LocalDate end);
+    Collection<Booking> findAllIntersecting(LocalDate begin, LocalDate end);
 
     /**
      * Creates the given booking.
