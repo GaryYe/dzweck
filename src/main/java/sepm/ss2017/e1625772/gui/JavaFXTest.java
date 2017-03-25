@@ -13,8 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 
-import java.io.IOException;
-
 /**
  * @author Gary Ye
  * @version %I% %G%
@@ -48,13 +46,12 @@ public class JavaFXTest extends Application {
 
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler(JavaFXTest::showError);
         ApplicationContext appContext = new AnnotationConfigApplicationContext(JavaFXTest.class);
-        FXMLController demoController = appContext.getBean(BookingController.class);
-
-        stage.setScene(new Scene((Parent) demoController.getView()));
+        FXMLController rootController = appContext.getBean(RootController.class);
         stage.setTitle("Wendy's horse pension");
+        stage.setScene(new Scene((Parent) rootController.getView()));
         stage.show();
 
         LOG.info("The UI has started");

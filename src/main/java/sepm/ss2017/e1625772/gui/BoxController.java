@@ -29,8 +29,8 @@ import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
  * sepm.ss2017.e1625772.gui.BoxSearchingController
  */
 @Component
-public class BoxSearchingController extends FXMLController {
-    private static final Logger LOG = LoggerFactory.getLogger(BoxSearchingController.class);
+public class BoxController extends FXMLController {
+    private static final Logger LOG = LoggerFactory.getLogger(BoxController.class);
 
     private final BoxService boxService;
     private final String EDITING_STATE = "Viewing";
@@ -75,7 +75,7 @@ public class BoxSearchingController extends FXMLController {
     private Label currentStateLabel;
 
     @Autowired
-    public BoxSearchingController(BoxService boxService) {
+    public BoxController(BoxService boxService) {
         super();
         this.boxService = boxService;
     }
@@ -229,7 +229,7 @@ public class BoxSearchingController extends FXMLController {
         currentStateLabel.setText(EDITING_STATE);
     }
 
-    @Value("ui/sample.fxml")
+    @Value("ui/box.fxml")
     @Override
     public void setFxmlFilePath(String filePath) {
         this.fxmlFilePath = filePath;
