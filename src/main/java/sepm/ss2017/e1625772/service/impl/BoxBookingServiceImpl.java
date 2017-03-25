@@ -6,18 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
-import sepm.ss2017.e1625772.exceptions.DataAccessException;
-import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
-import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
-import sepm.ss2017.e1625772.exceptions.ServiceException;
+import sepm.ss2017.e1625772.exceptions.*;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 import sepm.ss2017.e1625772.service.BoxBookingService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Gary Ye
@@ -63,11 +57,13 @@ public class BoxBookingServiceImpl implements BoxBookingService {
     }
 
     @Override
-    public void create(BoxBooking boxBooking) throws DuplicatedObjectException {
+    public void create(BoxBooking boxBooking) throws DuplicatedObjectException, BoxBookingCollisionException {
         try {
+            List<BoxBooking> conflicting = conflictingBoxBookings(boxBooking);
+            if (!conflicting.isEmpty())
+                throw new BoxBookingCollisionException(conflicting);
             boxBookingDAO.create(boxBooking);
-            LOG.info("BoxBooking between boxId={} and bookingId={} was created", boxBooking.getBoxId(), boxBooking
-                    .getBookingId());
+            LOG.info("BoxBooking ({}, {}) created", boxBooking.getBoxId(), boxBooking.getBookingId());
         } catch (DataAccessException e) {
             throw new ServiceException(e);
         }
@@ -82,18 +78,23 @@ public class BoxBookingServiceImpl implements BoxBookingService {
         }
     }
 
+    @Override
+    public List<BoxBooking> conflictingBoxBookings(Booking booking) {
+        return conflictingBoxBookings(booking, boxBookingDAO.findAllByBooking(booking.getId()));
+    }
+
     /**
      * {@inheritDoc}
      * <p>
      * This implementation has an asymptotically O(n) run time, where n is the number of boxes.
      */
     @Override
-    public List<BoxBooking> conflictingBoxBookings(Booking booking) {
+    public List<BoxBooking> conflictingBoxBookings(Booking booking, List<BoxBooking> bookingInQuestion) {
         if (booking == null)
             throw new IllegalArgumentException("Booking can not be null");
         try {
             Set<Long> boxIdOurs = new TreeSet<>();
-            for (BoxBooking boxBooking : boxBookingDAO.findAllByBooking(booking.getId()))
+            for (BoxBooking boxBooking : bookingInQuestion)
                 boxIdOurs.add(boxBooking.getBoxId());
             List<Booking> intersectingBookings = new ArrayList<>(bookingDAO.findAllBetween(booking.getBeginTime(),
                     booking.getEndTime()));
@@ -112,5 +113,12 @@ public class BoxBookingServiceImpl implements BoxBookingService {
         } catch (DataAccessException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public List<BoxBooking> conflictingBoxBookings(BoxBooking booking) {
+        if (booking == null)
+            throw new IllegalArgumentException("Booking can not be null");
+        return conflictingBoxBookings(bookingDAO.findOne(booking.getBookingId()), Collections.singletonList(booking));
     }
 }

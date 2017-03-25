@@ -23,7 +23,7 @@ public class BoxBookingCollisionException extends Exception {
 
     @Override
     public String getMessage() {
-        StringBuilder sb = new StringBuilder("Following box bookings are in conflict with the given one:");
+        StringBuilder sb = new StringBuilder("Following box bookings are in conflict with the given one:\n");
         for (BoxBooking boxBooking : conflicting) {
             sb.append(String.format("Box = %d, Booking = %d\n", boxBooking.getBoxId(), boxBooking.getBookingId()));
         }

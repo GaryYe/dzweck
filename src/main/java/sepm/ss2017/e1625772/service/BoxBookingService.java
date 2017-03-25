@@ -50,4 +50,8 @@ public interface BoxBookingService {
      * @throws ServiceException if an error occurred while the service was operating
      */
     List<BoxBooking> conflictingBoxBookings(Booking booking);
+
+    List<BoxBooking> conflictingBoxBookings(Booking booking, List<BoxBooking> bookingInQuestion);
+
+    List<BoxBooking> conflictingBoxBookings(BoxBooking booking);
 }
