@@ -1,39 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
-
-<VBox prefHeight="537.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="793.0" VBox.vgrow="ALWAYS">
-         <children>
-            <SplitPane dividerPositions="0.29797979797979796" layoutX="57.0" layoutY="67.0" prefHeight="400.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                     <children>
-                        <Button layoutX="108.0" layoutY="439.0" mnemonicParsing="false" onAction="#load" text="Load Stats" />
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                     <children>
-                        <StackedBarChart fx:id="stackedBarChart" layoutX="-56.0" layoutY="-10.0" prefHeight="398.0" prefWidth="444.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </StackedBarChart>
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-         </children>
-    </AnchorPane>
-  </children>
-</VBox>
+<?import javafx.scene.text.Font?>
+<GridPane prefHeight="566.0" prefWidth="855.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+    <columnConstraints>
+        <ColumnConstraints/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <StackedBarChart fx:id="stackedBarChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                         prefHeight="498.0" prefWidth="335.0" GridPane.columnIndex="1">
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Number of bookings" side="LEFT"/>
+            </yAxis>
+        </StackedBarChart>
+        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="567.0" prefWidth="259.0">
+            <children>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <children>
+                        <Label lineSpacing="10.0" text="Change daily rate">
+                            <font>
+                                <Font name="System Bold" size="20.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <children>
+                        <Label lineSpacing="10.0" prefHeight="15.0" prefWidth="56.0" text="Delta"/>
+                        <RadioButton fx:id="percentageRadio" mnemonicParsing="false" selected="true" text="\%">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="g1"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="absoluteRadio" mnemonicParsing="false" text="\$" toggleGroup="$g1"/>
+                        <TextField fx:id="numberTextField" prefHeight="25.0" prefWidth="111.0"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <children>
+                        <Label lineSpacing="10.0" text="Choose:"/>
+                        <RadioButton fx:id="bestRadio" mnemonicParsing="false" selected="true" text="Best">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="g2"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="worstRadio" mnemonicParsing="false" text="Worst" toggleGroup="$g2"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                    <children>
+                        <Label prefHeight="25.0" prefWidth="52.0" text="Begin"/>
+                        <DatePicker fx:id="beginTimePicker"/>
+                    </children>
+                </HBox>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <children>
+                        <Label prefHeight="25.0" prefWidth="52.0" text="End"/>
+                        <DatePicker fx:id="endTimePicker"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <children>
+                        <Label lineSpacing="10.0" prefHeight="25.0" prefWidth="94.0" text="Preview">
+                            <font>
+                                <Font name="System Bold" size="13.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="298.0" prefWidth="259.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label lineSpacing="10.0" prefHeight="25.0" prefWidth="94.0" text="Not loaded"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                    </padding>
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#preview" text="Preview"/>
+                        <Button mnemonicParsing="false" onAction="#update" text="Update"/>
+                        <Button mnemonicParsing="false" onAction="#load" text="Stats"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</GridPane>
