@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import sepm.ss2017.e1625772.domain.Booking;
 import sepm.ss2017.e1625772.domain.BoxBooking;
+import sepm.ss2017.e1625772.domain.Receipt;
 import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
 import sepm.ss2017.e1625772.exceptions.*;
 import sepm.ss2017.e1625772.gui.properties.PropertyBooking;
 import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
 import sepm.ss2017.e1625772.service.BookingService;
 import sepm.ss2017.e1625772.service.BoxBookingService;
+import sepm.ss2017.e1625772.service.ReceiptService;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -39,6 +41,8 @@ public class BookingController extends FXMLController {
     private final String CREATING_STATE = "Creating";
     private final BookingService bookingService;
     private final BoxBookingService boxBookingService;
+    private final ReceiptService receiptService;
+    private final ReceiptRenderer<String> receiptRenderer;
     private Booking currentBooking;
 
     @FXML
@@ -93,9 +97,12 @@ public class BookingController extends FXMLController {
     private ObservableList<PropertyBooking> searchTableList;
 
     @Autowired
-    public BookingController(BookingService bookingService, BoxBookingService boxBookingService) {
+    public BookingController(BookingService bookingService, BoxBookingService boxBookingService, ReceiptService
+            receiptService, ReceiptRenderer<String> receiptRenderer) {
         this.bookingService = bookingService;
         this.boxBookingService = boxBookingService;
+        this.receiptService = receiptService;
+        this.receiptRenderer = receiptRenderer;
     }
 
     private void clearAddBoxForm() {
@@ -299,7 +306,8 @@ public class BookingController extends FXMLController {
         if (currentBooking == null)
             throw new PresentationException("User requested receipt while current booking was not loaded");
         // TODO: Receipt service call
-        alertErrorMessage("This is the receipt of booking: " + currentBooking);
+        Receipt receipt = receiptService.calculateReceipt(currentBooking.getId());
+        confirmationDialog("This is the receipt of booking\n" + receiptRenderer.render(receipt));
     }
 
     private Booking parseBooking() throws FormParsingException {
