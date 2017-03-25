@@ -64,7 +64,7 @@
                        </HBox>
                </children>
                </VBox>
-               <VBox prefHeight="261.0" prefWidth="354.0">
+               <VBox prefHeight="261.0" prefWidth="354.0" spacing="5.0">
                <children>
                    <HBox alignment="CENTER" prefHeight="57.0" prefWidth="372.0" spacing="10.0">
                        <children>
@@ -125,18 +125,39 @@
                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                        </rowConstraints>
                    </GridPane>
-                   <HBox alignment="CENTER_RIGHT" prefHeight="57.0" prefWidth="372.0" spacing="10.0">
+                   <GridPane>
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="146.0"/>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="251.0"/>
+                       </columnConstraints>
+                       <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                       </rowConstraints>
                        <children>
-                           <Button fx:id="receiptButton" mnemonicParsing="false" onAction="#openReceipt"
-                                   text="Receipt"/>
-                           <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#createNew" text="New"/>
-                           <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save"/>
-                           <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete"/>
+                           <HBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="257.0" spacing="10.0"
+                                 GridPane.columnIndex="1">
+                               <children>
+                                   <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#createNew"
+                                           text="New"/>
+                                   <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save"/>
+                                   <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete"
+                                           text="Delete"/>
+                               </children>
+                               <padding>
+                                   <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                               </padding>
+                           </HBox>
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                               <children>
+                                   <Button fx:id="receiptButton" mnemonicParsing="false" onAction="#openReceipt"
+                                           text="Receipt"/>
+                               </children>
+                               <GridPane.margin>
+                                   <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                               </GridPane.margin>
+                           </HBox>
                        </children>
-                       <padding>
-                           <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
-                       </padding>
-                   </HBox>
+                   </GridPane>
                </children>
                </VBox>
                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="276.0"
