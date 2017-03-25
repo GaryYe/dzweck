@@ -17,15 +17,20 @@ import java.util.ResourceBundle;
 public class RootController extends FXMLController {
     private final BookingController bookingController;
     private final BoxController boxController;
+    private final StatisticsController statisticsController;
     @FXML
     private Tab bookingTab;
     @FXML
     private Tab boxesTab;
+    @FXML
+    private Tab statsTab;
 
     @Autowired
-    public RootController(BookingController bookingController, BoxController boxController) {
+    public RootController(BookingController bookingController, BoxController boxController, StatisticsController
+            statisticsController) {
         this.bookingController = bookingController;
         this.boxController = boxController;
+        this.statisticsController = statisticsController;
     }
 
 
@@ -39,5 +44,6 @@ public class RootController extends FXMLController {
     public void initialize(URL location, ResourceBundle resources) {
         bookingTab.setContent(bookingController.getView());
         boxesTab.setContent(boxController.getView());
+        statsTab.setContent(statisticsController.getView());
     }
 }

@@ -20,6 +20,7 @@
                                 <!--<fx:include fx:id="boxTab" source="box.fxml"/>-->
                             </content>
                         </Tab>
+                        <Tab fx:id="statsTab" text="Statistics"/>
                     </tabs>
                 </TabPane>
             </children>
