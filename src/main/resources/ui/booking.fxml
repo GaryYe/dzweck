@@ -1,165 +1,202 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="565.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.text.Font?>
+<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+          minHeight="-Infinity" minWidth="-Infinity" prefHeight="853.0" prefWidth="1139.0"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.0" minWidth="10.0" prefWidth="354.0"/>
+        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                           prefWidth="699.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
    <children>
-      <SplitPane dividerPositions="0.4103585657370518" layoutX="100.0" layoutY="91.0" prefHeight="497.0" prefWidth="614.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <SplitPane dividerPositions="0.6233766233766234" orientation="VERTICAL" prefHeight="545.0" prefWidth="255.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="481.0" prefWidth="769.0">
+       <VBox prefHeight="836.0" prefWidth="356.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+           <children>
+               <VBox prefHeight="240.0" prefWidth="512.0">
+                   <children>
+                       <HBox alignment="CENTER" prefHeight="57.0" prefWidth="372.0" spacing="10.0">
                            <children>
-                              <TableView fx:id="searchTable" editable="true" layoutX="30.0" layoutY="35.0" prefHeight="346.0" prefWidth="303.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <columns>
-                                    <TableColumn fx:id="idColumn" prefWidth="61.0" text="ID" />
-                                    <TableColumn fx:id="beginColumn" prefWidth="75.0" text="BEGIN" />
-                                    <TableColumn fx:id="endColumn" prefWidth="75.0" text="END" />
-                                    <TableColumn fx:id="customerColumn" prefWidth="91.0" text="CUSTOMER" />
-                                 </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <GridPane layoutX="41.0" layoutY="39.0" prefHeight="197.0" prefWidth="349.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                       <children>
-                                          <TilePane prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetSearch" text="Reset" />
-                                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" text="Search" />
-                                             </children>
-                                          </TilePane>
-                                       </children>
-                                    </HBox>
-                                    <DatePicker fx:id="searchBeginTimePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label contentDisplay="CENTER" text="Begin time" textAlignment="CENTER" GridPane.rowIndex="1" />
-                                    <Label contentDisplay="CENTER" text="End time" textAlignment="CENTER" GridPane.rowIndex="2" />
-                                    <DatePicker fx:id="searchEndTimePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                 </children>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="129.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="379.0" minWidth="10.0" prefWidth="174.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                              </GridPane>
-                           </children>
-                           <opaqueInsets>
-                              <Insets right="10.0" />
-                           </opaqueInsets>
-                        </AnchorPane>
-                     </items>
-                  </SplitPane>
-               </children>
-            </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="574.0" prefWidth="532.0">
-               <children>
-                  <GridPane layoutX="23.0" layoutY="223.0" prefHeight="535.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="536.0" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="536.0" minHeight="10.0" prefHeight="295.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="127.0" minHeight="0.0" prefHeight="53.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <HBox prefHeight="0.0" prefWidth="440.0" GridPane.rowIndex="2">
-                           <children>
-                              <TilePane prefHeight="30.0" prefWidth="246.0">
-                                 <children>
-                                    <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#createNew" text="Create new" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </TilePane>
-                              <TilePane prefHeight="30.0" prefWidth="289.0">
-                                 <children>
-                                    <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save" />
-                                    <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete" />
-                                    <Button fx:id="receiptButton" mnemonicParsing="false" onAction="#openReceipt" text="Receipt" />
-                                 </children>
-                              </TilePane>
-                           </children>
-                        </HBox>
-                        <GridPane prefHeight="533.0" prefWidth="315.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="118.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="312.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints maxHeight="370.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="370.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="148.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="386.0" minHeight="9.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="Customer name" GridPane.rowIndex="2" />
-                              <TextField fx:id="customerTextField" prefHeight="26.0" prefWidth="238.0" promptText="Enter the name of the customer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label text="ID" GridPane.rowIndex="1" />
-                              <TextField fx:id="idTextField" prefHeight="26.0" prefWidth="264.0" promptText="Enter the ID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER_RIGHT" />
-                              <Label fx:id="currentStateLabel" alignment="CENTER_RIGHT" text="Viewing" GridPane.columnIndex="1" />
-                              <Label contentDisplay="CENTER" text="Begin time" textAlignment="CENTER" GridPane.rowIndex="3" />
-                              <Label contentDisplay="CENTER" text="End time" textAlignment="CENTER" GridPane.rowIndex="4" />
-                              <DatePicker fx:id="formBeginTimePicker" prefHeight="25.0" prefWidth="319.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <DatePicker fx:id="formEndTimePicker" prefHeight="25.0" prefWidth="414.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                               <Label text="Search">
+                                   <font>
+                                       <Font name="System Bold" size="18.0"/>
+                                   </font>
+                               </Label>
                            </children>
                            <padding>
-                              <Insets left="10.0" />
+                               <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
                            </padding>
-                        </GridPane>
-                        <VBox prefHeight="293.0" prefWidth="440.0" GridPane.rowIndex="1">
+                       </HBox>
+                       <GridPane hgap="10.0" prefHeight="31.0" prefWidth="354.0">
+                           <columnConstraints>
+                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                           </columnConstraints>
+                           <rowConstraints>
+                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                           </rowConstraints>
                            <children>
-                              <ListView fx:id="boxListView" prefHeight="273.0" prefWidth="263.0" />
-                              <HBox prefHeight="72.0" prefWidth="440.0">
-                                 <children>
-                                    <TextField fx:id="boxIDTextField" prefHeight="25.0" prefWidth="84.0" promptText="Box ID">
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </TextField>
-                                    <TextField fx:id="agreedDailyRateTextField" prefHeight="25.0" prefWidth="97.0" promptText="Daily Rate" />
-                                    <TextField fx:id="horseNameTextField" prefHeight="25.0" prefWidth="105.0" promptText="Horse Name" />
-                                    <Button fx:id="addBoxButton" mnemonicParsing="false" onAction="#addBox" text="Add" />
-                                    <Button fx:id="deleteBoxButton" mnemonicParsing="false" onAction="#deleteBox" text="Delete" />
-                                 </children>
-                              </HBox>
+                               <DatePicker fx:id="searchBeginTimePicker" maxHeight="1.7976931348623157E308"
+                                           maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT"
+                                           prefHeight="25.0" prefWidth="251.0" promptText="Begin time"/>
+                               <DatePicker fx:id="searchEndTimePicker" maxHeight="1.7976931348623157E308"
+                                           maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="191.0"
+                                           promptText="End time" GridPane.columnIndex="1"/>
                            </children>
-                        </VBox>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </GridPane>
+                           <padding>
+                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                           </padding>
+                       </GridPane>
+                       <HBox alignment="CENTER_RIGHT" prefHeight="57.0" prefWidth="372.0" spacing="10.0">
+                           <children>
+                               <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetSearch"
+                                       text="Reset"/>
+                               <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" text="Search"/>
+                           </children>
+                           <padding>
+                               <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                           </padding>
+                       </HBox>
                </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
+               </VBox>
+               <VBox prefHeight="261.0" prefWidth="354.0">
+               <children>
+                   <HBox alignment="CENTER" prefHeight="57.0" prefWidth="372.0" spacing="10.0">
+                       <children>
+                           <Label fx:id="currentStateLabel" alignment="CENTER" prefHeight="21.0" prefWidth="190.0"
+                                  text="Viewing" textAlignment="CENTER">
+                               <font>
+                                   <Font name="System Bold" size="18.0"/>
+                               </font>
+                           </Label>
+                       </children>
+                       <padding>
+                           <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                       </padding>
+                   </HBox>
+                   <GridPane hgap="5.0" prefHeight="113.0" prefWidth="354.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="113.0"/>
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                                           prefWidth="206.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="66.0" minHeight="31.0" prefHeight="57.0"/>
+                        <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                     <children>
+                         <Label contentDisplay="CENTER" prefHeight="15.0" prefWidth="70.0" text="Customer"
+                                textAlignment="CENTER"/>
+                         <TextField fx:id="customerTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                    prefWidth="208.0" promptText="Name of the customer" GridPane.columnIndex="1"/>
+                         <TextField fx:id="idTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                    prefWidth="97.0" promptText="Enter the ID" GridPane.columnIndex="1"
+                                    GridPane.rowIndex="1"/>
+                         <Label contentDisplay="CENTER" prefHeight="15.0" prefWidth="69.0" text="ID"
+                                textAlignment="CENTER" GridPane.rowIndex="1"/>
+                     </children>
+                       <padding>
+                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                       </padding>
+                   </GridPane>
+                   <GridPane hgap="10.0" prefHeight="31.0" prefWidth="354.0">
+                       <children>
+                           <DatePicker fx:id="formBeginTimePicker" maxHeight="1.7976931348623157E308"
+                                       maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT"
+                                       prefHeight="25.0" prefWidth="152.0" promptText="Begin time"/>
+                           <DatePicker fx:id="formEndTimePicker" maxHeight="1.7976931348623157E308"
+                                       maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT"
+                                       prefHeight="25.0" prefWidth="167.0" promptText="End time"
+                                       GridPane.columnIndex="1"/>
+                       </children>
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                       </columnConstraints>
+                       <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                       </padding>
+                       <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                       </rowConstraints>
+                   </GridPane>
+                   <HBox alignment="CENTER_RIGHT" prefHeight="57.0" prefWidth="372.0" spacing="10.0">
+                       <children>
+                           <Button fx:id="receiptButton" mnemonicParsing="false" onAction="#openReceipt"
+                                   text="Receipt"/>
+                           <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#createNew" text="New"/>
+                           <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save"/>
+                           <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete"/>
+                       </children>
+                       <padding>
+                           <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                       </padding>
+                   </HBox>
+               </children>
+               </VBox>
+               <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="276.0"
+                     prefWidth="354.0" VBox.vgrow="ALWAYS">
+                   <children>
+                       <HBox alignment="CENTER" prefHeight="37.0" prefWidth="354.0" spacing="10.0">
+                           <children>
+                               <Label fx:id="currentStateLabel1" alignment="CENTER" prefHeight="21.0" prefWidth="190.0"
+                                      text="Boxes" textAlignment="CENTER">
+                                   <font>
+                                       <Font name="System Bold" size="14.0"/>
+                                   </font>
+                               </Label>
+                           </children>
+                           <padding>
+                               <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
+                           </padding>
+                       </HBox>
+                       <ListView fx:id="boxListView" prefHeight="279.0" prefWidth="354.0" VBox.vgrow="ALWAYS">
+                           <padding>
+                               <Insets bottom="15.0" left="15.0" right="15.0" top="10.0"/>
+                           </padding>
+                       </ListView>
+                       <HBox prefHeight="72.0" prefWidth="440.0" spacing="10.0">
+                           <children>
+                               <TextField fx:id="boxIDTextField" prefHeight="25.0" prefWidth="72.0" promptText="Box ID">
+                                   <opaqueInsets>
+                                       <Insets/>
+                                   </opaqueInsets>
+                               </TextField>
+                               <TextField fx:id="agreedDailyRateTextField" prefHeight="25.0" prefWidth="60.0"
+                                          promptText="\$ / day"/>
+                               <TextField fx:id="horseNameTextField" prefHeight="25.0" prefWidth="81.0"
+                                          promptText="Horse"/>
+                               <Button fx:id="addBoxButton" mnemonicParsing="false" onAction="#addBox" prefHeight="25.0"
+                                       prefWidth="51.0" text="Add"/>
+                               <Button fx:id="deleteBoxButton" mnemonicParsing="false" onAction="#deleteBox"
+                                       text="Delete"/>
+                           </children>
+                           <padding>
+                               <Insets bottom="12.0" left="15.0" right="15.0" top="12.0"/>
+                           </padding>
+                       </HBox>
+                   </children>
+               </VBox>
+           </children>
+       </VBox>
+       <TableView fx:id="searchTable" editable="true" maxHeight="1.7976931348623157E308"
+                  maxWidth="1.7976931348623157E308" prefHeight="854.0" prefWidth="753.0" GridPane.columnIndex="1"
+                  GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER"
+                  GridPane.vgrow="NEVER">
+           <columns>
+               <TableColumn fx:id="idColumn" prefWidth="61.0" text="ID"/>
+               <TableColumn fx:id="beginColumn" prefWidth="75.0" text="BEGIN"/>
+               <TableColumn fx:id="endColumn" prefWidth="75.0" text="END"/>
+               <TableColumn fx:id="customerColumn" prefWidth="108.0" text="CUSTOMER"/>
+           </columns>
+           <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+           </columnResizePolicy>
+       </TableView>
    </children>
-</AnchorPane>
+</GridPane>
