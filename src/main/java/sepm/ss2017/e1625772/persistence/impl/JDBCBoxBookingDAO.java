@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.persistence.jdbc;
+package sepm.ss2017.e1625772.persistence.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;

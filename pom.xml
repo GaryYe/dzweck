@@ -65,7 +65,6 @@
           <archive>
             <manifest>
               <!-- Jar file entry point -->
-              <mainClass>sepm.ss2017.e1625772.Main</mainClass>
               <addClasspath>true</addClasspath>
             </manifest>
           </archive>

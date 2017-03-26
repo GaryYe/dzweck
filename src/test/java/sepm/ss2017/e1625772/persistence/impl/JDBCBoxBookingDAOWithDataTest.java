@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.persistence.jdbc;
+package sepm.ss2017.e1625772.persistence.impl;
 
 import org.junit.After;
 import org.junit.Before;

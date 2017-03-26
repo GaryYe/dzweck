@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.persistence.jdbc;
+package sepm.ss2017.e1625772.persistence.impl;
 
 import org.junit.After;
 import org.junit.Before;
@@ -7,9 +7,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import java.sql.SQLException;
-
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Testing with the test_db
