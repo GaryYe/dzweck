@@ -32,9 +32,12 @@ INSERT INTO BOOKINGS (ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME) VALUES (13, '2017
 INSERT INTO BOOKINGS (ID, BEGIN_TIME, END_TIME, CUSTOMER_NAME) VALUES (14, '2017-03-10', '2017-03-30', 'customer_14');
 -- Box bookings
 INSERT INTO BOXBOOKINGS (BOOKING_ID, BOX_ID, HORSE_NAME, DAILY_RATE) VALUES
-  (1, 1, 'Horse', 2.0),
-  (1, 2, 'Horse', 2.0),
-  (1, 3, 'Horse', 2.0),
-  (2, 4, 'Horse', 2.0),
-  (2, 5, 'Horse', 2.0),
-  (2, 6, 'Horse', 2.0);
+  (1, 1, 'Horse', 102.0),
+  (1, 2, 'Horse', 28.0),
+  (1, 3, 'Horse', 14.0),
+  (2, 4, 'Horse', 241.0),
+  (2, 5, 'Horse', 288.0),
+  (2, 6, 'Horse', 212.0),
+  (3, 7, 'Horse', 332.0),
+  (3, 8, 'Horse', 112.0),
+  (3, 9, 'Horse', 532.0);
