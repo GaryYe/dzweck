@@ -4,21 +4,30 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import sepm.ss2017.e1625772.domain.Box;
+import sepm.ss2017.e1625772.domain.BoxImage;
 import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.service.BoxService;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -76,16 +85,17 @@ public class BoxController extends FXMLController {
     private TextField dailyRateTextBox;
     @FXML
     private Label currentStateLabel;
+    private BufferedImage selectedImage;
+
+    // DETAIL VIEW END
+
+    // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
 
     @Autowired
     public BoxController(BoxService boxService) {
         super();
         this.boxService = boxService;
     }
-
-    // DETAIL VIEW END
-
-    // http://stackoverflow.com/questions/26424769/javafx8-how-to-create-listener-for-selection-of-row-in-tableview
 
     private void setCreateNewState() {
         boxIdTextBox.setText("");
@@ -98,6 +108,32 @@ public class BoxController extends FXMLController {
         indoorCheckbox.setSelected(false);
         currentStateLabel.setText(CREATING_STATE);
         deleteButton.setDisable(true);
+        imageView.setImage(null);
+        selectedImage = null;
+    }
+
+    private void loadSelectedImage() {
+        if (selectedImage == null) {
+            imageView.setImage(null);
+        } else {
+            Image fxImage = SwingFXUtils.toFXImage(selectedImage, null);
+            imageView.setImage(fxImage);
+        }
+    }
+
+    @FXML
+    public void selectImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        // http://stackoverflow.com/questions/13585590/how-to-get-parent-window-in-fxml-controller
+        File file = fileChooser.showOpenDialog(((Node) event.getTarget()).getScene().getWindow());
+        if (file != null) {
+            try {
+                selectedImage = ImageIO.read(file);
+                loadSelectedImage();
+            } catch (IOException e) {
+                alertErrorMessage("Could not read the given file");
+            }
+        }
     }
 
     @FXML
@@ -165,6 +201,12 @@ public class BoxController extends FXMLController {
         return box;
     }
 
+    private void saveSelectedImage(Long boxId) {
+        if (selectedImage != null) {
+            boxService.saveImage(new BoxImage(boxId, selectedImage));
+        }
+    }
+
     @FXML
     public void save(ActionEvent actionEvent) {
         LOG.error("User clicked the save button");
@@ -181,10 +223,12 @@ public class BoxController extends FXMLController {
         if (currentStateLabel.getText().equals(CREATING_STATE)) {
             if (confirmationDialog("Do you really want to create the box?")) {
                 boxService.createBox(box);
+                saveSelectedImage(box.getId());
             }
         } else {
             if (confirmationDialog("Do you really want to update the box?")) {
                 boxService.updateBox(box);
+                saveSelectedImage(box.getId());
             }
         }
 
@@ -223,6 +267,13 @@ public class BoxController extends FXMLController {
         indoorCheckbox.setSelected(box.isIndoor());
         currentStateLabel.setText(EDITING_STATE);
         deleteButton.setDisable(false);
+
+        BoxImage boxImage = boxService.findImage(id);
+        if (boxImage == null)
+            selectedImage = null;
+        else
+            selectedImage = boxImage.getImage();
+        loadSelectedImage();
     }
 
     @Value("ui/box.fxml")

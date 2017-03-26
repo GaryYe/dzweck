@@ -1,6 +1,7 @@
 package sepm.ss2017.e1625772.service;
 
 import sepm.ss2017.e1625772.domain.Box;
+import sepm.ss2017.e1625772.domain.BoxImage;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 
 import java.util.List;
@@ -49,4 +50,19 @@ public interface BoxService {
      */
     void deleteBox(Box box) throws ServiceException;
 
+
+    /**
+     * Finds the image of the corresponding box.
+     *
+     * @param boxId the id of the box
+     * @return null if not found or the image
+     */
+    BoxImage findImage(Long boxId);
+
+    /**
+     * Saves the given image by the given box or attempts to overwrite it.
+     *
+     * @param boxImage the image of the box
+     */
+    void saveImage(BoxImage boxImage);
 }
