@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.slf4j.LoggerFactory.getLogger;
 import static sepm.ss2017.e1625772.gui.utils.Dialogs.alertErrorMessage;
 import static sepm.ss2017.e1625772.gui.utils.Dialogs.confirmationDialog;
 
@@ -32,6 +34,8 @@ import static sepm.ss2017.e1625772.gui.utils.Dialogs.confirmationDialog;
  */
 @Controller
 public class StatisticsController extends FXMLController {
+    private static final Logger LOG = getLogger(StatisticsController.class);
+
     private final BoxStatisticsService boxStatisticsService;
     private final BoxService boxService;
 
@@ -76,6 +80,7 @@ public class StatisticsController extends FXMLController {
 
     @FXML
     public void load() {
+        LOG.info("User has clicked the preview button");
         if (!checkForm(timeRangeForm) || !checkForm(weekdayForm))
             return;
 
@@ -115,6 +120,7 @@ public class StatisticsController extends FXMLController {
 
     @FXML
     public void preview() {
+        LOG.info("User has clicked the preview button");
         if (!checkForm(timeRangeForm) || !checkForm(updateForm))
             return;
         Box oldBox = getBoxFromForm(false);
@@ -129,6 +135,7 @@ public class StatisticsController extends FXMLController {
 
     @FXML
     public void update() {
+        LOG.info("User has clicked the update button");
         if (!checkForm(timeRangeForm) || !checkForm(updateForm))
             return;
         Box box = getBoxFromForm(true);

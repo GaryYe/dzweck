@@ -2,6 +2,7 @@ package sepm.ss2017.e1625772.gui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -9,12 +10,16 @@ import org.springframework.stereotype.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * @author Gary Ye
  * @version %I% %G%
  */
 @Controller
 public class RootController extends FXMLController {
+    private static final Logger LOG = getLogger(RootController.class);
+
     private final BookingController bookingController;
     private final BoxController boxController;
     private final StatisticsController statisticsController;
@@ -45,5 +50,6 @@ public class RootController extends FXMLController {
         bookingTab.setContent(bookingController.getView());
         boxesTab.setContent(boxController.getView());
         statsTab.setContent(statisticsController.getView());
+        LOG.info("Initialized root controller");
     }
 }

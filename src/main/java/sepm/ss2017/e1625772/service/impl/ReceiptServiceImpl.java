@@ -1,5 +1,6 @@
 package sepm.ss2017.e1625772.service.impl;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sepm.ss2017.e1625772.domain.Booking;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author Gary Ye
@@ -26,6 +28,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
  */
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
+    private static final Logger LOG = getLogger(ReceiptServiceImpl.class);
+
     private final BoxBookingDAO boxBookingDAO;
     private final BookingDAO bookingDAO;
     private final BoxDAO boxDAO;
@@ -40,6 +44,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public Receipt calculateReceipt(Long bookingId) throws ObjectNotFoundException {
         try {
+            LOG.debug("Calculating receipt of booking {}", bookingId);
             Receipt receipt = new Receipt();
             List<BoxBooking> relevant = boxBookingDAO.findAllByBooking(bookingId);
             Booking booking = bookingDAO.findOne(bookingId);
