@@ -8,7 +8,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
-import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
 import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
@@ -57,8 +56,8 @@ public class JDBCBoxBookingDAOWithEmptyDBTest {
         dao.delete(new BoxBookingBuilder(null, 3L).create());
     }
 
-    @Test(expected = DataAccessException.class)
-    public void testCreateWithoutExistingBoxesShouldThrow() throws DuplicatedObjectException {
+    @Test(expected = ObjectNotFoundException.class)
+    public void testCreateWithoutExistingBoxesShouldThrow() throws DuplicatedObjectException, ObjectNotFoundException {
         BoxBooking boxBooking = new BoxBookingBuilder(3L, 5L).create();
         dao.create(boxBooking);
     }

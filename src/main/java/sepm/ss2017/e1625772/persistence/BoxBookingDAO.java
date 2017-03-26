@@ -42,7 +42,7 @@ public interface BoxBookingDAO {
      * @param boxBooking the box booking to create
      * @throws DataAccessException if an error occurred while accessing the data
      */
-    void create(BoxBooking boxBooking) throws DuplicatedObjectException;
+    void create(BoxBooking boxBooking) throws DuplicatedObjectException, ObjectNotFoundException;
 
     /**
      * @param boxBooking the box booking to delete

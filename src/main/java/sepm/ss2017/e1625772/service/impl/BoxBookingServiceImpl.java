@@ -48,7 +48,8 @@ public class BoxBookingServiceImpl implements BoxBookingService {
     }
 
     @Override
-    public void create(BoxBooking boxBooking) throws DuplicatedObjectException, BoxBookingCollisionException {
+    public void create(BoxBooking boxBooking) throws DuplicatedObjectException, BoxBookingCollisionException,
+            ObjectNotFoundException {
         try {
             List<BoxBooking> conflicting = conflictingBoxBookings(boxBooking);
             if (!conflicting.isEmpty())

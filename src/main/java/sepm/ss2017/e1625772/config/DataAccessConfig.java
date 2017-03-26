@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 public class DataAccessConfig {
     @Bean
     public DataSource dataSource() {
-        // TODO: Load from config file
+        // OPTIONAL: Load from config file
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:tcp://localhost/~/boxes");
         ds.setUser("sa");

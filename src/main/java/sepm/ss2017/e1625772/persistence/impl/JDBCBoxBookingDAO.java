@@ -1,6 +1,7 @@
 package sepm.ss2017.e1625772.persistence.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.exceptions.DuplicatedObjectException;
+import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
 
 import javax.sql.DataSource;
@@ -63,7 +65,7 @@ public class JDBCBoxBookingDAO implements BoxBookingDAO {
     }
 
     @Override
-    public void create(BoxBooking boxBooking) throws DuplicatedObjectException {
+    public void create(BoxBooking boxBooking) throws DuplicatedObjectException, ObjectNotFoundException {
         if (boxBooking == null)
             throw new IllegalArgumentException("BoxBooking can not be null");
         try {
@@ -72,6 +74,9 @@ public class JDBCBoxBookingDAO implements BoxBookingDAO {
                             .getAgreedDailyRate());
         } catch (DuplicateKeyException e) {
             throw new DuplicatedObjectException(e);
+        } catch (DataIntegrityViolationException e) {
+            // since there are only foreign keys constraints
+            throw new ObjectNotFoundException(e);
         } catch (org.springframework.dao.DataAccessException e) {
             throw new DataAccessException(e);
         }

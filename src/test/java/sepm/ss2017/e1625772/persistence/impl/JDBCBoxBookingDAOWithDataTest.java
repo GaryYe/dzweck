@@ -63,7 +63,7 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test
-    public void testCreateShouldWork() throws DataAccessException, DuplicatedObjectException {
+    public void testCreateShouldWork() throws DataAccessException, DuplicatedObjectException, ObjectNotFoundException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         BoxBooking boxBooking2 = new BoxBookingBuilder(1L, 2L).create();
         List<BoxBooking> expected = Arrays.asList(boxBooking1, boxBooking2);
@@ -73,7 +73,7 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test
-    public void testFindAllByBooking() throws DataAccessException, DuplicatedObjectException {
+    public void testFindAllByBooking() throws DataAccessException, DuplicatedObjectException, ObjectNotFoundException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         BoxBooking boxBooking2 = new BoxBookingBuilder(1L, 2L).create();
         BoxBooking boxBooking3 = new BoxBookingBuilder(2L, 2L).create();
@@ -85,7 +85,7 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test
-    public void testFindAllByBox() throws DataAccessException, DuplicatedObjectException {
+    public void testFindAllByBox() throws DataAccessException, DuplicatedObjectException, ObjectNotFoundException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         BoxBooking boxBooking2 = new BoxBookingBuilder(1L, 2L).create();
         BoxBooking boxBooking3 = new BoxBookingBuilder(2L, 2L).create();
@@ -97,7 +97,8 @@ public class JDBCBoxBookingDAOWithDataTest {
     }
 
     @Test(expected = DuplicatedObjectException.class)
-    public void testCreateTwiceShouldThrowDuplicatedObjectException() throws DuplicatedObjectException {
+    public void testCreateTwiceShouldThrowDuplicatedObjectException() throws DuplicatedObjectException,
+            ObjectNotFoundException {
         BoxBooking boxBooking1 = new BoxBookingBuilder(1L, 1L).create();
         boxBookingDAO.create(boxBooking1);
         boxBookingDAO.create(boxBooking1);

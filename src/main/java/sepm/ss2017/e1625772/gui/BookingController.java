@@ -152,7 +152,6 @@ public class BookingController extends FXMLController {
         } catch (BoxBookingCollisionException e) {
             alertErrorMessage(e.getMessage());
         } catch (ObjectNotFoundException e) {
-            // TODO: Would be clean to check whether it is the box that is missing
             alertErrorMessage("The requested box does not exist");
         } catch (DuplicatedObjectException e) {
             alertErrorMessage("The given box already exists!");
