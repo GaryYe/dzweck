@@ -80,12 +80,12 @@
                        </HBox>
                        <GridPane hgap="5.0" prefHeight="492.0" prefWidth="354.0" vgap="5.0" VBox.vgrow="ALWAYS">
                            <children>
+                               <TextField fx:id="boxIdTextBox" prefHeight="26.0" prefWidth="264.0"
+                                          promptText="Enter the ID" GridPane.columnIndex="1"/>
                                <Label text="Name" GridPane.rowIndex="1"/>
                                <TextField fx:id="boxNameTextBox" prefHeight="26.0" prefWidth="238.0"
                                           promptText="Enter the name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                <Label text="ID"/>
-                               <TextField fx:id="boxIdTextBox" prefHeight="26.0" prefWidth="264.0"
-                                          promptText="Enter the ID" GridPane.columnIndex="1"/>
                                <TextField fx:id="areaTextBox" prefHeight="26.0" prefWidth="238.0"
                                           promptText="Enter the area in meters squared" GridPane.columnIndex="1"
                                           GridPane.rowIndex="2"/>
@@ -101,12 +101,13 @@
                                        <CheckBox fx:id="indoorCheckbox" mnemonicParsing="false" text="Indoor"/>
                                    </children>
                                </FlowPane>
-                               <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                               <HBox prefHeight="35.0" prefWidth="239.0" spacing="10.0" GridPane.columnIndex="1"
+                                     GridPane.rowIndex="5">
                                    <children>
+                                       <Label alignment="CENTER" contentDisplay="TOP" prefHeight="33.0"
+                                              prefWidth="122.0" text="No image selected" wrapText="true"/>
                                        <Button fx:id="selectImageButton" mnemonicParsing="false" text="Select Image"
                                                GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                                       <Label alignment="CENTER" contentDisplay="TOP" prefHeight="33.0"
-                                              prefWidth="122.0" text="No image selected"/>
                                    </children>
                                    <GridPane.margin>
                                        <Insets bottom="12.0" left="15.0" right="15.0" top="12.0"/>
@@ -115,7 +116,7 @@
                                        <Insets left="5.0"/>
                                    </padding>
                                </HBox>
-                               <ImageView fx:id="imageView" fitHeight="144.0" fitWidth="264.0" pickOnBounds="true"
+                               <ImageView fx:id="imageView" fitHeight="158.0" fitWidth="264.0" pickOnBounds="true"
                                           preserveRatio="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
                                           GridPane.rowIndex="6" GridPane.vgrow="ALWAYS"/>
                            </children>
@@ -129,24 +130,20 @@
                                <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
                                <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
                                <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
-                               <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES"/>
+                               <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES"/>
                                <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="8.0"
-                                               prefHeight="90.0" vgrow="ALWAYS"/>
+                                               prefHeight="136.0" vgrow="ALWAYS"/>
                            </rowConstraints>
                        </GridPane>
                        <HBox prefHeight="29.0" prefWidth="354.0">
                      <children>
-                         <TilePane prefHeight="14.0" prefWidth="165.0">
+                         <TilePane alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="359.0">
                            <children>
                                <Button fx:id="createNewButton" mnemonicParsing="false" onAction="#createNew"
                                        text="New"/>
+                               <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save"/>
+                               <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete"/>
                            </children>
-                         </TilePane>
-                         <TilePane prefHeight="30.0" prefWidth="289.0">
-                             <children>
-                                 <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save"/>
-                                 <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete"/>
-                             </children>
                          </TilePane>
                      </children>
                            <padding>

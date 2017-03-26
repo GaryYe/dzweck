@@ -54,6 +54,8 @@ public class BoxController extends FXMLController {
     @FXML
     private Button createNewButton;
     @FXML
+    private Button deleteButton;
+    @FXML
     private TableColumn<PropertyBox, Long> idColumn;
     // DETAIL VIEW BEGIN
     @FXML
@@ -95,6 +97,7 @@ public class BoxController extends FXMLController {
         hasWindowsCheckbox.setSelected(false);
         indoorCheckbox.setSelected(false);
         currentStateLabel.setText(CREATING_STATE);
+        deleteButton.setDisable(true);
     }
 
     @FXML
@@ -116,7 +119,9 @@ public class BoxController extends FXMLController {
     @FXML
     public void createNew(ActionEvent actionEvent) {
         LOG.error("User has requested creating a new Box");
-        setCreateNewState();
+        if (confirmationDialog("If you want to create a new one, the entered data, which might be empty, will be lost" +
+                "."))
+            setCreateNewState();
     }
 
     @FXML
@@ -174,23 +179,12 @@ public class BoxController extends FXMLController {
         }
 
         if (currentStateLabel.getText().equals(CREATING_STATE)) {
-            try {
+            if (confirmationDialog("Do you really want to create the box?")) {
                 boxService.createBox(box);
-                LOG.info("Box {} successfully created", box);
-            } catch (ServiceException e) {
-                // TODO: Better usability (ID already existing)
-                LOG.error("Something went wrong when creating the box ", e);
-                alertErrorMessage("Service error while creating the box");
-                return;
             }
         } else {
-            try {
+            if (confirmationDialog("Do you really want to update the box?")) {
                 boxService.updateBox(box);
-                LOG.info("Box {} successfully updated", box);
-            } catch (ServiceException e) {
-                LOG.error("Something went wrong when updating the box ", e);
-                alertErrorMessage("Service error while updating the box");
-                return;
             }
         }
 
@@ -228,6 +222,7 @@ public class BoxController extends FXMLController {
         hasWindowsCheckbox.setSelected(box.hasWindows());
         indoorCheckbox.setSelected(box.isIndoor());
         currentStateLabel.setText(EDITING_STATE);
+        deleteButton.setDisable(false);
     }
 
     @Value("ui/box.fxml")
