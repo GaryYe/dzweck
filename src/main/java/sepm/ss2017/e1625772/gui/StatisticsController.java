@@ -11,9 +11,9 @@ import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.BoxStatistics;
 import sepm.ss2017.e1625772.exceptions.PresentationException;
 import sepm.ss2017.e1625772.gui.forms.AbstractForm;
-import sepm.ss2017.e1625772.service.BookingService;
 import sepm.ss2017.e1625772.service.BoxService;
 import sepm.ss2017.e1625772.service.BoxStatisticsService;
+import sepm.ss2017.e1625772.utils.DateUtils;
 
 import java.net.URL;
 import java.time.DayOfWeek;
@@ -211,9 +211,9 @@ public class StatisticsController extends FXMLController {
             endDate = endTimePicker.getValue();
 
             if (beginDate == null)
-                beginDate = BookingService.MIN;
+                beginDate = DateUtils.MIN;
             if (endDate == null)
-                endDate = BookingService.MAX;
+                endDate = DateUtils.MAX;
         }
 
         @Override

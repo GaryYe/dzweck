@@ -9,10 +9,16 @@ import static java.time.temporal.ChronoUnit.DAYS;
  * @version %I% %G%
  */
 public class DateUtils {
+    public static final LocalDate MIN = LocalDate.of(1970, 1, 1);
+    public static final LocalDate MAX = LocalDate.of(2038, 1, 1);
+
     /**
-     * @param begin
-     * @param end
-     * @return
+     * Counts the number of week days that exists between the two given days.
+     *
+     * @param begin the begin date
+     * @param end   the end date
+     * @return an array of seven integers, each corresponding to the count of the day. The first one will correspond
+     * to MONDAY, while the last one will correspond to SUNDAY.
      */
     public static int[] countWeekdays(LocalDate begin, LocalDate end) {
         int[] count = new int[7];
@@ -37,6 +43,13 @@ public class DateUtils {
         return count;
     }
 
+    /**
+     * Returns the number of days between the two given dates
+     *
+     * @param begin the begin date
+     * @param end   the end date
+     * @return the number of days between the two given dates.
+     */
     public static int numberOfDaysBetween(LocalDate begin, LocalDate end) {
         return (int) (DAYS.between(begin, end) + 1);
     }

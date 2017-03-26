@@ -21,6 +21,7 @@ import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
 import sepm.ss2017.e1625772.service.BookingService;
 import sepm.ss2017.e1625772.service.BoxBookingService;
 import sepm.ss2017.e1625772.service.ReceiptService;
+import sepm.ss2017.e1625772.utils.DateUtils;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -192,11 +193,10 @@ public class BookingController extends FXMLController {
         LocalDate beginTime = searchBeginTimePicker.getValue();
         LocalDate endTime = searchEndTimePicker.getValue();
 
-        // TODO: can this be improved?
         if (beginTime == null)
-            beginTime = BookingService.MIN;
+            beginTime = DateUtils.MIN;
         if (endTime == null)
-            endTime = BookingService.MAX;
+            endTime = DateUtils.MAX;
 
         if (beginTime.isAfter(endTime)) {
             alertErrorMessage("End time can not be after begin time");
@@ -306,9 +306,12 @@ public class BookingController extends FXMLController {
         LOG.info("User has pressed the receipt button");
         if (currentBooking == null)
             throw new PresentationException("User requested receipt while current booking was not loaded");
-        // TODO: Receipt service call
-        Receipt receipt = receiptService.calculateReceipt(currentBooking.getId());
-        confirmationDialog("This is the receipt of booking\n" + receiptRenderer.render(receipt));
+        try {
+            Receipt receipt = receiptService.calculateReceipt(currentBooking.getId());
+            confirmationDialog("This is the receipt of booking\n" + receiptRenderer.render(receipt));
+        } catch (ObjectNotFoundException e) {
+            alertErrorMessage("Booking suddenly not found!");
+        }
     }
 
     private Booking parseBooking() throws FormParsingException {

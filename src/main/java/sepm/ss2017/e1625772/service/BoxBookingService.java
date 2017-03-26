@@ -14,11 +14,22 @@ import java.util.List;
  * @version %I% %G%
  */
 public interface BoxBookingService {
+    /**
+     * Finds all box bookings that are in the underlying system.
+     *
+     * @return all box bookings in a list
+     * @throws ServiceException if an error occurred while the service was processing the request
+     */
     List<BoxBooking> findAll();
 
+    /**
+     * Finds all box bookings that are in the underlying system, which correspond to the given booking id.
+     *
+     * @param bookingId the id to check against
+     * @return all box bookings in a list
+     * @throws ServiceException if an error occurred while the service was processing the request
+     */
     List<BoxBooking> findAllByBooking(Long bookingId);
-
-    List<BoxBooking> findAllByBox(Long boxId);
 
     /**
      * Creates the given box booking, but also performs a check whether there are any conflicts between the given one
@@ -30,6 +41,7 @@ public interface BoxBookingService {
      * @throws BoxBookingCollisionException if by creating the box booking there will be a conflict with other box
      *                                      bookings
      * @throws DuplicatedObjectException    if the given box booking already exists
+     * @throws ServiceException             if an error occurred while the service was processing the request
      */
     void create(BoxBooking boxBooking) throws BoxBookingCollisionException, ObjectNotFoundException,
             DuplicatedObjectException;
@@ -39,6 +51,7 @@ public interface BoxBookingService {
      *
      * @param boxBooking the box booking to delete
      * @throws ObjectNotFoundException if the box booking was not found
+     * @throws ServiceException        if an error occurred while the service was processing the request
      */
     void delete(BoxBooking boxBooking) throws ObjectNotFoundException;
 
@@ -51,7 +64,22 @@ public interface BoxBookingService {
      */
     List<BoxBooking> conflictingBoxBookings(Booking booking);
 
+    /**
+     * Returns the box bookings that are in conflict with the given booking and the bookings in question.
+     *
+     * @param booking           the booking to check against
+     * @param bookingInQuestion the bookings that are in question
+     * @return the conflicting box bookings in a list
+     * @throws ServiceException if an error occurred while the service was operating
+     */
     List<BoxBooking> conflictingBoxBookings(Booking booking, List<BoxBooking> bookingInQuestion);
 
-    List<BoxBooking> conflictingBoxBookings(BoxBooking booking);
+    /**
+     * Returns the box bookings that are in conflict with the given booking and the bookings in question.
+     *
+     * @param boxBooking the boxBooking to check against
+     * @return the conflicting box bookings in a list
+     * @throws ServiceException if an error occurred while the service was operating
+     */
+    List<BoxBooking> conflictingBoxBookings(BoxBooking boxBooking);
 }

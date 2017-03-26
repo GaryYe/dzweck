@@ -3,7 +3,6 @@ package sepm.ss2017.e1625772.persistence.jdbc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
@@ -43,7 +42,6 @@ public class JDBCBoxDAO implements BoxDAO {
                 box.setDailyRate(rs.getBigDecimal("DAILY_RATE").doubleValue());
                 box.setHasWindows(rs.getBoolean("WINDOWS"));
                 box.setIndoor(rs.getBoolean("INDOOR"));
-                // TODO image
                 return box;
             } else {
                 return null;
@@ -56,31 +54,44 @@ public class JDBCBoxDAO implements BoxDAO {
 
     @Override
     public Collection<Box> findAll() throws DataAccessException {
-        Collection<Box> result = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM BOXES")) {
-            while (rs.next()) {
-                Box box = new Box();
-                box.setId((long) rs.getInt("ID"));
-                box.setArea(rs.getDouble("AREA"));
-                box.setName(rs.getString("NAME"));
-                box.setDailyRate(rs.getBigDecimal("DAILY_RATE").doubleValue());
-                box.setHasWindows(rs.getBoolean("WINDOWS"));
-                box.setIndoor(rs.getBoolean("INDOOR"));
-                // TODO: Insert image in next version
-                result.add(box);
-            }
+            return parseBoxes(rs);
         } catch (SQLException e) {
             LOG.error("Error occurred while finding all boxes.", e);
             throw new DataAccessException(e);
+        }
+    }
+
+    private Collection<Box> parseBoxes(ResultSet rs) throws SQLException {
+        Collection<Box> result = new ArrayList<>();
+        while (rs.next()) {
+            Box box = new Box();
+            box.setId((long) rs.getInt("ID"));
+            box.setArea(rs.getDouble("AREA"));
+            box.setName(rs.getString("NAME"));
+            box.setDailyRate(rs.getBigDecimal("DAILY_RATE").doubleValue());
+            box.setHasWindows(rs.getBoolean("WINDOWS"));
+            box.setIndoor(rs.getBoolean("INDOOR"));
+            result.add(box);
         }
         return result;
     }
 
     @Override
     public Collection<Box> findAll(Box box) throws DataAccessException {
-        return null;
+        String querySql = "SELECT * FROM BOXES WHERE NAME LIKE ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(querySql);) {
+            stmt.setString(1, "%" + box.getName() + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                return parseBoxes(rs);
+            }
+        } catch (SQLException e) {
+            LOG.error("Error occurred while finding all boxes.", e);
+            throw new DataAccessException(e);
+        }
     }
 
     @Override
@@ -97,7 +108,6 @@ public class JDBCBoxDAO implements BoxDAO {
             stmt.setBigDecimal(4, BigDecimal.valueOf(box.getDailyRate()));
             stmt.setBigDecimal(5, BigDecimal.valueOf(box.getArea()));
             stmt.setString(6, box.getName());
-            // TODO: Update with Image byte array
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("Error occurred while creating the box={}", box.toString(), e);
@@ -133,7 +143,6 @@ public class JDBCBoxDAO implements BoxDAO {
             stmt.setString(5, box.getName());
             stmt.setLong(6, box.getId());
             stmt.execute();
-            // TODO: image
         } catch (SQLException e) {
             LOG.error("Error while updating box=", box.toString(), e);
             throw new DataAccessException(e);

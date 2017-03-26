@@ -140,8 +140,7 @@ public class BoxController extends FXMLController {
     public void search(ActionEvent actionEvent) {
         LOG.error("User has requested a search via the search button");
         try {
-            // TODO: Replace null LUL
-            List<Box> boxes = boxService.findBoxes(null);
+            List<Box> boxes = boxService.findBoxes(new BoxBuilder(null).name(searchName.getText()).create());
             boxObservableList.clear();
             for (Box box : boxes)
                 boxObservableList.addAll(new PropertyBox(box));
@@ -205,6 +204,11 @@ public class BoxController extends FXMLController {
         if (selectedImage != null) {
             boxService.saveImage(new BoxImage(boxId, selectedImage));
         }
+    }
+
+    @FXML
+    public void reset(ActionEvent actionEvent) {
+        searchName.clear();
     }
 
     @FXML
@@ -295,6 +299,7 @@ public class BoxController extends FXMLController {
                 setStateViewingBox(newSelection.getId());
             }
         });
+
         setCreateNewState();
     }
 

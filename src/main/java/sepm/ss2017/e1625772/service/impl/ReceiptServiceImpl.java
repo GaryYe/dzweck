@@ -7,6 +7,7 @@ import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.BoxBooking;
 import sepm.ss2017.e1625772.domain.Receipt;
 import sepm.ss2017.e1625772.exceptions.DataAccessException;
+import sepm.ss2017.e1625772.exceptions.ObjectNotFoundException;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
 import sepm.ss2017.e1625772.persistence.BookingDAO;
 import sepm.ss2017.e1625772.persistence.BoxBookingDAO;
@@ -37,11 +38,14 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public Receipt calculateReceipt(Long bookingId) {
+    public Receipt calculateReceipt(Long bookingId) throws ObjectNotFoundException {
         try {
             Receipt receipt = new Receipt();
             List<BoxBooking> relevant = boxBookingDAO.findAllByBooking(bookingId);
             Booking booking = bookingDAO.findOne(bookingId);
+
+            if (booking == null)
+                throw new ObjectNotFoundException();
 
             int numberOfDays = (int) DAYS.between(booking.getBeginTime(), booking.getEndTime()) + 1;
             receipt.setBeginTime(booking.getBeginTime());

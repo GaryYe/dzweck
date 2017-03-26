@@ -48,15 +48,6 @@ public class BoxBookingServiceImpl implements BoxBookingService {
     }
 
     @Override
-    public List<BoxBooking> findAllByBox(Long boxId) {
-        try {
-            return boxBookingDAO.findAllByBox(boxId);
-        } catch (DataAccessException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public void create(BoxBooking boxBooking) throws DuplicatedObjectException, BoxBookingCollisionException {
         try {
             List<BoxBooking> conflicting = conflictingBoxBookings(boxBooking);

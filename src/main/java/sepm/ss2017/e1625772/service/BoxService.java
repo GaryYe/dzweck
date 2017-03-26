@@ -15,16 +15,18 @@ public interface BoxService {
      * Creates the given box and registers it into the system.
      *
      * @param box the box to register
+     * @throws ServiceException if an error occurred while the service was processing the request
      */
-    void createBox(Box box) throws ServiceException;
+    void createBox(Box box);
 
     /**
      * Retrieves the box with the given id.
      *
      * @param id the id of the box to return
      * @return either null, if the box was not found, or else the box with the matching id
+     * @throws ServiceException if an error occurred while the service was processing the request
      */
-    Box findBox(Long id) throws ServiceException;
+    Box findBox(Long id);
 
     /**
      * Finds all boxes that match the given one
@@ -40,15 +42,17 @@ public interface BoxService {
      * thrown.
      *
      * @param box the box with the new attributes.
+     * @throws ServiceException if an error occurred while the service was processing the request
      */
-    void updateBox(Box box) throws ServiceException;
+    void updateBox(Box box);
 
     /**
      * Deletes the given box.
      *
      * @param box the box to delete
+     * @throws ServiceException if an error occurred while the service was processing the request
      */
-    void deleteBox(Box box) throws ServiceException;
+    void deleteBox(Box box);
 
 
     /**
@@ -56,6 +60,7 @@ public interface BoxService {
      *
      * @param boxId the id of the box
      * @return null if not found or the image
+     * @throws ServiceException if an error occurred while the service was processing the request
      */
     BoxImage findImage(Long boxId);
 
@@ -63,6 +68,7 @@ public interface BoxService {
      * Saves the given image by the given box or attempts to overwrite it.
      *
      * @param boxImage the image of the box
+     * @throws ServiceException if an error occurred while the service was processing the request
      */
     void saveImage(BoxImage boxImage);
 }

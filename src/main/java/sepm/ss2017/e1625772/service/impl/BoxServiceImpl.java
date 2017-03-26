@@ -52,7 +52,7 @@ public class BoxServiceImpl implements BoxService {
     @Override
     public List<Box> findBoxes(Box box) {
         try {
-            return new ArrayList<>(boxDAO.findAll()); // TODO
+            return new ArrayList<>(boxDAO.findAll(box));
         } catch (DataAccessException e) {
             throw new ServiceException(e);
         }

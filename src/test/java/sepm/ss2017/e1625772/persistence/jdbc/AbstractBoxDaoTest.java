@@ -7,6 +7,7 @@ import sepm.ss2017.e1625772.exceptions.DataAccessException;
 import sepm.ss2017.e1625772.persistence.BoxDAO;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.TestCase.*;
@@ -31,7 +32,6 @@ public abstract class AbstractBoxDaoTest {
                 .windows(false)
                 .indoor(true)
                 .name("Box 42")
-                // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
         boxDAO.create(box);
         List<Box> storedBoxes = new ArrayList<>(boxDAO.findAll());
@@ -42,6 +42,18 @@ public abstract class AbstractBoxDaoTest {
     @Test
     public void testFindAllShouldReturnEmptyWhenNoElementsInside() throws DataAccessException {
         assertTrue(boxDAO.findAll().isEmpty());
+    }
+
+    @Test
+    public void testFindAllNameMatching() {
+        Box boxInclude1 = new BoxBuilder(1L).name("Include1").create();
+        Box boxInclude2 = new BoxBuilder(2L).name("Include2").create();
+        Box boxExclude1 = new BoxBuilder(3L).name("Exclude1").create();
+        boxDAO.create(boxInclude1);
+        boxDAO.create(boxInclude2);
+        boxDAO.create(boxExclude1);
+        assertEquals(Arrays.asList(boxInclude1, boxInclude2),
+                boxDAO.findAll(new BoxBuilder(null).name("Include").create()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -74,7 +86,6 @@ public abstract class AbstractBoxDaoTest {
                 .windows(false)
                 .indoor(true)
                 .name("Box 42")
-                // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
         boxDAO.create(box);
         assertFalse(boxDAO.findAll().isEmpty());
@@ -96,7 +107,6 @@ public abstract class AbstractBoxDaoTest {
                 .windows(false)
                 .indoor(true)
                 .name("Box 42")
-                // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
         boxDAO.create(before);
         Box after = new BoxBuilder(42L)
@@ -105,9 +115,7 @@ public abstract class AbstractBoxDaoTest {
                 .windows(true)
                 .indoor(true)
                 .name("Box 4333")
-                // .image(new BufferedImage(1, 1, 3)) TODO
                 .create();
-
         boxDAO.update(after);
         List<Box> list = new ArrayList<>(boxDAO.findAll());
         assertEquals(after, list.get(0));
