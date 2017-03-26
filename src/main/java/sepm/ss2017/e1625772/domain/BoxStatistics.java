@@ -20,6 +20,13 @@ public class BoxStatistics {
         return new ArrayList<>(data.keySet());
     }
 
+    public int numberOfReservations(Box box, List<DayOfWeek> dayOfWeeks) {
+        int sum = 0;
+        for (DayOfWeek dayOfWeek : dayOfWeeks)
+            sum += numberOfReservations(box, dayOfWeek);
+        return sum;
+    }
+
     public int numberOfReservations(Box box, DayOfWeek dayOfWeek) {
         return data.get(box)[dayOfWeek.getValue() - 1];
     }

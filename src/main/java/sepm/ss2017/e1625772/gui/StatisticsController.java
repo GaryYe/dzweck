@@ -3,10 +3,7 @@ package sepm.ss2017.e1625772.gui;
 import javafx.fxml.FXML;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +19,7 @@ import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -55,9 +53,12 @@ public class StatisticsController extends FXMLController {
     private DatePicker endTimePicker;
     @FXML
     private Label previewLabel;
+    @FXML
+    private CheckBox mondayBox, tuesdayBox, thursdayBox, wednesdayBox, fridayBox, saturdayBox, sundayBox;
 
     private TimeRangeForm timeRangeForm;
     private UpdateForm updateForm;
+    private WeekdayForm weekdayForm;
 
     @Autowired
     public StatisticsController(BoxStatisticsService boxStatisticsService, BoxService boxService) {
@@ -75,7 +76,7 @@ public class StatisticsController extends FXMLController {
 
     @FXML
     public void load() {
-        if (!checkForm(timeRangeForm))
+        if (!checkForm(timeRangeForm) || !checkForm(weekdayForm))
             return;
 
         stackedBarChart.getData().clear();
@@ -83,6 +84,8 @@ public class StatisticsController extends FXMLController {
         BoxStatistics boxStatistics = boxStatisticsService.getStatistics(timeRangeForm.beginDate,
                 timeRangeForm.endDate);
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+            if (!weekdayForm.selectedFlags[dayOfWeek.getValue() - 1])
+                continue;
             XYChart.Series<String, Number> daySeries = new XYChart.Series<>();
             daySeries.setName(dayOfWeek.toString());
             for (Box box : boxStatistics.boxes()) {
@@ -96,10 +99,10 @@ public class StatisticsController extends FXMLController {
     }
 
     Box getBoxFromForm(boolean update) {
-        if (!checkForm(timeRangeForm) || !checkForm(updateForm))
+        if (!checkForm(timeRangeForm) || !checkForm(updateForm) || !checkForm(weekdayForm))
             throw new PresentationException("Form hasn't been checked for some reason");
-        Box outlier = boxStatisticsService.findOutlierBox(timeRangeForm.beginDate, timeRangeForm.endDate, updateForm
-                .updateBest);
+        Box outlier = boxStatisticsService.findOutlierBox(timeRangeForm.beginDate, timeRangeForm.endDate,
+                updateForm.updateBest, weekdayForm.selected);
         if (update)
             outlier.setDailyRate(newPrice(outlier.getDailyRate(), updateForm.updateAbsolute, updateForm.number));
         return outlier;
@@ -149,6 +152,8 @@ public class StatisticsController extends FXMLController {
         stackedBarChart.setAnimated(false);
         timeRangeForm = new TimeRangeForm(beginTimePicker, endTimePicker);
         updateForm = new UpdateForm(absoluteRadio, bestRadio, numberTextField);
+        weekdayForm = new WeekdayForm(Arrays.asList(mondayBox, tuesdayBox, wednesdayBox, thursdayBox, fridayBox,
+                saturdayBox, sundayBox));
     }
 
     private class UpdateForm extends AbstractForm {
@@ -216,6 +221,36 @@ public class StatisticsController extends FXMLController {
             if (beginDate.isAfter(endDate)) {
                 validationErrors.add("Begin date can not be after end date");
             }
+        }
+    }
+
+    private class WeekdayForm extends AbstractForm {
+        private final List<CheckBox> checkBoxes;
+        List<DayOfWeek> selected;
+        boolean selectedFlags[];
+
+        private WeekdayForm(List<CheckBox> checkBoxes) {
+            this.checkBoxes = checkBoxes;
+        }
+
+
+        @Override
+        protected void doParse() {
+            int i = 0;
+            selected = new ArrayList<>();
+            selectedFlags = new boolean[7];
+            for (CheckBox checkBox : checkBoxes) {
+                selectedFlags[i] = checkBox.isSelected();
+                if (checkBox.isSelected()) {
+                    selected.add(DayOfWeek.values()[i]);
+                }
+                i++;
+            }
+        }
+
+        @Override
+        protected void check() {
+
         }
     }
 }

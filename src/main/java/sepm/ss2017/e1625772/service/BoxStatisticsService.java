@@ -5,6 +5,7 @@ import sepm.ss2017.e1625772.domain.BoxStatistics;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Gary Ye
@@ -30,15 +31,5 @@ public interface BoxStatisticsService {
      * @return an outlier - in case there are many boxes that match the criteria then the one with the lowest id will
      * be chosen.
      */
-    Box findOutlierBox(LocalDate begin, LocalDate end, boolean best);
-
-    /**
-     * Finds the box with the least/most number of bookings on the given day of the week.
-     *
-     * @param dayOfWeek the day of the week
-     * @param best      true for the best or the worst
-     * @return an outlier - in case there are many boxes that match the criteria then the one with the lowest id will
-     * be chosen.
-     */
-    Box findOutlierBox(DayOfWeek dayOfWeek, boolean best);
+    Box findOutlierBox(LocalDate begin, LocalDate end, boolean best, List<DayOfWeek> dayOfWeeks);
 }

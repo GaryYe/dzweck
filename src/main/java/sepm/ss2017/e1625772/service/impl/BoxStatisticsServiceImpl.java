@@ -70,29 +70,13 @@ public class BoxStatisticsServiceImpl implements BoxStatisticsService {
     }
 
     @Override
-    public Box findOutlierBox(LocalDate begin, LocalDate end, boolean best) {
-        BoxStatistics boxStatistics = getStatistics(begin, end);
+    public Box findOutlierBox(LocalDate begin, LocalDate end, boolean best, List<DayOfWeek> days) {
+        BoxStatistics bs = getStatistics(begin, end);
         Box bestBox = null;
-        for (Box box : boxStatistics.boxes()) {
+        for (Box box : bs.boxes()) {
             if (bestBox == null ||
-                    (best && boxStatistics.numberOfReservations(box) > boxStatistics.numberOfReservations(bestBox)) ||
-                    (!best && boxStatistics.numberOfReservations(box) < boxStatistics.numberOfReservations(bestBox))) {
-                bestBox = box;
-            }
-        }
-        return bestBox;
-    }
-
-    @Override
-    public Box findOutlierBox(DayOfWeek dayOfWeek, boolean best) {
-        BoxStatistics boxStatistics = getStatistics(null, null);
-        Box bestBox = null;
-        for (Box box : boxStatistics.boxes()) {
-            if (bestBox == null ||
-                    (best && boxStatistics.numberOfReservations(box, dayOfWeek) > boxStatistics.numberOfReservations
-                            (bestBox, dayOfWeek)) ||
-                    (!best && boxStatistics.numberOfReservations(box, dayOfWeek) < boxStatistics.numberOfReservations
-                            (bestBox, dayOfWeek))) {
+                    (best && bs.numberOfReservations(box, days) > bs.numberOfReservations(bestBox, days)) ||
+                    (!best && bs.numberOfReservations(box, days) < bs.numberOfReservations(bestBox, days))) {
                 bestBox = box;
             }
         }

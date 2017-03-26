@@ -101,6 +101,22 @@
                         <Insets bottom="15.0" left="12.0" right="12.0" top="15.0"/>
                     </padding>
                 </HBox>
+                <FlowPane hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0" VBox.vgrow="NEVER">
+                    <children>
+                        <CheckBox fx:id="mondayBox" mnemonicParsing="false" selected="true" text="Mo"/>
+                        <CheckBox fx:id="tuesdayBox" mnemonicParsing="false" selected="true" text="Tue"/>
+                        <CheckBox fx:id="wednesdayBox" mnemonicParsing="false" selected="true" text="Wed"/>
+                        <CheckBox fx:id="thursdayBox" mnemonicParsing="false" selected="true" text="Thu"/>
+                        <CheckBox fx:id="fridayBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="44.0"
+                                  selected="true" text="Fri"/>
+                        <CheckBox fx:id="saturdayBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="48.0"
+                                  selected="true" text="Sat"/>
+                        <CheckBox fx:id="sundayBox" mnemonicParsing="false" selected="true" text="Sun"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="12.0" left="15.0" right="15.0" top="12.0"/>
+                    </padding>
+                </FlowPane>
                 <HBox prefHeight="47.0" prefWidth="249.0" spacing="10.0">
                     <children>
                         <Label lineSpacing="10.0" prefHeight="25.0" prefWidth="94.0" text="Preview">
