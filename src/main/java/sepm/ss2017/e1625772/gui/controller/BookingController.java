@@ -326,6 +326,9 @@ public class BookingController extends FXMLController {
                 throw new FormParsingException("End time has to be present");
             booking.setEndTime(formEndTimePicker.getValue());
 
+            if (booking.getBeginTime().isAfter(booking.getEndTime()))
+                throw new FormParsingException("Begin time has to be before end time");
+
             booking.setCustomerName(customerTextField.getText());
         } catch (NumberFormatException e) {
             throw new FormParsingException("Id could not be parsed (it must be a positive number)");
