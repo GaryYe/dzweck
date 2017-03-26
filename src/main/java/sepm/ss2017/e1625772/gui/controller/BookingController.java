@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +18,7 @@ import sepm.ss2017.e1625772.domain.builders.BoxBookingBuilder;
 import sepm.ss2017.e1625772.exceptions.*;
 import sepm.ss2017.e1625772.gui.properties.PropertyBooking;
 import sepm.ss2017.e1625772.gui.properties.PropertyBoxBooking;
+import sepm.ss2017.e1625772.gui.utils.ReceiptRenderer;
 import sepm.ss2017.e1625772.service.BookingService;
 import sepm.ss2017.e1625772.service.BoxBookingService;
 import sepm.ss2017.e1625772.service.ReceiptService;
@@ -28,8 +29,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
-import static sepm.ss2017.e1625772.gui.FXUtils.confirmationDialog;
+import static sepm.ss2017.e1625772.gui.utils.Dialogs.alertErrorMessage;
+import static sepm.ss2017.e1625772.gui.utils.Dialogs.confirmationDialog;
 
 
 /**

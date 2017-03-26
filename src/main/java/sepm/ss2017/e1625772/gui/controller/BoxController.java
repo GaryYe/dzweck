@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.controller;
 
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -32,8 +32,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
-import static sepm.ss2017.e1625772.gui.FXUtils.confirmationDialog;
+import static sepm.ss2017.e1625772.gui.utils.Dialogs.alertErrorMessage;
+import static sepm.ss2017.e1625772.gui.utils.Dialogs.confirmationDialog;
 
 /**
  * sepm.ss2017.e1625772.gui.BoxSearchingController

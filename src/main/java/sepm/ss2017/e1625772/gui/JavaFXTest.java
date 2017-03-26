@@ -12,6 +12,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import sepm.ss2017.e1625772.exceptions.ServiceException;
+import sepm.ss2017.e1625772.gui.controller.FXMLController;
+import sepm.ss2017.e1625772.gui.controller.RootController;
+import sepm.ss2017.e1625772.gui.utils.Dialogs;
 
 /**
  * @author Gary Ye
@@ -38,9 +41,9 @@ public class JavaFXTest extends Application {
     private static void showErrorDialog(Throwable e) {
         String errorMessage = "An unexpected occurred while processing your request";
         if (e instanceof ServiceException) {
-            FXUtils.alertErrorMessage(errorMessage);
+            Dialogs.alertErrorMessage(errorMessage);
         } else {
-            FXUtils.alertExceptionMessage(new Exception(e), errorMessage);
+            Dialogs.alertExceptionMessage(new Exception(e), errorMessage);
         }
     }
 

@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.StackedBarChart;
@@ -23,8 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static sepm.ss2017.e1625772.gui.FXUtils.alertErrorMessage;
-import static sepm.ss2017.e1625772.gui.FXUtils.confirmationDialog;
+import static sepm.ss2017.e1625772.gui.utils.Dialogs.alertErrorMessage;
+import static sepm.ss2017.e1625772.gui.utils.Dialogs.confirmationDialog;
 
 /**
  * @author Gary Ye

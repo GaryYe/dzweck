@@ -1,8 +1,9 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.utils.impl;
 
 import org.springframework.stereotype.Service;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.Receipt;
+import sepm.ss2017.e1625772.gui.utils.ReceiptRenderer;
 
 import java.util.Map;
 

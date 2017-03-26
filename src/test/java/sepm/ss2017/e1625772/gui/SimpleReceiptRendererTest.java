@@ -5,6 +5,8 @@ import org.junit.Test;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.Receipt;
 import sepm.ss2017.e1625772.domain.builders.BoxBuilder;
+import sepm.ss2017.e1625772.gui.utils.ReceiptRenderer;
+import sepm.ss2017.e1625772.gui.utils.impl.SimpleReceiptRenderer;
 
 import java.util.HashMap;
 import java.util.Map;

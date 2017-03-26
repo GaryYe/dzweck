@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.utils;
 
 import sepm.ss2017.e1625772.domain.Receipt;
 

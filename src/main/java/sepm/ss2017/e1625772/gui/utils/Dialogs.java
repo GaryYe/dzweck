@@ -1,4 +1,4 @@
-package sepm.ss2017.e1625772.gui;
+package sepm.ss2017.e1625772.gui.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * @author Gary Ye
  * @version %I% %G%
  */
-public class FXUtils {
+public class Dialogs {
     public static void alertErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
