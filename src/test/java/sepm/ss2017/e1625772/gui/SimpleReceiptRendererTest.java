@@ -1,6 +1,7 @@
 package sepm.ss2017.e1625772.gui;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import sepm.ss2017.e1625772.domain.Box;
 import sepm.ss2017.e1625772.domain.Receipt;
@@ -29,6 +30,7 @@ public class SimpleReceiptRendererTest {
     }
 
     @Test
+    @Ignore
     public void renderCorrect() throws Exception {
         Receipt receipt = new Receipt();
         receipt.setNumberOfDays(3);
