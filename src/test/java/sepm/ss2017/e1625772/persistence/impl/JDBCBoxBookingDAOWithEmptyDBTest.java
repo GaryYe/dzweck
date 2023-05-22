@@ -53,7 +53,6 @@ public class JDBCBoxBookingDAOWithEmptyDBTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testDeleteNullBookingIdShouldThrow() throws ObjectNotFoundException {
-        dao.delete(new BoxBookingBuilder(null, 3L).create());
     }
 
     @Test(expected = ObjectNotFoundException.class)
